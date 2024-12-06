@@ -1,0 +1,19 @@
+/* src/assets/styles/forecast.css */
+.forecast-container {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+  }
+  
+  .forecast-card {
+    text-align: center;
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 5px;
+    width: 150px;
+  }
+  
+  .forecast-card .icon {
+    font-size: 40px;
+  }
+  

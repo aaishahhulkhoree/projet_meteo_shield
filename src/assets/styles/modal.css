@@ -1,0 +1,58 @@
+/* modal.css */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 200px;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7); /* Légère ombre de fond */
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  z-index: 1000; /* Assurer que le modal soit au-dessus des autres éléments */
+  opacity: 0; /* Par défaut, invisible */
+  transition: opacity 0.3s ease-in-out;
+}
+  .modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .modal-content h3 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .modal-content button {
+    padding: 10px;
+    width: 100%;
+    margin: 10px 0;
+  }
+  
+  .modal-overlay.active {
+    display: flex;
+    opacity: 1;
+  }
+
+  button {
+    background-color: #4CAF50; /* Vert clair */
+    color: white;
+    padding: 10px;
+    margin: 5px 0;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  button:hover {
+    background-color: #45a049; /* Légère couleur au survol */
+  }
+  
+  button:focus {
+    outline: none;
+  }
+  
