@@ -7,7 +7,7 @@
   
   body {
     font-family: 'Arial', sans-serif;
-    background-color: #f4f6f9;
+    background-color: #f4f6f9d0;
     color: #333;
     padding: 0;
     margin: 0;
@@ -21,18 +21,6 @@
     text-decoration: none;
     color: inherit;
   }
+
   
-  button {
-    cursor: pointer;
-    padding: 10px 15px;
-    border-radius: 5px;
-    border: none;
-    background-color: #007bff;
-    color: white;
-    font-size: 16px;
-  }
-  
-  button:hover {
-    background-color: #0056b3;
-  }
-  
+

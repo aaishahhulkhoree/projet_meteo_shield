@@ -4,22 +4,21 @@
   justify-content: space-between;
   align-items: center;
   background: linear-gradient(90deg, #2196f3, #e53935); /* Dégradé de bleu à rouge */
-  padding: 15px 20px;
+  padding: 15px 30px; /* Plus d'espace autour */
   color: white;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.navbar-title {
-  font-size: 2rem;
-  font-weight: bold;
-  color: white;
+.navbar-left {
   display: flex;
   align-items: center;
+  margin-left: 20px; /* Ajouter un espace entre MétéoShield et le bord gauche */
+  margin-right: 50px; /* Ajout d'un espacement pour augmenter la distance entre MétéoShield et les autres liens */
 }
 
 .navbar-links {
   display: flex;
-  gap: 20px;
+  gap: 30px; /* Espacement plus large pour une meilleure lisibilité */
 }
 
 .nav-link {
@@ -27,25 +26,36 @@
   text-decoration: none;
   font-size: 1.2rem;
   transition: color 0.3s;
+  padding: 5px 0; /* Ajout d'un espacement vertical pour la séparation */
+  border-bottom: 2px solid transparent; /* Séparation entre les liens */
 }
 
 .nav-link:hover {
   color: #fbc02d; /* Jaune pour l'effet hover */
+  border-bottom: 2px solid #fbc02d; /* Ajout de la séparation sous le lien au hover */
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Espacement plus petit entre le bouton Menu et les liens */
 }
 
 .menu-btn {
   background-color: white;
   color: #e53935; /* Rouge du danger */
   border: none;
-  font-size: 1.5rem;
-  padding: 10px 15px;
-  border-radius: 50%;
+  font-size: 1.5rem; /* Taille du texte plus grande */
+  padding: 10px 20px; /* Taille adaptée au texte */
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .menu-btn:hover {
   background-color: #e53935;
   color: white;
-  transform: rotate(90deg);
 }

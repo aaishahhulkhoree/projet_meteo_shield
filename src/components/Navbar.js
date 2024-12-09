@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'; // Ajout du lien de navigation
-import '../assets/styles/navbar.css';
-import Modal from './Modal';
+import { Link } from 'react-router-dom';
+import '../assets/styles/navbar.css'; // Import du fichier CSS mis à jour
+import Modal from './Modal'; // Import du composant Modal
 
 const Navbar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -12,16 +12,24 @@ const Navbar = () => {
 
   return (
     <header className="navbar">
-      <h2 className="navbar-title">🌩️ MétéoShield</h2> {/* Icône d'orage ajoutée */}
-      <nav className="navbar-links">
-        <Link to="/" className="nav-link">Accueil</Link>
-        <Link to="/forecast" className="nav-link">Prévisions</Link>
-        <Link to="/map" className="nav-link">Carte</Link>
-        <Link to="/settings" className="nav-link">Paramètres</Link>
-      </nav>
-      <button className="menu-btn" onClick={toggleModal}>
-        ☰ Menu
-      </button>
+      {/* Liens et bouton sur la même ligne */}
+      <div className="navbar-left">
+        <Link to="/" className="nav-link">MétéoShield</Link>
+      </div>
+
+      <div className="navbar-right">
+        <nav className="navbar-links">
+          <Link to="/forecast" className="nav-link">Prévisions</Link>
+          <Link to="/map" className="nav-link">Carte</Link>
+        </nav>
+
+        {/* Bouton Menu */}
+        <button className="menu-btn" onClick={toggleModal}>
+          ☰ Menu
+        </button>
+      </div>
+
+      {/* Modal */}
       {isModalOpen && <Modal toggleModal={toggleModal} />}
     </header>
   );

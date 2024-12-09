@@ -27,23 +27,27 @@ const Weather = () => {
 
   return (
     <div className="body">
-      <input
-        type="text"
-        placeholder="Entrez une ville"
-        value={city}
-        onChange={(e) => setCity(e.target.value)}
-      />
-      <button onClick={handleSearch}>Rechercher</button>
 
-      {error && <div className="error">{error}</div>}
+      <div className="weather-container">
+        <input
+          type="text"
+          placeholder="Entrez une ville"
+          value={city}
+          onChange={(e) => setCity(e.target.value)}
+        />
 
-      {weatherData && (
-        <div className="weather-info">
-          <h2>{weatherData.name}</h2>
-          <p>{weatherData.weather[0].description}</p>
-          <p className='temperature'>{weatherData.main.temp}°C</p>
-        </div>
-      )}
+        <button onClick={handleSearch}>Rechercher</button>
+
+        {error && <div className="error">{error}</div>}
+
+        {weatherData && (
+          <div className="weather-info">
+            <h2>{weatherData.name}</h2>
+            <p>{weatherData.weather[0].description}</p>
+            <p className='temperature'>{weatherData.main.temp}°C</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

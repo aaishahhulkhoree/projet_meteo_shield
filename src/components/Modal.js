@@ -24,4 +24,5 @@ const Modal = ({ toggleModal }) => {
   );
 };
 
+
 export default Modal;

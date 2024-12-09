@@ -14,11 +14,10 @@
 .modal-content {
   background-color: #ffffff;
   padding: 20px 40px;
-  border-radius: 12px;
+  border-radius: 0; /* Coins carrés */
   text-align: center;
   width: 90%;
   max-width: 400px;
-  animation: fadeIn 0.5s;
 }
 
 .modal-content h3 {
@@ -49,13 +48,12 @@
   font-size: 1.2rem;
 }
 
+/* Suppression de l'animation de mouvement */
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(-20px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
   }
 }
