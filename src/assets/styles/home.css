@@ -1,62 +1,156 @@
 /* home.css */
+:root {
+  --primary-color: #4a90e2; /* Bleu clair inspirant la météo */
+  --secondary-color: #f5f7fa; /* Gris très clair pour le fond */
+  --text-color: #333333; /* Texte noir sur fond clair */
+  --highlight-color: #ff5722; /* Pour les températures chaudes */
+  --bubble-color: #4a90e2; /* Bulles de texte bleues */
+  --button-hover-color: #3578e5;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: var(--secondary-color);
+  color: var(--text-color);
+}
+
 .home-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-  }
-  
-  .weather-info {
-    text-align: center;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    margin: 20px 0;
-    width: 300px;
-  }
-  
-  .weather-info h2 {
-    font-size: 28px;
-    margin-bottom: 10px;
-  }
-  
-  .weather-info p {
-    font-size: 18px;
-    margin-bottom: 5px;
-  }
-  
-  .weather-info .temperature {
-    font-size: 48px;
-    font-weight: bold;
-    color: #ff5722;
-  }
-  
-  .search-bar {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    width: 100%;
-  }
-  
-  .search-bar input {
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    width: 60%;
-    font-size: 16px;
-    margin-right: 10px;
-  }
-  
-  .search-bar button {
-    padding: 10px 15px;
-    background-color: #007bff;
-    border-radius: 5px;
-    color: white;
-    border: none;
-  }
-  
-  .search-bar button:hover {
-    background-color: #0056b3;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.weather-info {
+  text-align: center;
+  background-color: var(--bubble-color);
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  margin: 20px 0;
+  width: 90%;
+  max-width: 350px;
+  color: #ffffff; /* Texte blanc dans la bulle */
+  position: relative;
+}
+
+.weather-info h2 {
+  font-size: 32px;
+  margin-bottom: 15px;
+}
+
+.weather-info p {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.weather-info .temperature {
+  font-size: 64px;
+  font-weight: bold;
+  color: var(--highlight-color);
+}
+
+.weather-icon {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 20px;
+}
+
+.search-bar {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.search-bar input {
+  padding: 12px;
+  border-radius: 8px;
+  border: 2px solid var(--primary-color);
+  width: 70%;
+  font-size: 18px;
+  margin-right: 10px;
+  transition: border-color 0.3s ease-in-out;
+}
+
+.search-bar input:focus {
+  border-color: var(--highlight-color);
+  outline: none;
+}
+
+.search-bar button {
+  padding: 12px 20px;
+  background-color: var(--primary-color);
+  border-radius: 8px;
+  color: white;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.search-bar button:hover {
+  background-color: var(--button-hover-color);
+}
+
+.alert-banner {
+  background-color: #ff4747;
+  color: white;
+  text-align: center;
+  padding: 10px;
+  border-radius: 10px;
+  width: 100%;
+  font-size: 18px;
+  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.bubble {
+  background-color: var(--bubble-color);
+  color: white;
+  padding: 15px 20px;
+  border-radius: 20px;
+  margin: 10px 0;
+  width: 100%;
+  text-align: center;
+  font-size: 18px;
+  position: relative;
+  max-width: 350px;
+}
+
+.bubble::before {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 20px;
+  width: 20px;
+  height: 20px;
+  background-color: var(--bubble-color);
+  transform: rotate(45deg);
+  border-bottom-left-radius: 5px;
+}
+
+.day-night-toggle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  margin-top: 20px;
+}
+
+.day-night-toggle button {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 50px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.day-night-toggle button:hover {
+  background-color: var(--button-hover-color);
+}
+

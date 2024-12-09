@@ -5,40 +5,20 @@ import '../assets/styles/modal.css';
 const Modal = ({ toggleModal }) => {
   const navigate = useNavigate();
 
-  // Gestionnaire pour rediriger vers la page de connexion
-  const handleConnexionClick = () => {
+  const handleNavigation = (route) => {
     toggleModal(); // Ferme le modal
-    navigate('/login'); // Redirige vers la page de connexion
-  };
-
-  // Gestionnaire pour rediriger vers la page d'inscription
-  const handleInscriptionClick = () => {
-    toggleModal(); // Ferme le modal
-    navigate('/signup'); // Redirige vers la page d'inscription
-  };
-
-  // Gestionnaire pour rediriger vers la page des paramètres
-  const handleParametresClick = () => {
-    toggleModal(); // Ferme le modal
-    navigate('/settings'); // Redirige vers la page des paramètres
-  };
-
-  // Gestionnaire pour rediriger vers la page À propos
-  const handleAboutClick = () => {
-    toggleModal(); // Ferme le modal
-    navigate('/about'); // Redirige vers la page À propos
+    navigate(route); // Redirige vers la route souhaitée
   };
 
   return (
     <div className="modal-overlay active">
       <div className="modal-content">
         <h3>Menu</h3>
-        {/* Chaque bouton exécute une fonction spécifique */}
-        <button onClick={handleConnexionClick}>Connexion</button>
-        <button onClick={handleInscriptionClick}>Inscription</button>
-        <button onClick={handleParametresClick}>Paramètres</button>
-        <button onClick={handleAboutClick}>À propos</button>
-        <button onClick={toggleModal}>Fermer</button>
+        <button onClick={() => handleNavigation('/login')}>Connexion</button>
+        <button onClick={() => handleNavigation('/signup')}>Inscription</button>
+        <button onClick={() => handleNavigation('/settings')}>Paramètres</button>
+        <button onClick={() => handleNavigation('/about')}>À propos</button>
+        <button className="close-btn" onClick={toggleModal}>❌ Fermer</button>
       </div>
     </div>
   );
