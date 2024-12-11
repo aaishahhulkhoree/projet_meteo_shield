@@ -1,0 +1,42 @@
+/* Conteneur général des alertes */
+.alert {
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    font-weight: bold;
+    text-align: center;
+    color: #fff;
+    display: block; /* Affichage par défaut */
+  }
+  
+  /* Alerte Tempête (vent violent) */
+  .storm-alert {
+    background-color: #ff4d4d; /* Rouge pour signaler un danger élevé */
+  }
+  
+  /* Alerte Température (trop chaud ou trop froid) */
+  .temperature-alert {
+    background-color: #ffcc00; /* Jaune pour signaler la chaleur ou le froid */
+  }
+  
+  /* Alerte Précipitation (risque d'inondation ou de tornade) */
+  .precipitation-alert {
+    background-color: #3399ff; /* Bleu pour signaler la pluie */
+  }
+  
+  /* Alerte Sécheresse (manque de pluie) */
+  .drought-alert {
+    background-color: #ffb84d; /* Orange pour signaler la sécheresse */
+  }
+  
+  /* CSS pour le texte des alertes */
+  .alert h3 {
+    margin: 0;
+    font-size: 18px;
+  }
+  
+  .alert p {
+    margin: 0;
+    font-size: 14px;
+  }
+  

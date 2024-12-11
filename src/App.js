@@ -9,7 +9,7 @@ import About from './components/About';
 import Modal from './components/Modal';
 import Forecast from './components/Forecast';
 import Map from './components/Map';
-import Login from './components/LogIn';
+//import Login from './components/LogIn';
 //import SignUp from './components/SignUp';
 //import Settings from './components/Settings';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
