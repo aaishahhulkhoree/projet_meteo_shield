@@ -4,8 +4,8 @@ import StormAlert from './StormAlert';
 import TemperatureAlert from './TemperatureAlert';
 import PrecipitationAlert from './PrecipitationAlert';
 import DroughtAlert from './DroughtAlert';
-import TsunamiAlert from './TsunamiAlert'; 
-import EarthquakeAlert from './EarthquakeAlert'; 
+import TsunamiAlert from './TsunamiAlert'; // À ajouter si tu veux gérer l'alerte Tsunami
+import EarthquakeAlert from './EarthquakeAlert'; // À ajouter si tu veux gérer l'alerte Tremblement de terre
 import WindSpeedInfo from './WindSpeedInfo';
 
 const WeatherAlerts = ({ userPreferences }) => {

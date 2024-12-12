@@ -11,7 +11,7 @@ import Forecast from './components/Forecast';
 import Map from './components/Map';
 //import Login from './components/LogIn';
 //import SignUp from './components/SignUp';
-//import Settings from './components/Settings';
+import Settings from './components/Settings';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 function App() {
@@ -21,9 +21,11 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
+          <Route path="/settings" element={<Settings />} />
           <Route path="/forecast" element={<Forecast />} />
           <Route path="/map" element={<Map />} />
           <Route path="/modal" element={<Modal />} />
+
         </Routes>
     </div>
     </Router>

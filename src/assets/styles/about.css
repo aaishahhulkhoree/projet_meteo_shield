@@ -1,12 +1,122 @@
-/* about.css */
+/* --- About Page --- */
 .about-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    background-color: #ffffff;
-    margin: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  }
-  
+  background: linear-gradient(90deg, #ffcccc, #a6c9ff); /* Dégradé léger similaire à la page Home */
+  padding: 30px;
+  color: #333;
+  text-align: center;
+  border-radius: 8px;
+  max-width: 800px;
+  margin: 20px auto;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.about-container h2 {
+  font-size: 2.2rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.about-container p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+.about-container strong {
+  font-weight: bold;
+  color: #2196f3; /* Bleu pour attirer l'attention sur MeteoShield */
+}
+
+.about-container h3 {
+  font-size: 1.6rem;
+  color: #333;
+  margin-top: 40px;
+}
+
+.about-container ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 20px 0;
+  font-size: 1.1rem;
+}
+
+.about-container ul li {
+  margin: 10px 0;
+  padding-left: 20px;
+  text-align: left;
+  position: relative;
+}
+
+.about-container ul li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: #2196f3; /* Bleu pour la coche */
+  font-size: 1.2rem;
+}
+
+.about-container a {
+  color: #2196f3;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.about-container a:hover {
+  text-decoration: underline;
+}
+
+.home-btn {
+  background: linear-gradient(135deg, #2196f3, #e53935); /* Dégradé du bleu au rouge */
+  color: rgb(252, 235, 235);
+  font-size: 1.2rem;
+  padding: 12px 24px;
+  margin-top: 20px;
+  margin-bottom: 30px; /* Ajouter un espace sous le bouton pour aérer le texte */
+  border-radius: 50px; /* Coins arrondis */
+  cursor: pointer;
+  border: none;
+  outline: none;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: block;
+  margin-left: auto;
+  margin-right: auto; /* Centrer le bouton horizontalement */
+}
+
+.home-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300%;
+  height: 300%;
+  background-color: rgb(251, 184, 184);
+  transition: width 0.4s, height 0.4s, top 0.4s, left 0.4s;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+}
+
+.home-btn:hover {
+  transform: scale(1.1); /* Légère agrandissement lors du survol */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Ombre portée */
+}
+
+.home-btn:hover::before {
+  width: 0;
+  height: 0;
+  top: 50%;
+  left: 50%;
+}
+
+.home-btn span {
+  position: relative;
+  z-index: 1; /* Placer le texte au-dessus de l'animation */
+}
+
+/* --- Conteneur About --- */
+.about-container {
+  padding: 20px;
+  text-align: center;
+}

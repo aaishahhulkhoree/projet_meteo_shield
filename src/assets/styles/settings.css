@@ -1,5 +1,114 @@
+/* --- Settings Page --- */
 .settings-container {
-    padding: 20px;
-    text-align: center;
-  }
-  
+  background: linear-gradient(90deg, #ffcccc, #a6c9ff); /* Dégradé léger similaire à la page Home */
+  color: black;
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+h1 {
+  color: #05070c;
+}
+
+p {
+  margin-bottom: 20px;
+}
+
+.setting-option {
+  margin-bottom: 20px;
+}
+
+.setting-option label {
+  display: block;
+  font-size: 16px;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.setting-option select {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f0f8ff;
+  color: #333;
+}
+
+.setting-option select:focus {
+  border-color: #0044cc;
+  outline: none;
+}
+
+.button-container {
+  text-align: center;
+}
+
+.save-button {
+  padding: 12px 24px;
+  background-color: #0044cc;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.save-button:hover {
+  background-color: #0033aa;
+}
+
+/* --- Home Button --- */
+.home-btn {
+  background: linear-gradient(135deg, #3ba0f3, #dd6462); /* Dégradé bleu-rouge */
+  color: rgb(245, 245, 245);
+  font-size: 1.2rem;
+  padding: 12px 24px;
+  margin-top: 20px;
+  margin-bottom: 30px;
+  border-radius: 50px;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: block;
+  margin-left: auto;
+  margin-right: auto; /* Centrer le bouton horizontalement */
+}
+
+.home-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300%;
+  height: 300%;
+  background-color: rgb(251, 184, 184);
+  transition: width 0.4s, height 0.4s, top 0.4s, left 0.4s;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+}
+
+.home-btn:hover {
+  transform: scale(1.1); /* Légère agrandissement lors du survol */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Ombre portée */
+}
+
+.home-btn:hover::before {
+  width: 0;
+  height: 0;
+  top: 50%;
+  left: 50%;
+}
+
+.home-btn span {
+  position: relative;
+  z-index: 1; /* Placer le texte au-dessus de l'animation */
+}

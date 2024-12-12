@@ -1,0 +1,45 @@
+.unit-switch {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+  
+  .unit-switch button {
+    padding: 10px 20px;
+    margin: 0 5px;
+    border: none;
+    background-color: #ddd;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+  }
+  
+  .unit-switch button.active {
+    background-color: #4caf50; /* Vert clair préféré */
+    color: #fff;
+  }
+  
+  .temperature-alert {
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: bold;
+  }
+  
+  .extreme-heat {
+    background-color: #e74c3c; /* Rouge vif */
+  }
+  
+  .moderate-heat {
+    background-color: #e67e22; /* Orange */
+  }
+  
+  .extreme-cold {
+    background-color: #3498db; /* Bleu foncé */
+  }
+  
+  .moderate-cold {
+    background-color: #8e44ad; /* Violet */
+  }
+  

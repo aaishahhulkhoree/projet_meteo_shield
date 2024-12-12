@@ -3,7 +3,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: linear-gradient(90deg, #2196f3, #e53935); /* Dégradé de bleu à rouge */
+  background: linear-gradient(90deg, #f7abab, #9dc3fc); /* Dégradé du rouge clair au bleu clair, similaire à celui du home-container */
   padding: 15px 30px; /* Plus d'espace autour */
   color: white;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
@@ -31,8 +31,8 @@
 }
 
 .nav-link:hover {
-  color: #fbc02d; /* Jaune pour l'effet hover */
-  border-bottom: 2px solid #fbc02d; /* Ajout de la séparation sous le lien au hover */
+  color: #ffeb3b; /* Jaune légèrement plus doux pour l'effet hover */
+  border-bottom: 2px solid #ffeb3b; /* Ajout de la séparation sous le lien au hover */
 }
 
 .navbar-right {
@@ -43,7 +43,7 @@
 
 .menu-btn {
   background-color: white;
-  color: #e53935; /* Rouge du danger */
+  color: #c62828; /* Rouge plus sombre pour le bouton */
   border: none;
   font-size: 1.5rem; /* Taille du texte plus grande */
   padding: 10px 20px; /* Taille adaptée au texte */
@@ -56,6 +56,6 @@
 }
 
 .menu-btn:hover {
-  background-color: #e53935;
+  background-color: #c62828;
   color: white;
 }

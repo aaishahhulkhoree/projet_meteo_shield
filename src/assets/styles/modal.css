@@ -31,7 +31,7 @@
   margin-bottom: 10px;
   font-size: 1rem;
   color: white;
-  background-color: #2196f3;
+  background-color: #a6c9ff; /* Bleu clair pour correspondre à la navbar */
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -39,13 +39,20 @@
 }
 
 .modal-content button:hover {
-  background-color: #1976d2;
+  background-color: #42a5f5; /* Légère variation de bleu au survol */
 }
 
 .close-btn {
-  background-color: #e53935;
+  background-color: #ff7043; /* Rouge plus doux pour fermer */
   color: white;
   font-size: 1.2rem;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.close-btn:hover {
+  background-color: #ff5722; /* Variation de rouge au survol */
 }
 
 /* Suppression de l'animation de mouvement */
