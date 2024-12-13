@@ -83,7 +83,7 @@ const Home = () => {
           className="search-input"
         />
         <button onClick={handleSearch} className="search-button">
-          Search
+          Rechercher
         </button>
       </div>
       {error && <p className="error-message">{error}</p>}
