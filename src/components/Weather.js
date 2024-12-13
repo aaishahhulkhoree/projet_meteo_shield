@@ -65,6 +65,7 @@ const Weather = ({ city, temperature, weather }) => {
   }
 
   return (
+    
     <div className="weather-container">
       <h2>Informations météo actuelles</h2>
       <p>Ville : {city || 'Non disponible'}</p>

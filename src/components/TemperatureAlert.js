@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import '../assets/styles/temperature.css';
 
 const TemperatureAlert = ({ temp }) => {
   // État pour suivre l'unité sélectionnée (Celsius par défaut)
