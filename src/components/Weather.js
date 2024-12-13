@@ -9,12 +9,11 @@ import EarthquakeAlert from './EarthquakeAlert';
 import WindSpeedInfo from './WindSpeedInfo';
 import '../assets/styles/weather.css';
 
-const Weather = () => {
+const Weather = ({ city, temperature, weather }) => {
   const [forecast, setForecast] = useState(null);
   const [earthquakeData, setEarthquakeData] = useState(null);
   const [tsunamiWarning, setTsunamiWarning] = useState(false);
   const [error, setError] = useState('');
-  const [city, setCity] = useState('');
 
   useEffect(() => {
     // S'abonner aux prévisions météo via PrevisionMeteo
@@ -30,27 +29,14 @@ const Weather = () => {
 
     const fetchWeatherAndAlerts = async () => {
       try {
-        if ('geolocation' in navigator) {
-          navigator.geolocation.getCurrentPosition(async (position) => {
-            const { latitude, longitude } = position.coords;
-            const cityName = await PrevisionMeteo.getCityName(latitude, longitude);
-            setCity(cityName);
-
-            // Mettre à jour les prévisions pour la ville
-            await PrevisionMeteo.mettreAJourPrevisions(cityName);
-
-            // Charger les alertes
-            // Exemple de données fictives pour les alertes
-            setEarthquakeData({ magnitude: 5, location: 'Tokyo' });
-            setTsunamiWarning(true);
-          }, (geoError) => {
-            console.error('Erreur de géolocalisation :', geoError);
-            setError('Impossible de récupérer la position actuelle.');
-          });
-        } else {
-          console.error('La géolocalisation n’est pas prise en charge.');
-          setError('La géolocalisation n’est pas disponible sur ce navigateur.');
+        if (city) {
+          // Mettre à jour les prévisions pour la ville sélectionnée
+          await PrevisionMeteo.mettreAJourPrevisions(city);
         }
+
+        // Charger les alertes fictives pour exemple
+        setEarthquakeData({ magnitude: 5, location: 'Tokyo' });
+        setTsunamiWarning(true);
       } catch (err) {
         console.error('Erreur lors de la récupération des données météo ou des alertes :', err);
         setError('Une erreur est survenue lors du chargement des données.');
@@ -62,7 +48,7 @@ const Weather = () => {
     return () => {
       PrevisionMeteo.retirerObserver(observer);
     };
-  }, []);
+  }, [city]); // Mettre à jour lorsqu'une nouvelle ville est recherchée
 
   if (!forecast) {
     return <div className="weather-container">Chargement des données météo...</div>;

@@ -16,7 +16,6 @@ const Home = () => {
       return;
     }
 
-    // Update weather data for the searched city
     try {
       await PrevisionMeteo.mettreAJourPrevisions(city);
     } catch (error) {
@@ -25,7 +24,6 @@ const Home = () => {
     }
   };
 
-  // Fetch the user's location and weather data on component mount
   useEffect(() => {
     const fetchWeatherForUser = async () => {
       if ('geolocation' in navigator) {
@@ -55,7 +53,6 @@ const Home = () => {
     fetchWeatherForUser();
   }, []);
 
-  // Subscribe to weather data updates
   useEffect(() => {
     const observer = {
       mettreAJour: (data) => {
@@ -76,9 +73,7 @@ const Home = () => {
 
   return (
     <div className="home-container">
-      {/* Navbar */}
       <Navbar />
-
       <div className="search-container">
         <input
           type="text"
@@ -91,11 +86,8 @@ const Home = () => {
           Search
         </button>
       </div>
-
       {error && <p className="error-message">{error}</p>}
-
-      {/* Weather Component */}
-      <Weather temperature={temperature} weather={weather} />
+      <Weather city={city} temperature={temperature} weather={weather} />
     </div>
   );
 };
