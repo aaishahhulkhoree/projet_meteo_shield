@@ -1,19 +1,58 @@
 /* src/assets/styles/forecast.css */
 .forecast-container {
-    display: flex;
-    justify-content: space-around;
-    padding: 20px;
-  }
-  
-  .forecast-card {
-    text-align: center;
-    background-color: #f9f9f9;
-    padding: 10px;
-    border-radius: 5px;
-    width: 150px;
-  }
-  
-  .forecast-card .icon {
-    font-size: 40px;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(to bottom, #ffcccc, #a6c9ff); /* Dégradé du rouge clair au bleu clair */
+  padding: 20px;
+  min-height: 100vh; /* Assure que le dégradé couvre toute la hauteur de la page */
+}
+
+.forecast-container h1,
+.forecast-container h2 {
+  font-size: 28px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.daily-forecast {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+}
+
+.forecast-card {
+  text-align: center;
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 180px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.forecast-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.forecast-card h4 {
+  margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+.forecast-card p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.icon {
+  font-size: 40px;
+  margin-bottom: 10px;
+  color: #007bff; /* Couleur bleue pour les icônes */
+}

@@ -1,3 +1,5 @@
+// Point d'entree du site, permet d'initialiser React et rend le composant App.
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';

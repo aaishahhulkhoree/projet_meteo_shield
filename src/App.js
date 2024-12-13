@@ -7,7 +7,7 @@ import './assets/styles/modal.css';
 import Home from './components/Home';
 import About from './components/About';
 import Modal from './components/Modal';
-import Forecast from './components/Forecast';
+import ForecastObserver from './components/ForecastObserver';
 import Map from './components/Map';
 //import Login from './components/LogIn';
 //import SignUp from './components/SignUp';
@@ -22,7 +22,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/settings" element={<Settings />} />
-          <Route path="/forecast" element={<Forecast />} />
+          <Route path="/forecast" element={<ForecastObserver />} />
           <Route path="/map" element={<Map />} />
           <Route path="/modal" element={<Modal />} />
 

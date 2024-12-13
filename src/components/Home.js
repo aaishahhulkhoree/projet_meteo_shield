@@ -1,47 +1,101 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../assets/styles/home.css';
 import Weather from './Weather';
 import Navbar from './Navbar';
+import PrevisionMeteo from '../utils/PrevisionMeteo';
 
 const Home = () => {
   const [city, setCity] = useState('');
   const [temperature, setTemperature] = useState('');
   const [weather, setWeather] = useState('');
+  const [error, setError] = useState('');
 
   const handleSearch = async () => {
     if (!city) {
       alert('Please enter a city name');
       return;
     }
-  
-    const API_KEY = 'fd441e159a57c88c956ebf246cc1ae9c';
-    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`;
-  
+
+    // Update weather data for the searched city
     try {
-      const response = await fetch(apiUrl);
-      if (!response.ok) {
-        throw new Error('City not found');
-      }
-      const data = await response.json();
-  
-      // Extraire les données météo
-      setTemperature(`${data.main.temp}°C`);
-      setWeather(data.weather[0].description);
+      await PrevisionMeteo.mettreAJourPrevisions(city);
     } catch (error) {
-      console.error('Error fetching weather data:', error);
-      alert('Unable to fetch weather data. Please check the city name or try again later.');
+      console.error('Error updating weather data:', error);
+      alert('Unable to fetch weather data for the entered city.');
     }
   };
-  
+
+  // Fetch the user's location and weather data on component mount
+  useEffect(() => {
+    const fetchWeatherForUser = async () => {
+      if ('geolocation' in navigator) {
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            const { latitude, longitude } = position.coords;
+            try {
+              const cityName = await PrevisionMeteo.getCityName(latitude, longitude);
+              setCity(cityName);
+              await PrevisionMeteo.mettreAJourPrevisions(cityName);
+            } catch (error) {
+              console.error('Error fetching user location weather:', error);
+              setError('Unable to fetch weather data for your location.');
+            }
+          },
+          (geoError) => {
+            console.error('Geolocation error:', geoError);
+            setError("Unable to get your location. Please enable location access.");
+          }
+        );
+      } else {
+        console.error('Geolocation is not supported in this browser.');
+        setError('Geolocation is not supported in this browser.');
+      }
+    };
+
+    fetchWeatherForUser();
+  }, []);
+
+  // Subscribe to weather data updates
+  useEffect(() => {
+    const observer = {
+      mettreAJour: (data) => {
+        if (data) {
+          const today = data.list[0];
+          setTemperature(`${today.main.temp}°C`);
+          setWeather(today.weather[0].description);
+        }
+      },
+    };
+
+    PrevisionMeteo.ajouterObserver(observer);
+
+    return () => {
+      PrevisionMeteo.retirerObserver(observer);
+    };
+  }, []);
 
   return (
     <div className="home-container">
       {/* Navbar */}
       <Navbar />
-    
-      {/* Weather Component */}
-      <Weather />
 
+      <div className="search-container">
+        <input
+          type="text"
+          placeholder="Enter a city name"
+          value={city}
+          onChange={(e) => setCity(e.target.value)}
+          className="search-input"
+        />
+        <button onClick={handleSearch} className="search-button">
+          Search
+        </button>
+      </div>
+
+      {error && <p className="error-message">{error}</p>}
+
+      {/* Weather Component */}
+      <Weather temperature={temperature} weather={weather} />
     </div>
   );
 };
