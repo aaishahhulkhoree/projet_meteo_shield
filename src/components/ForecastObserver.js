@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PrevisionMeteo from '../utils/PrevisionMeteo';
-import '../assets/styles/forecast.css'; // Ajoutez des styles si nécessaire
+import '../assets/styles/forecast.css';
 
 const ForecastObserver = () => {
   const [forecast, setForecast] = useState(null);
@@ -12,7 +12,7 @@ const ForecastObserver = () => {
       mettreAJour: (data) => {
         if (data) {
           setForecast(data);
-          setCity(data.city.name); // Met à jour le nom de la ville
+          setCity(data.city.name);
         }
       },
     };
@@ -59,21 +59,37 @@ const ForecastObserver = () => {
     return <div className="forecast-container">Chargement des prévisions...</div>;
   }
 
+  const groupedData = forecast.list.reduce((acc, item) => {
+    const date = item.dt_txt.split(' ')[0];
+    if (!acc[date]) {
+      acc[date] = { min: item.main.temp_min, max: item.main.temp_max, weather: item.weather[0].description };
+    } else {
+      acc[date].min = Math.min(acc[date].min, item.main.temp_min);
+      acc[date].max = Math.max(acc[date].max, item.main.temp_max);
+    }
+    return acc;
+  }, {});
+
+  const dailyForecasts = Object.entries(groupedData).map(([date, data]) => ({
+    date,
+    min: data.min,
+    max: data.max,
+    description: data.weather,
+  }));
+
   return (
     <div className="forecast-container">
       <h1>Prévisions météo pour {city || 'votre ville'}</h1>
       <h2>Prévisions sur 7 jours</h2>
       <div className="daily-forecast">
-        {forecast.list
-          .filter((item) => item.dt_txt.includes('12:00:00')) // Affiche les données de 12h chaque jour
-          .map((item, index) => (
-            <div key={index} className="forecast-card">
-              <h4>{new Date(item.dt_txt).toLocaleDateString()}</h4>
-              <p>Temp. min : {item.main.temp_min}°C</p>
-              <p>Temp. max : {item.main.temp_max}°C</p>
-              <p>{item.weather[0].description}</p>
-            </div>
-          ))}
+        {dailyForecasts.map((item, index) => (
+          <div key={index} className="forecast-card">
+            <h4>{new Date(item.date).toLocaleDateString()}</h4>
+            <p>Temp. min : {item.min}°C</p>
+            <p>Temp. max : {item.max}°C</p>
+            <p>{item.description}</p>
+          </div>
+        ))}
       </div>
     </div>
   );
