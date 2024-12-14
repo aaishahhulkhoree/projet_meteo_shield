@@ -5,22 +5,30 @@ import Navbar from './Navbar';
 import PrevisionMeteo from '../utils/PrevisionMeteo';
 
 const Home = () => {
-  const [city, setCity] = useState('');
+  const [searchCity, setSearchCity] = useState(''); // Ville recherchée
+  const [displayedCity, setDisplayedCity] = useState(''); // Ville actuellement affichée
   const [temperature, setTemperature] = useState('');
   const [weather, setWeather] = useState('');
   const [error, setError] = useState('');
 
   const handleSearch = async () => {
-    if (!city) {
+    if (!searchCity) {
       alert('Please enter a city name');
       return;
     }
 
     try {
-      await PrevisionMeteo.mettreAJourPrevisions(city);
+      setDisplayedCity(searchCity); // Met à jour la ville affichée
+      await PrevisionMeteo.mettreAJourPrevisions(searchCity);
     } catch (error) {
       console.error('Error updating weather data:', error);
       alert('Unable to fetch weather data for the entered city.');
+    }
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      handleSearch();
     }
   };
 
@@ -32,7 +40,8 @@ const Home = () => {
             const { latitude, longitude } = position.coords;
             try {
               const cityName = await PrevisionMeteo.getCityName(latitude, longitude);
-              setCity(cityName);
+              setSearchCity(cityName);
+              setDisplayedCity(cityName); // Initialiser avec la ville actuelle
               await PrevisionMeteo.mettreAJourPrevisions(cityName);
             } catch (error) {
               console.error('Error fetching user location weather:', error);
@@ -78,16 +87,14 @@ const Home = () => {
         <input
           type="text"
           placeholder="Enter a city name"
-          value={city}
-          onChange={(e) => setCity(e.target.value)}
+          value={searchCity}
+          onChange={(e) => setSearchCity(e.target.value)}
+          onKeyDown={handleKeyDown} // Trigger search on Enter
           className="search-input"
         />
-        <button onClick={handleSearch} className="search-button">
-          Rechercher
-        </button>
       </div>
       {error && <p className="error-message">{error}</p>}
-      <Weather city={city} temperature={temperature} weather={weather} />
+      <Weather city={displayedCity} temperature={temperature} weather={weather} />
     </div>
   );
 };
