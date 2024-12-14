@@ -4,10 +4,10 @@ import '../assets/styles/about.css';
 
 //interface AboutProps {}
 
-const About: React.FC<AboutProps> = (props) => {
+const About = () => {
   const navigate = useNavigate();
 
-  const goHome = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const goHome = (event) => {
     navigate('/');
   };
 
