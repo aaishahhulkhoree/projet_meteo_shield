@@ -67,8 +67,8 @@ const ForecastObserver = () => {
 
   const dailyForecasts = Object.entries(groupedData).map(([date, data]) => ({
     date,
-    min: Math.min(...data.map((item) => item.main.temp_min)),
-    max: Math.max(...data.map((item) => item.main.temp_max)),
+    min: Math.round(Math.min(...data.map((item) => item.main.temp_min))),
+    max: Math.round(Math.max(...data.map((item) => item.main.temp_max))),
     description: data[0].weather[0].description,
     hourly: data,
   }));
