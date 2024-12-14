@@ -3,6 +3,7 @@ import '../assets/styles/home.css';
 import Weather from './Weather';
 import Navbar from './Navbar';
 import PrevisionMeteo from '../utils/PrevisionMeteo';
+import { FaSearch } from 'react-icons/fa'; // Importation de l'icône loupe
 
 const Home = () => {
   const [searchCity, setSearchCity] = useState(''); // Ville recherchée
@@ -84,14 +85,17 @@ const Home = () => {
     <div className="home-container">
       <Navbar />
       <div className="search-container">
-        <input
-          type="text"
-          placeholder="Enter a city name"
-          value={searchCity}
-          onChange={(e) => setSearchCity(e.target.value)}
-          onKeyDown={handleKeyDown} // Trigger search on Enter
-          className="search-input"
-        />
+      <FaSearch className="search-icon" onClick={handleSearch} /> {/* Icône à l'extérieur */}
+        <div className="search-input-wrapper">
+          <input
+            type="text"
+            placeholder="Enter a city name"
+            value={searchCity}
+            onChange={(e) => setSearchCity(e.target.value)}
+            onKeyDown={handleKeyDown} // Trigger search on Enter
+            className="search-input"
+          />
+        </div>
       </div>
       {error && <p className="error-message">{error}</p>}
       <Weather city={displayedCity} temperature={temperature} weather={weather} />

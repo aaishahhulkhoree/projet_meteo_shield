@@ -19,18 +19,31 @@
   box-sizing: border-box; /* Inclut padding dans la largeur totale */
 }
 
+.search-input-wrapper {
+  position: relative; /* Assure que l'input prend en compte l'icône */
+  width: 100%; /* Assure que l'input prend toute la largeur disponible */
+  max-width: 400px; /* Limite la largeur de l'input pour une meilleure présentation */
+}
+
 .search-input {
   padding: 10px 15px;
   font-size: 16px;
   border: 2px solid #a6c9ff;
   border-radius: 5px;
   outline: none;
-  width: 300px;
+  width: 100%; /* Prend toute la largeur du conteneur */
   transition: border-color 0.3s ease;
 }
 
 .search-input:focus {
   border-color: #f6a9a9;
+}
+
+.search-icon {
+  font-size: 28px; /* Taille de l'icône ajustée */
+  color: #73777f; /* Couleur de l'icône */
+  margin: 10px 10px 20px;
+  cursor: pointer; /* Ajoute un curseur en forme de main pour indiquer que l'icône est cliquable */
 }
 
 .error-message {

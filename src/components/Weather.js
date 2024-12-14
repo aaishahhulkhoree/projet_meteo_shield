@@ -69,7 +69,6 @@ const Weather = ({ city, temperature, weather }) => {
     <div className="weather-container">
       <h2>Informations météo actuelles</h2>
       <p>Ville : {city || 'Non disponible'}</p>
-      <p>Température : {today.main.temp}°C</p>
       <img
         src={`https://openweathermap.org/img/wn/${today.weather[0].icon}@2x.png`}
         alt={today.weather[0].description}
