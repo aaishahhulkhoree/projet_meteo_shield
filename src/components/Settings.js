@@ -23,14 +23,14 @@ const Settings = () => {
     <div className="settings-container">
       {/* Bouton retour à l'accueil */}
       <button className="home-btn" onClick={goHome}>
-        <span>Retour à l'accueil</span>
+        <span>Retour à l&apos;accueil</span>
       </button>
 
       <h1>Paramètres</h1>
-      <p>Personnalisez vos préférences d'alerte météo et géolocalisation.</p>
+      <p>Personnalisez vos préférences d&apos;alerte météo et géolocalisation.</p>
       
       <div className="setting-option">
-        <label htmlFor="alertType">Type d'alerte météo</label>
+        <label htmlFor="alertType">Type d&apos;alerte météo</label>
         <select 
           id="alertType" 
           value={alertType} 

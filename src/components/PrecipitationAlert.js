@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const PrecipitationAlert = ({ rain }) => {
   // Alerte pour pluie extrême (> 100 mm)
@@ -6,7 +7,7 @@ const PrecipitationAlert = ({ rain }) => {
     return (
       <div className="alert precipitation-alert extreme-rain">
         <h3>Alerte Pluie Extrême !</h3>
-        <p>Précipitations torrentielles détectées : {rain['1h']} mm dans la dernière heure. Risque d'inondation imminent.</p>
+        <p>Précipitations torrentielles détectées : {rain['1h']} mm dans la dernière heure. Risque d&apos;inondation imminent.</p>
       </div>
     );
   }
@@ -16,7 +17,7 @@ const PrecipitationAlert = ({ rain }) => {
     return (
       <div className="alert precipitation-alert heavy-rain">
         <h3>Alerte Pluie Forte !</h3>
-        <p>Précipitations importantes détectées : {rain['1h']} mm dans la dernière heure. Risque d'inondation possible.</p>
+        <p>Précipitations importantes détectées : {rain['1h']} mm dans la dernière heure. Risque d&apos;inondation possible.</p>
       </div>
     );
   }
@@ -32,6 +33,13 @@ const PrecipitationAlert = ({ rain }) => {
   }
 
   return null;
+};
+
+// Validation des props
+PrecipitationAlert.propTypes = {
+  rain: PropTypes.shape({
+    '1h': PropTypes.number, // Validation pour rain['1h']
+  }).isRequired,
 };
 
 export default PrecipitationAlert;

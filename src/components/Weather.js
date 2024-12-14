@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types'; // Import de PropTypes
 import PrevisionMeteo from '../utils/PrevisionMeteo';
 import StormAlert from './StormAlert';
 import TemperatureAlert from './TemperatureAlert';
@@ -65,7 +66,6 @@ const Weather = ({ city, temperature, weather }) => {
   }
 
   return (
-    
     <div className="weather-container">
       <h2>Informations météo actuelles</h2>
       <p>Ville : {city || 'Non disponible'}</p>
@@ -88,6 +88,13 @@ const Weather = ({ city, temperature, weather }) => {
       <WindSpeedInfo windSpeed={today.wind.speed} />
     </div>
   );
+};
+
+// Définir les PropTypes pour valider les props du composant Weather
+Weather.propTypes = {
+  city: PropTypes.string.isRequired, // city doit être une chaîne de caractères et est requise
+  temperature: PropTypes.number, // temperature est un nombre, mais n'est pas requis
+  weather: PropTypes.object, // weather est un objet, mais n'est pas requis
 };
 
 export default Weather;

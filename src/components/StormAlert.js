@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types'; // Import de PropTypes
 
 const StormAlert = ({ windSpeed, windGust, forecastWindSpeed }) => {
   // Condition pour un vent violent
@@ -21,6 +22,13 @@ const StormAlert = ({ windSpeed, windGust, forecastWindSpeed }) => {
   }
 
   return null;
+};
+
+// Définir les PropTypes pour valider les props du composant StormAlert
+StormAlert.propTypes = {
+  windSpeed: PropTypes.number.isRequired, // windSpeed doit être un nombre et est requis
+  windGust: PropTypes.number.isRequired, // windGust doit être un nombre et est requis
+  forecastWindSpeed: PropTypes.number.isRequired, // forecastWindSpeed doit être un nombre et est requis
 };
 
 export default StormAlert;

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types'; // Import de PropTypes
 
 const WindSpeedInfo = ({ windSpeed }) => {
   if (windSpeed !== undefined) {
@@ -10,6 +11,11 @@ const WindSpeedInfo = ({ windSpeed }) => {
     );
   }
   return null;
+};
+
+// Validation des props
+WindSpeedInfo.propTypes = {
+  windSpeed: PropTypes.number, // windSpeed doit être un nombre
 };
 
 export default WindSpeedInfo;

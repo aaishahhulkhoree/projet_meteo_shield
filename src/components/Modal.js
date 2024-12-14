@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types'; // Import de PropTypes
 import '../assets/styles/modal.css';
 
 const Modal = ({ toggleModal }) => {
@@ -24,5 +25,9 @@ const Modal = ({ toggleModal }) => {
   );
 };
 
+// Définir les PropTypes pour valider les props du composant Modal
+Modal.propTypes = {
+  toggleModal: PropTypes.func.isRequired, // toggleModal doit être une fonction et est requise
+};
 
 export default Modal;

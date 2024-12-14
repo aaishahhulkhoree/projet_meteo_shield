@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types'; // Import de PropTypes
 
 const DroughtAlert = ({ rain, humidity, temp }) => {
   // Vérification si les précipitations sont absentes ou faibles
@@ -23,6 +24,15 @@ const DroughtAlert = ({ rain, humidity, temp }) => {
 
   // Si l'humidité est suffisante et les conditions sont normales, pas d'alerte sécheresse
   return null;
+};
+
+// Définir les PropTypes pour valider les props du composant DroughtAlert
+DroughtAlert.propTypes = {
+  rain: PropTypes.shape({
+    '1h': PropTypes.number,  // La quantité de pluie dans la dernière heure
+  }).isRequired, // rain est un objet avec une propriété '1h' (nombre de mm) et est requis
+  humidity: PropTypes.number.isRequired,  // L'humidité est un nombre
+  temp: PropTypes.number.isRequired, // La température est un nombre
 };
 
 export default DroughtAlert;
