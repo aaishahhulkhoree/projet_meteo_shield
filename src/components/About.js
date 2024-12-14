@@ -5,7 +5,7 @@ import '../assets/styles/about.css';
 // Pas de props ici, mais si besoin, on peut ajouter un type pour les props
 interface AboutProps {}
 
-const About: React.FC<AboutProps> = (props) => {
+const About: React.FC<AboutProps> = (props) =>{
   const navigate = useNavigate();
 
   const goHome = (event: React.MouseEvent<HTMLButtonElement>) => {

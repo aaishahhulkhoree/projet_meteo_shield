@@ -1,15 +1,20 @@
 import React, { useState } from 'react';
 import '../assets/styles/temperature.css';
 
-const TemperatureAlert = ({ temp }) => {
+// === Déclaration des types TypeScript ===
+interface TemperatureAlertProps {
+  temp: number; // temp est un nombre qui représente la température
+}
+
+const TemperatureAlert: React.FC<TemperatureAlertProps> = ({ temp }) => {
   // État pour suivre l'unité sélectionnée (Celsius par défaut)
-  const [unit, setUnit] = useState('C'); // 'C' pour Celsius, 'F' pour Fahrenheit
+  const [unit, setUnit] = useState<'C' | 'F'>('C'); // 'C' pour Celsius, 'F' pour Fahrenheit
 
   // Fonction de conversion Celsius → Fahrenheit
-  const convertToFahrenheit = (celsius) => (celsius * 9 / 5) + 32;
+  const convertToFahrenheit = (celsius: number): number => (celsius * 9 / 5) + 32;
 
   // Température affichée en fonction de l'unité sélectionnée
-  const displayTemp = unit === 'C' ? Math.round(temp) : Math.round(convertToFahrenheit(temp));
+  const displayTemp: number = unit === 'C' ? Math.round(temp) : Math.round(convertToFahrenheit(temp));
 
   // Alerte pour chaleur extrême
   if (temp > 35) {

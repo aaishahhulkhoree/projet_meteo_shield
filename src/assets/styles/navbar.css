@@ -43,7 +43,7 @@
 
 .menu-btn {
   background-color: white;
-  color: #c62828; /* Rouge plus sombre pour le bouton */
+  color: #726262; /* Rouge plus sombre pour le bouton */
   border: none;
   font-size: 1.5rem; /* Taille du texte plus grande */
   padding: 10px 20px; /* Taille adaptée au texte */
@@ -56,6 +56,6 @@
 }
 
 .menu-btn:hover {
-  background-color: #c62828;
+  background-color: #f6a9a9;
   color: white;
 }
