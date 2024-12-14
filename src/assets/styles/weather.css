@@ -134,3 +134,8 @@ body {
     transform: translateX(25px);
   }
   
+  .current-weather-icon {
+    width: 60px;
+    height: 60px;
+    margin-top: 10px;
+  }  

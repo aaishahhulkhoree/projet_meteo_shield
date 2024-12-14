@@ -91,9 +91,13 @@ const ForecastObserver = () => {
             onClick={() => handleDayClick(item.date)}
           >
             <h4>{new Date(item.date).toLocaleDateString()}</h4>
+            <img
+              src={`https://openweathermap.org/img/wn/${item.hourly[0].weather[0].icon}@2x.png`}
+              alt={item.hourly[0].weather[0].description}
+              className="forecast-icon"
+            />
             <p>Temp. min : {item.min}°C</p>
             <p>Temp. max : {item.max}°C</p>
-            <p>{item.description}</p>
           </div>
         ))}
       </div>

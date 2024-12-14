@@ -70,7 +70,11 @@ const Weather = ({ city, temperature, weather }) => {
       <h2>Informations météo actuelles</h2>
       <p>Ville : {city || 'Non disponible'}</p>
       <p>Température : {today.main.temp}°C</p>
-      <p>Météo : {today.weather[0].description}</p>
+      <img
+        src={`https://openweathermap.org/img/wn/${today.weather[0].icon}@2x.png`}
+        alt={today.weather[0].description}
+        className="current-weather-icon"
+      />
 
       {/* Alertes */}
       <StormAlert windSpeed={today.wind.speed} />
