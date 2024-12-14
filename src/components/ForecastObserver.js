@@ -2,94 +2,82 @@ import React, { useEffect, useState } from 'react';
 import PrevisionMeteo from '../utils/PrevisionMeteo';
 import '../assets/styles/forecast.css';
 
-/**
- * Composant React affichant les previsions meteo sur 7 jours.
- * Utilise la geolocalisation pour determiner la ville actuelle ou recupere les previsions pour une ville donnee.
- */
-
 const ForecastObserver = () => {
-  const [forecast, setForecast] = useState(null); // Etat pour stocker les donnees des previsions
-  const [error, setError] = useState(''); // Etat pour stocker les messages d'erreur
-  const [city, setCity] = useState(''); // Etat pour stocker le nom de la ville actuelle
+  const [forecast, setForecast] = useState(null); // Stocke les prévisions météo
+  const [error, setError] = useState(''); // Stocke les messages d'erreur
+  const [city, setCity] = useState(''); // Stocke le nom de la ville
+  const [hourlyForecast, setHourlyForecast] = useState(null); // Stocke les prévisions horaires pour une journée
+  const [selectedDate, setSelectedDate] = useState(''); // Stocke la date sélectionnée
 
-  // useEffect qui s'execute une fois au montage du composant
+  // Fonction pour initialiser les prévisions météo et géolocalisation
   useEffect(() => {
     const observer = {
-      // Methode appelee pour mettre a jour les previsions lorsque les donnees changent
       mettreAJour: (data) => {
         if (data) {
-          setForecast(data); // Mettre a jour les donnees des previsions
-          setCity(data.city.name); // Mettre a jour le nom de la ville
+          setForecast(data);
+          setCity(data.city.name);
         }
       },
     };
 
-    // Ajouter cet observateur pour recevoir les mises a jour de PrevisionMeteo
     PrevisionMeteo.ajouterObserver(observer);
 
-    // Fonction pour recuperer la geolocalisation de l'utilisateur et mettre a jour les previsions
     const fetchLocationAndForecast = async () => {
       try {
         if ('geolocation' in navigator) {
           navigator.geolocation.getCurrentPosition(
             async (position) => {
               const { latitude, longitude } = position.coords;
-              const cityName = await PrevisionMeteo.getCityName(latitude, longitude); // Convertir les coordonnees en nom de ville
-              setCity(cityName); // Mettre a jour la ville
-              await PrevisionMeteo.mettreAJourPrevisions(cityName); // Mettre a jour les previsions meteo
+              const cityName = await PrevisionMeteo.getCityName(latitude, longitude);
+              setCity(cityName);
+              await PrevisionMeteo.mettreAJourPrevisions(cityName);
             },
-            (geoError) => {
-              console.error('Erreur de geolocalisation :', geoError);
-              setError("Impossible d'obtenir votre localisation."); // Gestion des erreurs de geolocalisation
-            }
+            (geoError) => setError("Impossible d'obtenir votre localisation.")
           );
         } else {
-          console.error("La geolocalisation n'est pas disponible.");
-          setError("La geolocalisation n'est pas disponible sur ce navigateur."); // Si la geolocalisation n'est pas supportee
+          setError("La géolocalisation n'est pas disponible sur ce navigateur.");
         }
       } catch (err) {
-        console.error('Erreur lors de la recuperation des previsions :', err);
-        setError('Erreur lors du chargement des previsions meteo.');
+        setError('Erreur lors du chargement des prévisions météo.');
       }
     };
 
     fetchLocationAndForecast();
 
-    // Nettoyer l'observateur lors du demontage du composant
     return () => {
       PrevisionMeteo.retirerObserver(observer);
     };
   }, []);
 
-  // Afficher un message d'erreur si une erreur est survenue
+  // Gérer l'erreur ou le chargement
   if (error) {
     return <div className="forecast-container">{error}</div>;
   }
-
-  // Afficher un message de chargement si les donnees des previsions ne sont pas encore disponibles
   if (!forecast) {
     return <div className="forecast-container">Chargement des prévisions...</div>;
   }
 
-  // Grouper les donnees par jour et calculer les temperatures minimale et maximale
+  // Grouper les données par jour
   const groupedData = forecast.list.reduce((acc, item) => {
-    const date = item.dt_txt.split(' ')[0]; // Extraire la date
-    if (!acc[date]) {
-      acc[date] = { min: item.main.temp_min, max: item.main.temp_max, weather: item.weather[0].description };
-    } else {
-      acc[date].min = Math.min(acc[date].min, item.main.temp_min);
-      acc[date].max = Math.max(acc[date].max, item.main.temp_max);
-    }
+    const date = item.dt_txt.split(' ')[0];
+    if (!acc[date]) acc[date] = [];
+    acc[date].push(item);
     return acc;
   }, {});
 
-  // Transformer les donnees groupees en tableau pour affichage
   const dailyForecasts = Object.entries(groupedData).map(([date, data]) => ({
     date,
-    min: data.min,
-    max: data.max,
-    description: data.weather,
+    min: Math.min(...data.map((item) => item.main.temp_min)),
+    max: Math.max(...data.map((item) => item.main.temp_max)),
+    description: data[0].weather[0].description,
+    hourly: data,
   }));
+
+  // Fonction pour gérer le clic sur une journée
+  const handleDayClick = (date) => {
+    setSelectedDate(date);
+    setHourlyForecast(groupedData[date]);
+  };
 
   return (
     <div className="forecast-container">
@@ -97,7 +85,11 @@ const ForecastObserver = () => {
       <h2>Prévisions sur 7 jours</h2>
       <div className="daily-forecast">
         {dailyForecasts.map((item, index) => (
-          <div key={index} className="forecast-card">
+          <div
+            key={index}
+            className="forecast-card"
+            onClick={() => handleDayClick(item.date)}
+          >
             <h4>{new Date(item.date).toLocaleDateString()}</h4>
             <p>Temp. min : {item.min}°C</p>
             <p>Temp. max : {item.max}°C</p>
@@ -105,6 +97,33 @@ const ForecastObserver = () => {
           </div>
         ))}
       </div>
+
+      {hourlyForecast && (
+        <div className="hourly-forecast">
+          <h2>Prévisions horaires pour {selectedDate}</h2>
+          <div className="hourly-list">
+            {hourlyForecast.map((item, index) => {
+              const time = new Date(item.dt_txt).toLocaleTimeString([], {
+                hour: '2-digit',
+                minute: '2-digit',
+              });
+              const precipitation =
+                item.rain?.['3h'] || item.snow?.['3h'] || 0;
+              return (
+                <div key={index} className="hourly-card">
+                  <p>{time}</p>
+                  <p>Température : {item.main.temp}°C</p>
+                  <p>Précipitations : {precipitation > 0 ? `${precipitation}%` : '-'}</p>
+                  <img
+                    src={`https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`}
+                    alt={item.weather[0].description}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

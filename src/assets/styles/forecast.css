@@ -1,11 +1,10 @@
-/* src/assets/styles/forecast.css */
 .forecast-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: linear-gradient(to bottom, #ffcccc, #a6c9ff); /* Dégradé du rouge clair au bleu clair */
+  background: linear-gradient(to bottom, #ffcccc, #a6c9ff);
   padding: 20px;
-  min-height: 100vh; /* Assure que le dégradé couvre toute la hauteur de la page */
+  min-height: 100vh;
 }
 
 .forecast-container h1,
@@ -31,6 +30,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 180px;
   transition: transform 0.2s ease-in-out;
+  cursor: pointer;
 }
 
 .forecast-card:hover {
@@ -38,21 +38,30 @@
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
-.forecast-card h4 {
-  margin-bottom: 10px;
-  font-size: 18px;
-  font-weight: bold;
-  color: #333;
+.hourly-forecast {
+  margin-top: 20px;
+  width: 100%;
 }
 
-.forecast-card p {
-  margin: 5px 0;
-  font-size: 14px;
-  color: #555;
+.hourly-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
 }
 
-.icon {
-  font-size: 40px;
-  margin-bottom: 10px;
-  color: #007bff; /* Couleur bleue pour les icônes */
+.hourly-card {
+  text-align: center;
+  background-color: #ffffff;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 120px;
+}
+
+.hourly-card img {
+  width: 50px;
+  height: 50px;
+  margin-top: 5px;
 }
