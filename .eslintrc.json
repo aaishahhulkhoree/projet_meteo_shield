@@ -1,0 +1,17 @@
+{
+    "extends": [
+      "eslint:recommended",
+      "plugin:react/recommended",
+      "plugin:@typescript-eslint/recommended"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "plugins": ["react", "@typescript-eslint"],
+    "env": {
+      "browser": true,
+      "node": true
+    },
+    "rules": {
+      "no-undef": "off"  // Si cette règle te pose problème, tu peux l'éteindre ici
+    }
+  }
+  
