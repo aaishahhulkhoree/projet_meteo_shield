@@ -51,7 +51,6 @@ const Home = () => {
           },
           (geoError) => {
             console.error('Geolocation error:', geoError);
-            setError("Unable to get your location. Please enable location access.");
           }
         );
       } else {
