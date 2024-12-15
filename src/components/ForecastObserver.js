@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Importation de useNavigate
 import PrevisionMeteo from '../utils/PrevisionMeteo';
-import '../assets/styles/forecast.css';
+import '../assets/styles/forecast.css'; // Le fichier CSS pour styliser le composant
 
 const ForecastObserver = () => {
+  const navigate = useNavigate(); // Initialisation du hook de navigation
   const [forecast, setForecast] = useState(null); // Stocke les prévisions météo
   const [error, setError] = useState(''); // Stocke les messages d'erreur
   const [city, setCity] = useState(''); // Stocke le nom de la ville
   const [hourlyForecast, setHourlyForecast] = useState(null); // Stocke les prévisions horaires pour une journée
   const [selectedDate, setSelectedDate] = useState(''); // Stocke la date sélectionnée
 
-  // Fonction pour initialiser les prévisions météo et géolocalisation
+  // Fonction pour retourner à la page d'accueil
+  const goHome = (event) => {
+    navigate('/');
+  };
+
+  // Fonction pour initialiser les prévisions météo et la géolocalisation
   useEffect(() => {
     const observer = {
       mettreAJour: (data) => {
@@ -81,6 +88,11 @@ const ForecastObserver = () => {
 
   return (
     <div className="forecast-container">
+      {/* Bouton retour à l'accueil en haut */}
+      <button className="home-btn" onClick={goHome}>
+        <span>Retour à l&apos;accueil</span>
+      </button>
+
       <h1>Prévisions météo pour {city || 'votre ville'}</h1>
       <h2>Prévisions sur 7 jours</h2>
       <div className="daily-forecast">
@@ -116,7 +128,7 @@ const ForecastObserver = () => {
               return (
                 <div key={index} className="hourly-card">
                   <p>{time}</p>
-                  <p>Température : {item.main.temp}°C</p>
+                  <p>Température : {Math.round(item.main.temp)}°C</p>
                   <p>Précipitations : {precipitation > 0 ? `${precipitation}%` : '-'}</p>
                   <img
                     src={`https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`}
