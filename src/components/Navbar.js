@@ -10,11 +10,16 @@ const Navbar = () => {
     setIsModalOpen(!isModalOpen);
   };
 
+  const handleHomeClick = () => {
+    // Rechargement de la page en forçant une navigation vers la racine
+    window.location.href = '/';
+  };
+
   return (
     <header className="navbar">
       {/* Liens et bouton sur la même ligne */}
       <div className="navbar-left">
-        <Link to="/" className="nav-link">MétéoShield</Link>
+        <Link to="/" className="nav-link" onClick={handleHomeClick}>MétéoShield</Link> {/* Lien avec rafraîchissement */}
       </div>
 
       <div className="navbar-right">
