@@ -27,7 +27,6 @@ p {
   font-size: 16px;
   margin-bottom: 8px;
   color: #333;
-  
 }
 
 .setting-option select {
@@ -112,4 +111,67 @@ p {
 .home-btn span {
   position: relative;
   z-index: 1; /* Placer le texte au-dessus de l'animation */
+}
+
+/* --- Toggle Switch --- */
+.toggle-switch {
+  position: relative;
+  width: 50px;
+  height: 25px;
+  display: inline-block;
+}
+
+.toggle-switch input[type="checkbox"] {
+  display: none; /* Masquer l'input de type checkbox */
+}
+
+.toggle-label {
+  position: absolute;
+  width: 50px;
+  height: 25px;
+  background-color: #ddd;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.toggle-label:before {
+  content: '';
+  position: absolute;
+  width: 23px;
+  height: 23px;
+  background-color: #fff;
+  border-radius: 50%;
+  top: 1px;
+  left: 1px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.toggle-switch input[type="checkbox"]:checked + .toggle-label {
+  background-color: #4c56af; /* Couleur verte pour l'état "ON" */
+}
+
+.toggle-switch input[type="checkbox"]:checked + .toggle-label:before {
+  transform: translateX(25px);
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .settings-container {
+    max-width: 90%; 
+  }
+
+  .home-btn {
+    font-size: 1rem;
+    padding: 10px 20px;
+  }
+
+  .setting-option select {
+    font-size: 12px;
+  }
+
+  .save-button {
+    font-size: 14px;
+    padding: 10px 20px;
+  }
 }

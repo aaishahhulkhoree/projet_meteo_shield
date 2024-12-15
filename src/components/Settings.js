@@ -4,15 +4,15 @@ import '../assets/styles/settings.css';
 
 const Settings = () => {
   const [alertType, setAlertType] = useState('storm');
-  const [location, setLocation] = useState('current');
+  const [useGeolocation, setUseGeolocation] = useState(true); // State pour la géolocalisation (toggle switch)
   const navigate = useNavigate();
 
   const handleAlertChange = (e) => {
     setAlertType(e.target.value);
   };
 
-  const handleLocationChange = (e) => {
-    setLocation(e.target.value);
+  const handleToggleGeolocation = () => {
+    setUseGeolocation(!useGeolocation);
   };
 
   const goHome = () => {
@@ -27,8 +27,8 @@ const Settings = () => {
       </button>
 
       <h1>Paramètres</h1>
-      <p>Personnalisez vos préférences d&apos;alerte météo et géolocalisation.</p>
-      
+      <p>Personnalisez vos préférences d&apos;alerte météo et de géolocalisation.</p>
+
       <div className="setting-option">
         <label htmlFor="alertType">Type d&apos;alerte météo</label>
         <select 
@@ -45,15 +45,16 @@ const Settings = () => {
       </div>
 
       <div className="setting-option">
-        <label htmlFor="location">Localisation</label>
-        <select 
-          id="location" 
-          value={location} 
-          onChange={handleLocationChange}
-        >
-          <option value="current">Ma position actuelle</option>
-          <option value="manual">Choisir une ville</option>
-        </select>
+        <label htmlFor="geolocation">Géolocalisation</label>
+        <div className="toggle-switch">
+          <input 
+            type="checkbox" 
+            id="geolocation" 
+            checked={useGeolocation} 
+            onChange={handleToggleGeolocation} 
+          />
+          <label htmlFor="geolocation" className="toggle-label"></label>
+        </div>
       </div>
 
       <div className="button-container">
