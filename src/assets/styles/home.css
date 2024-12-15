@@ -17,6 +17,8 @@
   max-width: 1200px; /* Limite la largeur pour les grands écrans */
   padding: 20px; /* Ajoute un peu d'espace interne autour du contenu */
   box-sizing: border-box; /* Inclut padding dans la largeur totale */
+  position: relative; /* Permet de gérer le z-index */
+  z-index: 1; /* Assure que le modal passe au-dessus */
 }
 
 .search-input-wrapper {

@@ -9,6 +9,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 10; /* Assure que le modal est au-dessus des autres éléments */
 }
 
 .modal-content {
@@ -18,6 +19,7 @@
   text-align: center;
   width: 90%;
   max-width: 400px;
+  z-index: 15; /* Priorité encore plus élevée que le conteneur de l'overlay */
 }
 
 .modal-content h3 {
