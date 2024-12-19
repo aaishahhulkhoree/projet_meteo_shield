@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../assets/styles/login.css'; // Ajouter le style pour la page de connexion
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -16,8 +18,18 @@ const Login = () => {
     }
   };
 
+  const goHome = () => {
+    navigate('/');
+  };
+
   return (
+    
     <div className="login-container">
+      {/* Bouton retour à l'accueil */}
+      <button className="home-btn" onClick={goHome}>
+        <span>Retour à l&apos;accueil</span>
+      </button>
+
       <h2>Connexion</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
@@ -28,6 +40,7 @@ const Login = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            className="login-input"
           />
         </div>
         <div className="form-group">
@@ -38,9 +51,10 @@ const Login = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            className="login-input"
           />
         </div>
-        <button type="submit">Se connecter</button>
+        <button className="save-button">Se connecter</button>
       </form>
     </div>
   );

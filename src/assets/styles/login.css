@@ -4,7 +4,7 @@
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 8px;
-    background-color: #f9f9f9;
+    background: linear-gradient(to bottom, #ffcccc, #a6c9ff); /* Dégradé du rouge clair au bleu clair */
   }
   
   .login-container h2 {
@@ -19,15 +19,39 @@
     display: block;
     margin-bottom: 5px;
   }
-  
-  .form-group input {
+
+  .login-input {
+    padding: 10px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
     width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
   }
   
+  .login-input:focus {
+    border-color: #f6a9a9; /* Effet similaire à Home.js */
+    outline: none; /* Supprimer le contour par défaut */
+  }
+    
+  .save-button {
+    padding: 12px 24px;
+    background-color: #0044cc;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    display: block;
+    margin-left: auto;
+    margin-right: auto; /* Centrer le bouton horizontalement */
+  }
+  
+  .save-button:hover {
+    background-color: #0033aa;
+  }
+    
   button .login-container{
     width: 100%;
     padding: 10px;
@@ -40,5 +64,24 @@
   
   button:hover {
     background-color: linear-gradient(90deg, #2196f3, #e53935); /* Dégradé de bleu à rouge */;
+  }
+  
+  .home-btn {
+    background: linear-gradient(135deg, #3ba0f3, #dd6462); /* Dégradé bleu-rouge */
+    color: rgb(245, 245, 245);
+    font-size: 1.2rem;
+    padding: 12px 24px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    border-radius: 50px;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: block;
+    margin-left: auto;
+    margin-right: auto; /* Centrer le bouton horizontalement */
   }
   

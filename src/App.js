@@ -9,8 +9,8 @@ import About from './components/About';
 import Modal from './components/Modal';
 import ForecastObserver from './components/ForecastObserver';
 import Map from './components/Map';
-//import Login from './components/LogIn';
-//import SignUp from './components/SignUp';
+import Login from './components/LogIn';
+import SignUp from './components/SignUp';
 import Settings from './components/Settings';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
@@ -25,7 +25,8 @@ function App() {
           <Route path="/forecast" element={<ForecastObserver />} />
           <Route path="/map" element={<Map />} />
           <Route path="/modal" element={<Modal />} />
-
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
         </Routes>
     </div>
     </Router>
