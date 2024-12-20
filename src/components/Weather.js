@@ -10,14 +10,15 @@ import EarthquakeAlert from './EarthquakeAlert';
 import WindSpeedInfo from './WindSpeedInfo';
 import '../assets/styles/weather.css';
 
-const Weather = ({ city, temperature, weather }) => {
+const Weather = ({ city }) => {
   const [forecast, setForecast] = useState(null);
   const [earthquakeData, setEarthquakeData] = useState(null);
   const [tsunamiWarning, setTsunamiWarning] = useState(false);
   const [error, setError] = useState('');
+  const [validCity, setValidCity] = useState(true); // Pour savoir si la ville est valide ou non
 
   useEffect(() => {
-    // S'abonner aux prévisions météo via PrevisionMeteo
+    // Observer pour les prévisions
     const observer = {
       mettreAJour: (data) => {
         if (data) {
@@ -31,13 +32,23 @@ const Weather = ({ city, temperature, weather }) => {
     const fetchWeatherAndAlerts = async () => {
       try {
         if (city) {
-          // Mettre à jour les prévisions pour la ville sélectionnée
-          await PrevisionMeteo.mettreAJourPrevisions(city);
+          // Requête à l'API pour récupérer les données météo de la ville
+          const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=fd441e159a57c88c956ebf246cc1ae9c`);
+          const data = await response.json();
+          
+          if (data.cod === '404') {
+            setError('Ville n\'existe pas');
+            setValidCity(false); // Marquer la ville comme invalide
+            setForecast(null); // Réinitialiser les prévisions si la ville n'est pas valide
+          } else {
+            setError('');
+            setValidCity(true); // Ville valide
+            setForecast(data);
+            // Charger les alertes fictives pour exemple
+            setEarthquakeData({ magnitude: 5, location: 'Tokyo' });
+            setTsunamiWarning(true);
+          }
         }
-
-        // Charger les alertes fictives pour exemple
-        setEarthquakeData({ magnitude: 5, location: 'Tokyo' });
-        setTsunamiWarning(true);
       } catch (err) {
         console.error('Erreur lors de la récupération des données météo ou des alertes :', err);
         setError('Une erreur est survenue lors du chargement des données.');
@@ -68,7 +79,8 @@ const Weather = ({ city, temperature, weather }) => {
   return (
     <div className="weather-container">
       <h2>Informations météo actuelles</h2>
-      <p>Ville : {city || 'Non disponible'}</p>
+      <p>Ville : {validCity ? city : error || 'Non disponible'}</p> {/* Affiche la ville ou l'erreur */}
+
       <img
         src={`https://openweathermap.org/img/wn/${today.weather[0].icon}@2x.png`}
         alt={today.weather[0].description}
@@ -92,8 +104,6 @@ const Weather = ({ city, temperature, weather }) => {
 // Définir les PropTypes pour valider les props du composant Weather
 Weather.propTypes = {
   city: PropTypes.string.isRequired, // city doit être une chaîne de caractères et est requise
-  temperature: PropTypes.number, // temperature est un nombre, mais n'est pas requis
-  weather: PropTypes.object, // weather est un objet, mais n'est pas requis
 };
 
 export default Weather;

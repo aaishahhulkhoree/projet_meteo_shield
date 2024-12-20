@@ -54,3 +54,58 @@
   margin-top: 10px;
   text-align: center;
 }
+
+.suggestions-container {
+  position: absolute;
+  top: 50px;
+  width: 100%;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 10;
+}
+
+.suggestions-container ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.suggestion-item {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.suggestion-item:hover {
+  background-color: #f0f0f0;
+}
+
+.city-flag {
+  margin-right: 10px;
+  font-size: 20px;
+}
+
+.city-name {
+  font-weight: bold;
+  flex-grow: 1;
+}
+
+.additional-info {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.search-container {
+  position: relative;
+}
+
+.search-input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}

@@ -3,14 +3,19 @@ import '../assets/styles/home.css';
 import Weather from './Weather';
 import Navbar from './Navbar';
 import PrevisionMeteo from '../utils/PrevisionMeteo';
-import { FaSearch } from 'react-icons/fa'; // Importation de l'icône loupe
+import { FaSearch } from 'react-icons/fa';
+import CountryNames from '../utils/CountryNames'; 
+import Flag from 'react-world-flags'; // Import de react-world-flags
 
 const Home = () => {
-  const [searchCity, setSearchCity] = useState(''); // Ville recherchée
-  const [displayedCity, setDisplayedCity] = useState(''); // Ville actuellement affichée
+  const [searchCity, setSearchCity] = useState('');
+  const [displayedCity, setDisplayedCity] = useState('');
   const [temperature, setTemperature] = useState('');
   const [weather, setWeather] = useState('');
   const [error, setError] = useState('');
+  const [suggestions, setSuggestions] = useState([]);
+
+  const apiKey = 'fd441e159a57c88c956ebf246cc1ae9c'; 
 
   const handleSearch = async () => {
     if (!searchCity) {
@@ -19,7 +24,7 @@ const Home = () => {
     }
 
     try {
-      setDisplayedCity(searchCity); // Met à jour la ville affichée
+      setDisplayedCity(searchCity);
       await PrevisionMeteo.mettreAJourPrevisions(searchCity);
     } catch (error) {
       console.error('Error updating weather data:', error);
@@ -33,34 +38,34 @@ const Home = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchWeatherForUser = async () => {
-      if ('geolocation' in navigator) {
-        navigator.geolocation.getCurrentPosition(
-          async (position) => {
-            const { latitude, longitude } = position.coords;
-            try {
-              const cityName = await PrevisionMeteo.getCityName(latitude, longitude);
-              setSearchCity(cityName);
-              setDisplayedCity(cityName); // Initialiser avec la ville actuelle
-              await PrevisionMeteo.mettreAJourPrevisions(cityName);
-            } catch (error) {
-              console.error('Error fetching user location weather:', error);
-              setError('Unable to fetch weather data for your location.');
-            }
-          },
-          (geoError) => {
-            console.error('Geolocation error:', geoError);
-          }
-        );
-      } else {
-        console.error('Geolocation is not supported in this browser.');
-        setError('Geolocation is not supported in this browser.');
-      }
-    };
+  const fetchCitySuggestions = async (query) => {
+    if (query.length < 3) {
+      setSuggestions([]);
+      return;
+    }
 
-    fetchWeatherForUser();
-  }, []);
+    try {
+      const response = await fetch(`https://api.openweathermap.org/data/2.5/find?q=${query}&type=like&appid=${apiKey}`);
+      const data = await response.json();
+      if (data && data.list) {
+        // Filtrer les doublons basés sur le nom de la ville
+        const uniqueSuggestions = Array.from(new Set(data.list.map(item => item.name)))
+          .map(name => data.list.find(item => item.name === name));
+
+        setSuggestions(uniqueSuggestions);
+      }
+    } catch (error) {
+      console.error('Error fetching city suggestions:', error);
+    }
+  };
+
+  useEffect(() => {
+    if (searchCity) {
+      fetchCitySuggestions(searchCity);
+    } else {
+      setSuggestions([]);
+    }
+  }, [searchCity]);
 
   useEffect(() => {
     const observer = {
@@ -84,17 +89,47 @@ const Home = () => {
     <div className="home-container">
       <Navbar />
       <div className="search-container">
-      <FaSearch className="search-icon" onClick={handleSearch} /> {/* Icône à l'extérieur */}
+        <FaSearch className="search-icon" onClick={handleSearch} />
         <div className="search-input-wrapper">
           <input
             type="text"
             placeholder="Enter a city name"
             value={searchCity}
             onChange={(e) => setSearchCity(e.target.value)}
-            onKeyDown={handleKeyDown} // Trigger search on Enter
+            onKeyDown={handleKeyDown}
             className="search-input"
           />
         </div>
+
+        {/* Affichage des suggestions avec le nom complet du pays et drapeau */}
+        {suggestions.length > 0 && (
+          <div className="suggestions-container">
+            <ul>
+              {suggestions.map((suggestion, index) => {
+                const cityDetails = `${suggestion.name}, ${CountryNames[suggestion.sys.country] || suggestion.sys.country}`;
+                const countryCode = suggestion.sys.country.toLowerCase(); // Code du pays en minuscule
+                const additionalInfo = suggestion.name === 'Paris' ? 'Arrondissement 1' : '';
+
+                return (
+                  <li
+                    key={index}
+                    onClick={() => {
+                      setSearchCity(cityDetails);
+                      setDisplayedCity(cityDetails);
+                      setSuggestions([]);
+                      handleSearch();
+                    }}
+                    className="suggestion-item"
+                  >
+                    <Flag code={countryCode} style={{ width: 24, height: 16, marginRight: 8 }} />
+                    <span className="city-name">{cityDetails}</span>
+                    {additionalInfo && <span className="additional-info"> - {additionalInfo}</span>}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        )}
       </div>
       {error && <p className="error-message">{error}</p>}
       <Weather city={displayedCity} temperature={temperature} weather={weather} />
