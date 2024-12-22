@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Importation de useNavigate
+import { useNavigate } from 'react-router-dom';
 import PrevisionMeteo from '../utils/PrevisionMeteo';
 import '../assets/styles/forecast.css'; // Le fichier CSS pour styliser le composant
+import { FaSearch } from 'react-icons/fa';  // Icône de recherche
 
 const ForecastObserver = () => {
-  const navigate = useNavigate(); // Initialisation du hook de navigation
+  const navigate = useNavigate();
   const [forecast, setForecast] = useState(null); // Stocke les prévisions météo
   const [error, setError] = useState(''); // Stocke les messages d'erreur
   const [city, setCity] = useState(''); // Stocke le nom de la ville
+  const [searchCity, setSearchCity] = useState(''); // Stocke la ville saisie
   const [hourlyForecast, setHourlyForecast] = useState(null); // Stocke les prévisions horaires pour une journée
   const [selectedDate, setSelectedDate] = useState(''); // Stocke la date sélectionnée
 
@@ -31,7 +33,7 @@ const ForecastObserver = () => {
 
     const fetchLocationAndForecast = async () => {
       try {
-        if ('geolocation' in navigator) {
+        if ('geolocation' in navigator && !searchCity) {
           navigator.geolocation.getCurrentPosition(
             async (position) => {
               const { latitude, longitude } = position.coords;
@@ -41,8 +43,6 @@ const ForecastObserver = () => {
             },
             (geoError) => setError("Impossible d'obtenir votre localisation.")
           );
-        } else {
-          setError("La géolocalisation n'est pas disponible sur ce navigateur.");
         }
       } catch (err) {
         setError('Erreur lors du chargement des prévisions météo.');
@@ -54,13 +54,12 @@ const ForecastObserver = () => {
     return () => {
       PrevisionMeteo.retirerObserver(observer);
     };
-  }, []);
+  }, [searchCity]); // Ajout de `searchCity` comme dépendance pour actualiser les prévisions
 
   // Gérer l'erreur ou le chargement
   if (error) {
     return (
       <div className="forecast-container">
-        {/* Bouton retour à l'accueil */}
         <button className="home-btn" onClick={goHome}>
           <span>Retour à l&apos;accueil</span>
         </button>
@@ -72,7 +71,6 @@ const ForecastObserver = () => {
   if (!forecast) {
     return (
       <div className="forecast-container">
-        {/* Bouton retour à l'accueil */}
         <button className="home-btn" onClick={goHome}>
           <span>Retour à l&apos;accueil</span>
         </button>
@@ -103,15 +101,45 @@ const ForecastObserver = () => {
     setHourlyForecast(groupedData[date]);
   };
 
+  // Fonction de recherche de ville
+  const handleSearch = async (city) => {
+    if (!city) {
+      alert('Veuillez entrer un nom de ville');
+      return;
+    }
+
+    try {
+      setCity(city);
+      await PrevisionMeteo.mettreAJourPrevisions(city);
+    } catch (error) {
+      setError('Impossible de récupérer les prévisions pour cette ville.');
+    }
+  };
+
   return (
     <div className="forecast-container">
-      {/* Bouton retour à l'accueil en haut */}
-      <button className="home-btn" onClick={goHome}>
-        <span>Retour à l&apos;accueil</span>
-      </button>
-
+      {/* Barre de recherche et bouton retour à l'accueil alignés */}
+      <div className="search-home-container">
+        <button className="home-btn" onClick={goHome}>
+          <span>Retour à l&apos;accueil</span>
+        </button>
+       { /* Entêtes */}
       <h1>Prévisions météo pour {city || 'votre ville'}</h1>
       <h2>Prévisions sur 7 jours</h2>
+
+        <div className="search-container">
+          <FaSearch className="search-icon" />
+          <input
+            type="text"
+            placeholder="Entrez une ville"
+            value={searchCity}
+            onChange={(e) => setSearchCity(e.target.value)}
+            className="search-input"
+            onKeyDown={(e) => e.key === 'Enter' && handleSearch(searchCity)}
+          />
+        </div>
+      </div>
+
       <div className="daily-forecast">
         {dailyForecasts.map((item, index) => (
           <div
