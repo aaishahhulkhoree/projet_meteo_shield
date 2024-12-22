@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'; 
+import { useNavigate } from 'react-router-dom';  // Importer useNavigate
 import '../assets/styles/home.css';
 import Weather from './Weather';
 import Navbar from './Navbar';  
@@ -17,6 +18,8 @@ const Home = () => {
 
   const apiKey = 'fd441e159a57c88c956ebf246cc1ae9c'; 
 
+  const navigate = useNavigate();  // Initialisation de useNavigate pour la navigation
+
   const handleSearch = async (city) => {
     if (!city) {
       alert('Please enter a city name');
@@ -26,17 +29,14 @@ const Home = () => {
     try {
       setDisplayedCity(city);
       await PrevisionMeteo.mettreAJourPrevisions(city);
+
+      // Naviguer vers la route /:city
+      navigate(`/${city}`);
     } catch (error) {
       console.error('Error updating weather data:', error);
       alert('Unable to fetch weather data for the entered city.');
     }
   };
-
-  /*const handleKeyDown = (event) => {
-    if (event.key === 'Enter') {
-      handleSearch(searchCity);
-    }
-  };*/
 
   const fetchCitySuggestions = async (query) => {
     if (query.length < 3) {
@@ -95,7 +95,6 @@ const Home = () => {
             placeholder="Enter a city name"
             value={searchCity}
             onChange={(e) => setSearchCity(e.target.value)}
-            //onKeyDown={handleKeyDown}
             className="search-input"
           />
         </div>

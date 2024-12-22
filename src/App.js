@@ -20,6 +20,7 @@ function App() {
       <div className="App"> 
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/:city" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/forecast" element={<ForecastObserver />} />
