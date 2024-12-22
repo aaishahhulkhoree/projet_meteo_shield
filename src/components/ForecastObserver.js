@@ -12,7 +12,7 @@ const ForecastObserver = () => {
   const [selectedDate, setSelectedDate] = useState(''); // Stocke la date sélectionnée
 
   // Fonction pour retourner à la page d'accueil
-  const goHome = (event) => {
+  const goHome = () => {
     navigate('/');
   };
 
@@ -58,10 +58,27 @@ const ForecastObserver = () => {
 
   // Gérer l'erreur ou le chargement
   if (error) {
-    return <div className="forecast-container">{error}</div>;
+    return (
+      <div className="forecast-container">
+        {/* Bouton retour à l'accueil */}
+        <button className="home-btn" onClick={goHome}>
+          <span>Retour à l&apos;accueil</span>
+        </button>
+        <p>{error}</p>
+      </div>
+    );
   }
+
   if (!forecast) {
-    return <div className="forecast-container">Chargement des prévisions...</div>;
+    return (
+      <div className="forecast-container">
+        {/* Bouton retour à l'accueil */}
+        <button className="home-btn" onClick={goHome}>
+          <span>Retour à l&apos;accueil</span>
+        </button>
+        <p>Chargement des prévisions...</p>
+      </div>
+    );
   }
 
   // Grouper les données par jour

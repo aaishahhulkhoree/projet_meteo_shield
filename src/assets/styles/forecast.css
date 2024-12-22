@@ -56,18 +56,25 @@
   gap: 10px;
 }
 
-.hourly-card {
-  text-align: center;
-  background-color: #ffffff;
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  width: 120px;
-}
-
 .hourly-card img {
   width: 50px;
   height: 50px;
   margin-top: 5px;
+}
+
+.hourly-card {
+  text-align: center;
+  background-color: #ffffff;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  width: 150px;
+  height: 180px;
+}
+
+.hourly-card p {
+  margin: 5px 0;
+  font-size: 14px; /* Ajustez selon la taille désirée */
+  white-space: nowrap; /* Assure que le texte reste sur une seule ligne */
 }
