@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PrevisionMeteo from '../utils/PrevisionMeteo';
+import SearchBar from './SearchBar';  // Import du composant SearchBar
 import '../assets/styles/forecast.css'; // Le fichier CSS pour styliser le composant
-import { FaSearch } from 'react-icons/fa';  // Icône de recherche
 
 const ForecastObserver = () => {
   const navigate = useNavigate();
   const [forecast, setForecast] = useState(null); // Stocke les prévisions météo
   const [error, setError] = useState(''); // Stocke les messages d'erreur
   const [city, setCity] = useState(''); // Stocke le nom de la ville
-  const [searchCity, setSearchCity] = useState(''); // Stocke la ville saisie
   const [hourlyForecast, setHourlyForecast] = useState(null); // Stocke les prévisions horaires pour une journée
   const [selectedDate, setSelectedDate] = useState(''); // Stocke la date sélectionnée
+  const [searchCity, setSearchCity] = useState(''); // Stocke la ville saisie
 
   // Fonction pour retourner à la page d'accueil
   const goHome = () => {
@@ -123,21 +123,11 @@ const ForecastObserver = () => {
         <button className="home-btn" onClick={goHome}>
           <span>Retour à l&apos;accueil</span>
         </button>
-       { /* Entêtes */}
-      <h1>Prévisions météo pour {city || 'votre ville'}</h1>
-      <h2>Prévisions sur 7 jours</h2>
+        <h1>Prévisions météo pour {city || 'votre ville'}</h1>
+        <h2>Prévisions sur 7 jours</h2>
 
-        <div className="search-container">
-          <FaSearch className="search-icon" />
-          <input
-            type="text"
-            placeholder="Entrez une ville"
-            value={searchCity}
-            onChange={(e) => setSearchCity(e.target.value)}
-            className="search-input"
-            onKeyDown={(e) => e.key === 'Enter' && handleSearch(searchCity)}
-          />
-        </div>
+        {/* Inclure le composant SearchBar */}
+        <SearchBar onSearch={handleSearch} />
       </div>
 
       <div className="daily-forecast">

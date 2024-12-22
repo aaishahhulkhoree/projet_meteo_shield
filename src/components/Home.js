@@ -1,24 +1,19 @@
+// src/pages/Home.js
 import React, { useState, useEffect } from 'react'; 
-import { useNavigate } from 'react-router-dom';  // Importer useNavigate
+import { useNavigate } from 'react-router-dom'; 
 import '../assets/styles/home.css';
 import Weather from './Weather';
 import Navbar from './Navbar';  
 import PrevisionMeteo from '../utils/PrevisionMeteo';
-import { FaSearch } from 'react-icons/fa';  
-import CountryNames from '../utils/CountryNames'; 
-import Flag from 'react-world-flags'; 
+import SearchBar from '../components/SearchBar'; // Importer SearchBar
 
 const Home = () => {
-  const [searchCity, setSearchCity] = useState('');
   const [displayedCity, setDisplayedCity] = useState('');
   const [temperature, setTemperature] = useState('');
   const [weather, setWeather] = useState('');
   const [error, setError] = useState('');
-  const [suggestions, setSuggestions] = useState([]);
 
-  const apiKey = 'fd441e159a57c88c956ebf246cc1ae9c'; 
-
-  const navigate = useNavigate();  // Initialisation de useNavigate pour la navigation
+  const navigate = useNavigate(); 
 
   const handleSearch = async (city) => {
     if (!city) {
@@ -37,34 +32,6 @@ const Home = () => {
       alert('Unable to fetch weather data for the entered city.');
     }
   };
-
-  const fetchCitySuggestions = async (query) => {
-    if (query.length < 3) {
-      setSuggestions([]);
-      return;
-    }
-
-    try {
-      const response = await fetch(`https://api.openweathermap.org/data/2.5/find?q=${query}&type=like&appid=${apiKey}`);
-      const data = await response.json();
-      if (data && data.list) {
-        const uniqueSuggestions = Array.from(new Set(data.list.map(item => item.name)))
-          .map(name => data.list.find(item => item.name === name));
-
-        setSuggestions(uniqueSuggestions);
-      }
-    } catch (error) {
-      console.error('Error fetching city suggestions:', error);
-    }
-  };
-
-  useEffect(() => {
-    if (searchCity) {
-      fetchCitySuggestions(searchCity);
-    } else {
-      setSuggestions([]);
-    }
-  }, [searchCity]);
 
   useEffect(() => {
     const observer = {
@@ -86,46 +53,8 @@ const Home = () => {
 
   return (
     <div className="home-container">
-      <Navbar /> {/* Utilisation du composant Navbar */}
-      <div className="search-container">
-        <FaSearch className="search-icon"/> {/* Utilisation de FaSearch */}
-        <div className="search-input-wrapper">
-          <input
-            type="text"
-            placeholder="Enter a city name"
-            value={searchCity}
-            onChange={(e) => setSearchCity(e.target.value)}
-            className="search-input"
-          />
-        </div>
-
-        {suggestions.length > 0 && (
-          <div className="suggestions-container">
-            <ul>
-              {suggestions.map((suggestion, index) => {
-                const cityDetails = `${suggestion.name}, ${CountryNames[suggestion.sys.country] || suggestion.sys.country}`;
-                const countryCode = suggestion.sys.country.toLowerCase();
-
-                return (
-                  <li
-                    key={index}
-                    onClick={() => {
-                      //setSearchCity(cityDetails);
-                      //setDisplayedCity(cityDetails);
-                      setSuggestions([]);  // Effacer les suggestions après un clic
-                      handleSearch(cityDetails); // Met à jour directement avec la météo de la suggestion
-                    }}
-                    className="suggestion-item"
-                  >
-                    <Flag code={countryCode} style={{ width: 24, height: 16, marginRight: 8 }} />
-                    <span className="city-name">{cityDetails}</span>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        )}
-      </div>
+      <Navbar /> 
+      <SearchBar onSearch={handleSearch} /> {/* Utilisation du composant SearchBar */}
       {error && <p className="error-message">{error}</p>}
       <Weather city={displayedCity} temperature={temperature} weather={weather} />
     </div>
