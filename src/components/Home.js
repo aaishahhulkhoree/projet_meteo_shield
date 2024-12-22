@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'; 
 import '../assets/styles/home.css';
 import Weather from './Weather';
-import Navbar from './Navbar';
+import Navbar from './Navbar';  
 import PrevisionMeteo from '../utils/PrevisionMeteo';
-import { FaSearch } from 'react-icons/fa';
+import { FaSearch } from 'react-icons/fa';  
 import CountryNames from '../utils/CountryNames'; 
-import Flag from 'react-world-flags'; // Import de react-world-flags
+import Flag from 'react-world-flags'; 
 
 const Home = () => {
   const [searchCity, setSearchCity] = useState('');
@@ -17,26 +17,26 @@ const Home = () => {
 
   const apiKey = 'fd441e159a57c88c956ebf246cc1ae9c'; 
 
-  const handleSearch = async () => {
-    if (!searchCity) {
+  const handleSearch = async (city) => {
+    if (!city) {
       alert('Please enter a city name');
       return;
     }
 
     try {
-      setDisplayedCity(searchCity);
-      await PrevisionMeteo.mettreAJourPrevisions(searchCity);
+      setDisplayedCity(city);
+      await PrevisionMeteo.mettreAJourPrevisions(city);
     } catch (error) {
       console.error('Error updating weather data:', error);
       alert('Unable to fetch weather data for the entered city.');
     }
   };
 
-  const handleKeyDown = (event) => {
+  /*const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
-      handleSearch();
+      handleSearch(searchCity);
     }
-  };
+  };*/
 
   const fetchCitySuggestions = async (query) => {
     if (query.length < 3) {
@@ -48,7 +48,6 @@ const Home = () => {
       const response = await fetch(`https://api.openweathermap.org/data/2.5/find?q=${query}&type=like&appid=${apiKey}`);
       const data = await response.json();
       if (data && data.list) {
-        // Filtrer les doublons basés sur le nom de la ville
         const uniqueSuggestions = Array.from(new Set(data.list.map(item => item.name)))
           .map(name => data.list.find(item => item.name === name));
 
@@ -87,28 +86,26 @@ const Home = () => {
 
   return (
     <div className="home-container">
-      <Navbar />
+      <Navbar /> {/* Utilisation du composant Navbar */}
       <div className="search-container">
-        <FaSearch className="search-icon" onClick={handleSearch} />
+        <FaSearch className="search-icon" onClick={() => handleSearch(searchCity)} /> {/* Utilisation de FaSearch */}
         <div className="search-input-wrapper">
           <input
             type="text"
             placeholder="Enter a city name"
             value={searchCity}
             onChange={(e) => setSearchCity(e.target.value)}
-            onKeyDown={handleKeyDown}
+            //onKeyDown={handleKeyDown}
             className="search-input"
           />
         </div>
 
-        {/* Affichage des suggestions avec le nom complet du pays et drapeau */}
         {suggestions.length > 0 && (
           <div className="suggestions-container">
             <ul>
               {suggestions.map((suggestion, index) => {
                 const cityDetails = `${suggestion.name}, ${CountryNames[suggestion.sys.country] || suggestion.sys.country}`;
-                const countryCode = suggestion.sys.country.toLowerCase(); // Code du pays en minuscule
-                const additionalInfo = suggestion.name === 'Paris' ? 'Arrondissement 1' : '';
+                const countryCode = suggestion.sys.country.toLowerCase();
 
                 return (
                   <li
@@ -116,14 +113,13 @@ const Home = () => {
                     onClick={() => {
                       setSearchCity(cityDetails);
                       setDisplayedCity(cityDetails);
-                      setSuggestions([]);
-                      handleSearch();
+                      setSuggestions([]);  // Effacer les suggestions après un clic
+                      handleSearch(cityDetails); // Met à jour directement avec la météo de la suggestion
                     }}
                     className="suggestion-item"
                   >
                     <Flag code={countryCode} style={{ width: 24, height: 16, marginRight: 8 }} />
                     <span className="city-name">{cityDetails}</span>
-                    {additionalInfo && <span className="additional-info"> - {additionalInfo}</span>}
                   </li>
                 );
               })}
