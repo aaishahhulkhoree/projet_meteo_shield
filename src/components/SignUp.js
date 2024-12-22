@@ -5,14 +5,15 @@ import '../assets/styles/signup.css'; // Style pour la page d'inscription
 const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [pseudo, setPseudo] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
     // Exemple de logique pour créer un compte (backend non connecté)
-    if (email && password) {
-      console.log('Compte créé avec : ', { email, password });
+    if (pseudo && email && password) {
+      console.log('Compte créé avec : ', { pseudo, email, password });
       alert('Inscription réussie !');
       navigate('/'); // Rediriger vers la page Home
     } else {
@@ -31,6 +32,17 @@ const SignUp = () => {
       </button>
       <h2>Inscription</h2>
       <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label htmlFor="pseudo">Pseudo :</label>
+          <input
+            type="pseudo"
+            id="pseudo"
+            value={pseudo}
+            onChange={(e) => setPseudo(e.target.value)}
+            required
+            className="signup-input"
+          />
+        </div>
         <div className="form-group">
           <label htmlFor="email">Email :</label>
           <input

@@ -12,7 +12,9 @@ const Login = () => {
     if (email && password) {
       // Ajouter la logique de connexion ici (API, vérification, etc.)
       console.log("Connexion réussie avec l'email :", email);
+      alert('Connexion réussie !');
       // Rediriger vers la page d'accueil ou autre
+      navigate('/');
     } else {
       alert("Veuillez remplir tous les champs !");
     }
