@@ -88,7 +88,7 @@ const Home = () => {
     <div className="home-container">
       <Navbar /> {/* Utilisation du composant Navbar */}
       <div className="search-container">
-        <FaSearch className="search-icon" onClick={() => handleSearch(searchCity)} /> {/* Utilisation de FaSearch */}
+        <FaSearch className="search-icon"/> {/* Utilisation de FaSearch */}
         <div className="search-input-wrapper">
           <input
             type="text"
@@ -110,8 +110,8 @@ const Home = () => {
                   <li
                     key={index}
                     onClick={() => {
-                      setSearchCity(cityDetails);
-                      setDisplayedCity(cityDetails);
+                      //setSearchCity(cityDetails);
+                      //setDisplayedCity(cityDetails);
                       setSuggestions([]);  // Effacer les suggestions après un clic
                       handleSearch(cityDetails); // Met à jour directement avec la météo de la suggestion
                     }}
