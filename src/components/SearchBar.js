@@ -1,5 +1,6 @@
 // src/components/SearchBar.js
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { FaSearch } from 'react-icons/fa';  
 import CountryNames from '../utils/CountryNames'; 
 import Flag from 'react-world-flags';
