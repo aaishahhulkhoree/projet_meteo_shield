@@ -8,6 +8,8 @@ import DroughtAlert from './DroughtAlert';
 import TsunamiAlert from './TsunamiAlert';
 import EarthquakeAlert from './EarthquakeAlert';
 import WindSpeedInfo from './WindSpeedInfo';
+import PressureInfo from './PressureInfo'; // Import de PressureInfo
+import HumidityInfo from './HumidityInfo'; // Import de HumidityInfo
 import '../assets/styles/weather.css';
 
 const Weather = ({ city }) => {
@@ -97,6 +99,8 @@ const Weather = ({ city }) => {
 
       {/* Informations supplémentaires */}
       <WindSpeedInfo windSpeed={today.wind.speed} />
+      <PressureInfo pressure={today.main.pressure} />
+      <HumidityInfo humidity={today.main.humidity} />
     </div>
   );
 };

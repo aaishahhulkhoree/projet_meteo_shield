@@ -11,6 +11,9 @@ const Home = () => {
   const [displayedCity, setDisplayedCity] = useState('');
   const [temperature, setTemperature] = useState('');
   const [weather, setWeather] = useState('');
+  const [humidity, setHumidity] = useState('');
+  const [pressure, setPressure] = useState('');
+  const [windSpeed, setWindSpeed] = useState('');
   const [error, setError] = useState('');
 
   const navigate = useNavigate(); 
@@ -40,6 +43,9 @@ const Home = () => {
           const today = data.list[0];
           setTemperature(`${today.main.temp}°C`);
           setWeather(today.weather[0].description);
+          setHumidity(`${today.main.humidity}%`);
+          setPressure(`${today.main.pressure} hPa`);
+          setWindSpeed(`${today.wind.speed} m/s`);
         }
       },
     };
@@ -56,7 +62,14 @@ const Home = () => {
       <Navbar /> 
       <SearchBar onSearch={handleSearch} /> {/* Utilisation du composant SearchBar */}
       {error && <p className="error-message">{error}</p>}
-      <Weather city={displayedCity} temperature={temperature} weather={weather} />
+      <Weather 
+        city={displayedCity} 
+        temperature={temperature} 
+        weather={weather} 
+        humidity={humidity} 
+        pressure={pressure} 
+        windSpeed={windSpeed} 
+      />
     </div>
   );
 };
