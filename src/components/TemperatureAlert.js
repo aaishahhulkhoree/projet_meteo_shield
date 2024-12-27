@@ -20,7 +20,7 @@ const TemperatureAlert = ({ temp }) => {
       <div className="alert temperature-alert extreme-heat">
         <h3>Alerte Chaleur Extrême !</h3>
         <p>
-          Température exacte : {displayTemp}°{unit}. Risque de chaleur extrême. Protégez-vous !
+          Température actuelle : {displayTemp}°{unit}. Risque de chaleur extrême. Protégez-vous !
         </p>
       </div>
     );
@@ -29,7 +29,7 @@ const TemperatureAlert = ({ temp }) => {
       <div className="alert temperature-alert moderate-heat">
         <h3>Alerte Chaleur !</h3>
         <p>
-          Température exacte : {displayTemp}°{unit}. Risque de chaleur modérée. Buvez beaucoup d&apos;eau !
+          Température actuelle : {displayTemp}°{unit}. Risque de chaleur modérée. Buvez beaucoup d&apos;eau !
         </p>
       </div>
     );
@@ -38,7 +38,7 @@ const TemperatureAlert = ({ temp }) => {
       <div className="alert temperature-alert extreme-cold">
         <h3>Alerte Froid Extrême !</h3>
         <p>
-          Température exacte : {displayTemp}°{unit}. Risque de gel important.
+          Température actuelle : {displayTemp}°{unit}. Risque de gel important.
         </p>
       </div>
     );
@@ -47,7 +47,7 @@ const TemperatureAlert = ({ temp }) => {
       <div className="alert temperature-alert moderate-cold">
         <h3>Alerte Froid !</h3>
         <p>
-          Température exacte : {displayTemp}°{unit}. Risque de gel modéré.
+          Température actuelle : {displayTemp}°{unit}. Risque de gel modéré.
         </p>
       </div>
     );
