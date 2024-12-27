@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PrevisionMeteo from '../utils/PrevisionMeteo';
-import SearchBar from './SearchBar';  // Import du composant SearchBar
+import SearchBar from './SearchBar'; // Import du composant SearchBar
 import '../assets/styles/forecast.css'; // Le fichier CSS pour styliser le composant
 
 const ForecastObserver = () => {
@@ -64,6 +64,17 @@ const ForecastObserver = () => {
           <span>Retour à l&apos;accueil</span>
         </button>
         <p>{error}</p>
+
+        {/* Inclure la barre de recherche après le message d'erreur */}
+        <SearchBar onSearch={async (city) => {
+          try {
+            setCity(city);
+            await PrevisionMeteo.mettreAJourPrevisions(city);
+            setError(''); // Effacer le message d'erreur si la recherche réussit
+          } catch (searchError) {
+            setError('Impossible de récupérer les prévisions pour cette ville.');
+          }
+        }} />
       </div>
     );
   }
