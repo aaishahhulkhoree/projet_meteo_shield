@@ -1,0 +1,16 @@
+.pressure-info {
+    background-color: #f0f8ff; /* Couleur bleu clair pour le fond */
+    border: 1px solid #cce7ff; /* Bordure bleu pâle */
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 0;
+    text-align: center;
+    font-size: 14px;
+    color: #333; /* Couleur du texte */
+  }
+  
+  .pressure-info p {
+    margin: 0;
+    font-weight: bold;
+  }
+  

@@ -1,0 +1,16 @@
+.humidity-info {
+    background-color: #e6f7f1; /* Couleur vert clair pour le fond */
+    border: 1px solid #b3e0d2; /* Bordure vert pâle */
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 0;
+    text-align: center;
+    font-size: 14px;
+    color: #333; /* Couleur du texte */
+  }
+  
+  .humidity-info p {
+    margin: 0;
+    font-weight: bold;
+  }
+  
