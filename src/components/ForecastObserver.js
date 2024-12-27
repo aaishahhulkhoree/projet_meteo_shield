@@ -11,7 +11,7 @@ const ForecastObserver = () => {
   const [city, setCity] = useState(''); // Stocke le nom de la ville
   const [hourlyForecast, setHourlyForecast] = useState(null); // Stocke les prévisions horaires pour une journée
   const [selectedDate, setSelectedDate] = useState(''); // Stocke la date sélectionnée
-  const [searchCity, setSearchCity] = useState(''); // Stocke la ville saisie
+  //const [searchCity, setSearchCity] = useState(''); // Stocke la ville saisie
 
   // Fonction pour retourner à la page d'accueil
   const goHome = () => {
@@ -41,7 +41,7 @@ const ForecastObserver = () => {
               setCity(cityName);
               await PrevisionMeteo.mettreAJourPrevisions(cityName);
             },
-            (geoError) => setError("Impossible d'obtenir votre localisation.")
+           
           );
         }
       } catch (err) {
