@@ -33,7 +33,7 @@ const ForecastObserver = () => {
 
     const fetchLocationAndForecast = async () => {
       try {
-        if ('geolocation' in navigator && !searchCity) {
+        if ('geolocation' in navigator) {
           navigator.geolocation.getCurrentPosition(
             async (position) => {
               const { latitude, longitude } = position.coords;
@@ -54,7 +54,7 @@ const ForecastObserver = () => {
     return () => {
       PrevisionMeteo.retirerObserver(observer);
     };
-  }, [searchCity]); // Ajout de `searchCity` comme dépendance pour actualiser les prévisions
+  }); // Ajout de `searchCity` comme dépendance pour actualiser les prévisions /!\ maintenant je teste sans searchCity
 
   // Gérer l'erreur ou le chargement
   if (error) {
