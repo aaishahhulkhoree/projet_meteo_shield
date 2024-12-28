@@ -1,9 +1,9 @@
 .signup-container {
-    width: 320px;
+    width: 300px;
     margin: 100px auto;
     padding: 20px;
     border: 1px solid #ccc;
-    border-radius: 10px;
+    border-radius: 8px;
     background: linear-gradient(to bottom, #ffcccc, #a6c9ff);
   }
   

@@ -1,22 +1,41 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../assets/styles/login.css'; // Ajouter le style pour la page de connexion
+import '../assets/styles/login.css';
 
 const Login = () => {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [motdepasse, setMotdepasse] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    if (email && password) {
-      // Ajouter la logique de connexion ici (API, vérification, etc.)
-      console.log("Connexion réussie avec l'email :", email);
-      alert('Connexion réussie !');
-      // Rediriger vers la page d'accueil ou autre
-      navigate('/');
-    } else {
-      alert("Veuillez remplir tous les champs !");
+
+    if (!email || !motdepasse) {
+      alert('Veuillez remplir tous les champs.');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:5000/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: email.trim(), motdepasse: motdepasse.trim() }),
+      });
+
+      if (response.ok) {
+        alert('Connexion réussie !');
+        setEmail('');
+        setMotdepasse('');
+        navigate('/');
+      } else {
+        const errorData = await response.json();
+        alert(`Erreur : ${errorData.message}`);
+      }
+    } catch (error) {
+      console.error('Erreur lors de la connexion :', error);
+      alert('Impossible de se connecter. Veuillez réessayer.');
     }
   };
 
@@ -25,13 +44,10 @@ const Login = () => {
   };
 
   return (
-    
     <div className="login-container">
-      {/* Bouton retour à l'accueil */}
       <button className="home-btn" onClick={goHome}>
         <span>Retour à l&apos;accueil</span>
       </button>
-
       <h2>Connexion</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
@@ -46,17 +62,17 @@ const Login = () => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="password">Mot de passe :</label>
+          <label htmlFor="motdepasse">Mot de passe :</label>
           <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            type="motdepasse"
+            id="motdepasse"
+            value={motdepasse}
+            onChange={(e) => setMotdepasse(e.target.value)}
             required
             className="login-input"
           />
         </div>
-        <button className="save-button">Se connecter</button>
+        <button type="submit" className="save-button">Se connecter</button>
       </form>
     </div>
   );

@@ -1,23 +1,46 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../assets/styles/signup.css'; // Style pour la page d'inscription
+import '../assets/styles/signup.css';
 
 const SignUp = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [pseudo, setPseudo] = useState('');
+  const [email, setEmail] = useState('');
+  const [motdepasse, setMotdepasse] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Exemple de logique pour créer un compte (backend non connecté)
-    if (pseudo && email && password) {
-      console.log('Compte créé avec : ', { pseudo, email, password });
-      alert('Inscription réussie !');
-      navigate('/'); // Rediriger vers la page Home
-    } else {
-      alert('Veuillez remplir tous les champs');
+    if (!pseudo || !email || !motdepasse) {
+      alert('Tous les champs doivent être remplis.');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:5000/api/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: pseudo.trim(),
+          email: email.trim(),
+          motdepasse: motdepasse.trim(),
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert('Inscription réussie.');
+        setPseudo('');
+        setEmail('');
+        setMotdepasse('');
+        navigate('/');
+      } else {
+        alert(`Erreur : ${data.message}`);
+      }
+    } catch (error) {
+      console.error('Erreur lors de l\'inscription :', error);
+      alert('Erreur interne du serveur.');
     }
   };
 
@@ -33,10 +56,10 @@ const SignUp = () => {
       <h2>Inscription</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="pseudo">Pseudo :</label>
+          <label htmlFor="Pseudo">Pseudo :</label>
           <input
-            type="pseudo"
-            id="pseudo"
+            type="Pseudo"
+            id="Pseudo"
             value={pseudo}
             onChange={(e) => setPseudo(e.target.value)}
             required
@@ -47,7 +70,7 @@ const SignUp = () => {
           <label htmlFor="email">Email :</label>
           <input
             type="email"
-            id="email"
+            id="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -55,19 +78,17 @@ const SignUp = () => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="password">Mot de passe :</label>
+          <label htmlFor="motdepasse">Mot de passe :</label>
           <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            type="motdepasse"
+            id="Mot de passe"
+            value={motdepasse}
+            onChange={(e) => setMotdepasse(e.target.value)}
             required
             className="signup-input"
           />
         </div>
-        <button type="submit" className="save-button">
-          S&apos;inscrire
-        </button>
+        <button type="submit" className="save-button">S&apos;inscrire</button>
       </form>
     </div>
   );
