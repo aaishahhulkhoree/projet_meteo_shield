@@ -6,6 +6,7 @@ const SignUp = () => {
   const [pseudo, setPseudo] = useState('');
   const [email, setEmail] = useState('');
   const [motdepasse, setMotdepasse] = useState('');
+  const [showPassword, setShowPassword] = useState(false); // État pour gérer la visibilité du mot de passe
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
@@ -79,14 +80,23 @@ const SignUp = () => {
         </div>
         <div className="form-group">
           <label htmlFor="motdepasse">Mot de passe :</label>
-          <input
-            type="motdepasse"
-            id="Mot de passe"
-            value={motdepasse}
-            onChange={(e) => setMotdepasse(e.target.value)}
-            required
-            className="signup-input"
-          />
+          <div className="password-container">
+            <input
+              type={showPassword ? 'text' : 'password'}
+              id="motdepasse"
+              value={motdepasse}
+              onChange={(e) => setMotdepasse(e.target.value)}
+              required
+              className="signup-input"
+            />
+            <button
+              type="button"
+              className="toggle-password"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? '👁️' : '👁️‍🗨️'}
+            </button>
+          </div>
         </div>
         <button type="submit" className="save-button">S&apos;inscrire</button>
       </form>

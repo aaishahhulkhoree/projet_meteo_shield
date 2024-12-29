@@ -5,6 +5,7 @@ import '../assets/styles/login.css';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [motdepasse, setMotdepasse] = useState('');
+  const [showPassword, setShowPassword] = useState(false); // État pour gérer la visibilité du mot de passe
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
@@ -65,14 +66,23 @@ const Login = () => {
         </div>
         <div className="form-group">
           <label htmlFor="motdepasse">Mot de passe :</label>
-          <input
-            type="motdepasse"
-            id="motdepasse"
-            value={motdepasse}
-            onChange={(e) => setMotdepasse(e.target.value)}
-            required
-            className="login-input"
-          />
+          <div className="password-container">
+            <input
+              type={showPassword ? 'text' : 'password'} // Bascule entre texte et mot de passe
+              id="motdepasse"
+              value={motdepasse}
+              onChange={(e) => setMotdepasse(e.target.value)}
+              required
+              className="login-input"
+            />
+            <button
+              type="button"
+              className="toggle-password"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? '👁️' : '👁️‍🗨️'} {/* Icône pour afficher/masquer */}
+            </button>
+          </div>
         </div>
         <button type="submit" className="save-button">Se connecter</button>
       </form>

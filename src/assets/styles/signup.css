@@ -82,3 +82,45 @@
     margin-right: auto; /* Centrer le bouton horizontalement */
   }
   
+/* Conteneur pour le champ de mot de passe et l'icône */
+.password-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%; /* Garde la largeur du champ alignée */
+}
+
+/* Champ de saisie */
+.password-container input {
+  flex: 1; /* Assure que l'input occupe tout l'espace disponible */
+  padding-right: 40px; /* Donne de l'espace pour l'icône */
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  width: 100%; /* Fixe la largeur */
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+.password-container input:focus {
+  border-color: #f6a9a9;
+  outline: none;
+}
+
+/* Bouton pour basculer la visibilité du mot de passe */
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  transform: translateY(-25%); /* Ajustement pour aligner parfaitement */
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 0;
+  margin: 0;
+}
+
+.toggle-password:hover {
+  background: none; /* Supprime le fond coloré au survol */
+  color: #0044cc; /* Vous pouvez modifier la couleur de l'icône si nécessaire */
+}
