@@ -14,7 +14,7 @@ const Home = () => {
   const [humidity, setHumidity] = useState('');
   const [pressure, setPressure] = useState('');
   const [windSpeed, setWindSpeed] = useState('');
-  const [error, setError] = useState('');
+  //const [error, setError] = useState('');
 
   const navigate = useNavigate(); 
 
