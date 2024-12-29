@@ -4,6 +4,7 @@ import 'leaflet/dist/leaflet.css';
 import axios from 'axios';
 import '../assets/styles/map.css';
 import L from 'leaflet';
+import { useNavigate } from 'react-router-dom'; // Si vous utilisez React Router pour la navigation
 
 const Map = () => {
   const [position, setPosition] = useState(null);
@@ -13,6 +14,8 @@ const Map = () => {
   const [country, setCountry] = useState('');
 
   const center = [20.0, 0.0]; // Centre de la carte (pour afficher l'ensemble du monde)
+  
+  const navigate = useNavigate();
 
   // Fonction pour récupérer la température via l'API OpenWeather
   const getTemperature = async (lat, lng) => {
@@ -76,16 +79,29 @@ const Map = () => {
     ) : null;
   };
 
+  // Fonction pour revenir à la page d'accueil
+  const goHome = () => {
+    navigate('/'); // Utilisation de useNavigate pour rediriger vers l'accueil
+  };
+  
   return (
-    <div className="map-container">
-      <MapContainer center={center} zoom={2} className="map-interactive">
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        />
-        {/* Marqueur interactif pour les clics */}
-        <LocationMarker />
-      </MapContainer>
+    <div className="map-wrapper">
+      {/* Conteneur du bouton */}
+      <div className="home-button-container">
+        <button className="home-button" onClick={goHome}>Retour à l&apos;accueil</button>
+      </div>
+
+      {/* Conteneur de la carte */}
+      <div className="map-container">
+        <MapContainer center={center} zoom={2} className="map-interactive">
+          <TileLayer
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          />
+          {/* Marqueur interactif pour les clics */}
+          <LocationMarker />
+        </MapContainer>
+      </div>
     </div>
   );
 };

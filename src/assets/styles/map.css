@@ -8,21 +8,65 @@
     align-items: center;
     overflow: hidden; /* Évite les barres de défilement */
 }
-  
+
+
 /* Styles spécifiques à la carte interactive */
 .map-interactive {
-    width: 95%; /* La carte occupe 95% de la largeur de l'écran */
-    height: 85vh; /* La carte occupe 85% de la hauteur de la fenêtre */
+    width: 90%; /* La carte occupe 95% de la largeur de l'écran */
+    height: 65vh; /* La carte occupe 85% de la hauteur de la fenêtre */
     border: 3px solid #f3ecec; /* Bordure plus discrète mais visible */
     border-radius: 12px; /* Coins plus arrondis pour un aspect plus doux */
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Ombre plus nette autour de la carte */
     transition: transform 0.3s ease-in-out; /* Transition fluide */
+    margin-top: 10%;
 }
 
 .map-interactive:hover {
     transform: scale(1.02); 
 }
-  
+
+/* Conteneur du bouton avec position fixed */
+.home-button-container {
+    position: fixed; /* Positionner le bouton de manière fixe */
+    top: 20px; /* Espace du haut */
+    left: 50%; /* Centrer horizontalement */
+    transform: translateX(-50%); /* Correction pour un centrage parfait */
+    z-index: 1000;
+}
+
+/* Style du bouton Home */
+.home-button {
+    background: linear-gradient(135deg, #3ba0f3, #dd6462); /* Dégradé bleu-rouge */
+    color: rgb(245, 245, 245);
+    font-size: 1.2rem;
+    padding: 12px 24px;
+    border-radius: 50px;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    z-index: 1; /* Assure que le bouton soit au-dessus de la carte */
+}
+
+/* Effet du bouton Home lorsqu'il est survolé */
+.home-button:hover {
+    transform: scale(1.1); /* Légère agrandissement lors du survol */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Ombre portée */
+}
+
+.home-button:hover::before {
+    width: 0;
+    height: 0;
+    top: 50%;
+    left: 50%;
+}
+
+.home-button span {
+    position: relative;
+    z-index: 1; /* Placer le texte au-dessus de l'animation */
+}
+
 /* Style des popups */
 .leaflet-popup-content {
     font-family: 'Roboto', Arial, sans-serif;
@@ -36,7 +80,6 @@
     transition: transform 0.2s ease-out; /* Transition fluide pour le popup */
 }
 
-/* Animation des popups */
 .leaflet-popup-content:focus {
     transform: scale(1.05); /* Légère agrandissement au focus */
 }
@@ -76,7 +119,6 @@
     transition: background-color 0.3s, transform 0.3s; /* Transitions fluides */
 }
 
-/* Ajout d'un léger effet au survol des marqueurs */
 .leaflet-marker-icon:hover {
     background-color: #bdddfe; /* Change la couleur du marqueur au survol */
     cursor: pointer;
