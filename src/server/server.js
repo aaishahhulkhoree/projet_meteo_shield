@@ -92,7 +92,10 @@ app.post('/api/login', async (req, res) => {
     const isMatch = await bcrypt.compare(motdepasse, user.motdepasse);
 
     if (isMatch) {
-      res.status(200).json({ message: 'Connexion réussie.' });
+      res.status(200).json({
+        message: 'Connexion réussie.',
+        username: user.username, // Inclure le pseudo dans la réponse
+      });
     } else {
       res.status(401).json({ message: 'Mot de passe incorrect.' });
     }

@@ -59,3 +59,10 @@
   background-color: #f6a9a9;
   color: white;
 }
+
+.nav-username {
+  margin-right: 50 px;
+  font-size: 1.2rem;
+  color: white;
+  padding: 5px 0; /* Ajout d'un espacement vertical pour la séparation */
+}

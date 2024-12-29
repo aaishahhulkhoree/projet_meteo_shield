@@ -25,7 +25,9 @@ const Login = () => {
       });
 
       if (response.ok) {
+        const data = await response.json();
         alert('Connexion réussie !');
+        localStorage.setItem('username', data.username); //Stocke du pseudo localement
         setEmail('');
         setMotdepasse('');
         navigate('/');
