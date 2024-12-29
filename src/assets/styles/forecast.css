@@ -4,20 +4,18 @@
   flex-direction: column;
   align-items: center;
   background: linear-gradient(to bottom, #f0f8ff, #a6c9ff);
-  padding: 30px;
-  min-height: 100vh;
+  padding: 20px;
   box-sizing: border-box;
-  overflow: hidden;
-  font-family: 'Arial', sans-serif; /* Ajoute une police agréable */
+  font-family: 'Arial', sans-serif;
 }
 
 /* Titres de section */
 .forecast-container h1,
 .forecast-container h2 {
   font-size: 32px;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   text-align: center;
-  color: #2d0606;
+  color: #746464;
   font-weight: bold;
 }
 
@@ -26,11 +24,27 @@
   display: flex;
   flex-wrap: nowrap;
   justify-content: flex-start;
-  gap: 25px;
+  gap: 20px;
   overflow-x: auto;
-  padding-bottom: 15px;
+  padding-bottom: 10px;
+  width: 100%; /* Assure que le conteneur prend toute la largeur */
+  box-sizing: border-box;
 }
 
+.daily-forecast::-webkit-scrollbar {
+  height: 8px; /* Taille de la barre de défilement */
+}
+
+.daily-forecast::-webkit-scrollbar-thumb {
+  background: #8eb5e2;
+  border-radius: 10px;
+}
+
+.daily-forecast::-webkit-scrollbar-thumb:hover {
+  background: #6d9cba;
+}
+
+/* Cartes de prévisions (quotidiennes) */
 .forecast-card {
   text-align: center;
   background-color: #fff;
@@ -38,7 +52,7 @@
   border-radius: 15px;
   border: 1px solid #e2e2e2;
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
-  width: 200px;
+  width: 200px; /* Largeur ajustée pour une meilleure visibilité */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
   overflow: hidden;
