@@ -1,0 +1,105 @@
+/* Style général de la carte */
+.map-container {
+    width: 100%;
+    height: 100vh; /* La carte occupe toute la hauteur de la fenêtre */
+    background-color: #b3c9eb; /* Fond plus clair pour une ambiance plus moderne */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Évite les barres de défilement */
+}
+  
+/* Styles spécifiques à la carte interactive */
+.map-interactive {
+    width: 95%; /* La carte occupe 95% de la largeur de l'écran */
+    height: 85vh; /* La carte occupe 85% de la hauteur de la fenêtre */
+    border: 3px solid #f3ecec; /* Bordure plus discrète mais visible */
+    border-radius: 12px; /* Coins plus arrondis pour un aspect plus doux */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Ombre plus nette autour de la carte */
+    transition: transform 0.3s ease-in-out; /* Transition fluide */
+}
+
+.map-interactive:hover {
+    transform: scale(1.02); 
+}
+  
+/* Style des popups */
+.leaflet-popup-content {
+    font-family: 'Roboto', Arial, sans-serif;
+    font-size: 15px;
+    color: #645959;
+    padding: 12px;
+    background-color: #fff; /* Fond blanc pour les popups */
+    border-radius: 12px; /* Coins arrondis pour un effet moderne */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Ombre plus marquée */
+    max-width: 250px; /* Limite la largeur des popups */
+    transition: transform 0.2s ease-out; /* Transition fluide pour le popup */
+}
+
+/* Animation des popups */
+.leaflet-popup-content:focus {
+    transform: scale(1.05); /* Légère agrandissement au focus */
+}
+
+/* Style du texte dans les popups pour la température */
+.leaflet-popup-content .temperature {
+    font-size: 16px; /* Taille de la température un peu plus grande */
+    font-weight: bold; /* Rendre la température un peu plus audacieuse */
+    color: #f39c12; /* Orange pour une couleur chaude et visible */
+    margin-top: 8px; /* Espacement entre les autres informations et la température */
+}
+
+/* Style du texte dans les popups pour la ville et autres informations */
+.leaflet-popup-content .place-name {
+    font-size: 14px; /* Taille légèrement plus petite pour le nom de la ville */
+    font-weight: bold;
+    color: #2c3e50; /* Couleur sombre pour le nom de la ville */
+}
+
+.leaflet-popup-content .location-details {
+    font-size: 12px; /* Taille plus petite pour les détails comme le code postal et le pays */
+    color: #7f8c8d;
+}
+
+/* Effet sur le texte des popups */
+.leaflet-popup-content p:hover {
+    color: #6e767f; /* Change la couleur au survol */
+}
+
+/* Style du marqueur sélectionné */
+.leaflet-marker-icon {
+    background-color: #ffffff; /* Blanc pour un marqueur clair */
+    width: 30px; /* Ajuste la largeur du marqueur */
+    height: 30px; /* Ajuste la hauteur du marqueur */
+    border-radius: 50%; /* Marqueur circulaire */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Ombre douce pour le marqueur */
+    transition: background-color 0.3s, transform 0.3s; /* Transitions fluides */
+}
+
+/* Ajout d'un léger effet au survol des marqueurs */
+.leaflet-marker-icon:hover {
+    background-color: #bdddfe; /* Change la couleur du marqueur au survol */
+    cursor: pointer;
+    transform: scale(1.2); /* Légère augmentation de taille */
+}
+
+/* Effet de "pulse" sur le marqueur sélectionné */
+.leaflet-marker-icon.selected {
+    animation: pulse 1.5s infinite; /* Animation de pulsation */
+}
+
+/* Animation de pulsation */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.5);
+        opacity: 0.7;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
