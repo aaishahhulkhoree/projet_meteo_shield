@@ -26,6 +26,7 @@
   margin-top: 50px;
   width: 100%;
   padding-bottom: 15px;
+  padding: 0 20px;
 }
 
 .daily-forecast::-webkit-scrollbar {
@@ -33,12 +34,12 @@
 }
 
 .daily-forecast::-webkit-scrollbar-thumb {
-  background: #8eb5e2;
+  background: rgba(142, 181, 226, 0.8);
   border-radius: 10px;
 }
 
 .daily-forecast::-webkit-scrollbar-thumb:hover {
-  background: #6d9cba;
+  background: rgba(109, 156, 186, 0.9);
 }
 
 /* Cartes de prévisions */
@@ -50,13 +51,18 @@
   border: 1px solid #e2e2e2;
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
   width: 200px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.4s ease-in-out, box-shadow 0.4s ease-in-out;
   cursor: pointer;
 }
 
 .forecast-card:hover {
   transform: scale(1.05);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.forecast-card:focus {
+  outline: 2px solid #6d9cba;
+  transform: scale(1.08);
 }
 
 .forecast-card img.forecast-icon {
@@ -76,12 +82,31 @@
   color: #f39c12;
 }
 
+/* Animation pour les cartes d'alerte météo */
+.forecast-card.alert {
+  border: 2px solid #ff6f61;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 10px rgba(255, 111, 97, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(255, 111, 97, 0.9);
+  }
+  100% {
+    box-shadow: 0 0 10px rgba(255, 111, 97, 0.6);
+  }
+}
+
 /* Prévisions horaires avec scroll horizontal */
 .hourly-forecast {
   margin-top: 50px;
   width: 100%;
   overflow-x: auto;
   padding-bottom: 15px;
+  padding: 0 20px;
 }
 
 .hourly-list {
@@ -98,7 +123,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 160px;
   height: 200px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.4s ease-in-out, box-shadow 0.4s ease-in-out;
 }
 
 .hourly-card:hover {
@@ -106,10 +131,20 @@
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
 }
 
+.hourly-card:focus {
+  outline: 2px solid #6d9cba;
+  transform: scale(1.08);
+}
+
 .hourly-card img {
   width: 50px;
   height: 50px;
   margin-top: 10px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.hourly-card img:hover {
+  transform: scale(1.2);
 }
 
 .hourly-card p {
@@ -130,4 +165,33 @@
 
 .hourly-card:hover .forecast-temperature {
   color: #f39c12;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .forecast-container {
+    padding: 10px;
+  }
+
+  .daily-forecast,
+  .hourly-list {
+    gap: 5px;
+  }
+
+  .forecast-card,
+  .hourly-card {
+    width: 150px;
+    padding: 15px;
+  }
+
+  .forecast-card img.forecast-icon,
+  .hourly-card img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .forecast-card .forecast-weather,
+  .hourly-card .forecast-weather {
+    font-size: 12px;
+  }
 }

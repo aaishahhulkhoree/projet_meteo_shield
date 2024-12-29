@@ -114,7 +114,7 @@ const ForecastObserver = () => {
     return acc;
   }, {});
 
-  const dailyForecasts = Object.entries(groupedData).map(([date, data]) => ({
+  const dailyForecasts = Object.entries(groupedData).slice(0,6).map(([date, data]) => ({
     date,
     min: Math.round(Math.min(...data.map((item) => item.main.temp_min))),
     max: Math.round(Math.max(...data.map((item) => item.main.temp_max))),
@@ -155,7 +155,7 @@ const ForecastObserver = () => {
         <SearchBar onSearch={handleSearch} />
 
         <h1>Prévisions météo pour {city || 'votre ville'}</h1>
-        <h2>Prévisions sur 7 jours</h2>
+        <h2>Prévisions sur 6 jours</h2>
       </div>
 
       <div className="daily-forecast">
