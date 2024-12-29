@@ -57,6 +57,19 @@
   background-color: #ff5722; /* Variation de rouge au survol */
 }
 
+.logout-btn {
+  background-color: transparent;
+  color: white;
+  font-size: 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  background-color: #42a5f5; /* Légère variation de bleu au survol */
+}
+
+
 /* Suppression de l'animation de mouvement */
 @keyframes fadeIn {
   from {

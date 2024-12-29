@@ -11,12 +11,18 @@ const Modal = ({ toggleModal }) => {
     navigate(route); // Redirige vers la route souhaitée
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('username'); // Supprimer le pseudo
+    window.location.href = '/'; // Rediriger vers Home
+  };
+
   return (
     <div className="modal-overlay active">
       <div className="modal-content">
         <h3>Menu</h3>
         <button onClick={() => handleNavigation('/login')}>Connexion</button>
         <button onClick={() => handleNavigation('/signup')}>Inscription</button>
+        <button className="logout-btn" onClick={handleLogout}>Déconnexion</button>
         <button onClick={() => handleNavigation('/settings')}>Paramètres</button>
         <button onClick={() => handleNavigation('/about')}>À propos</button>
         <button className="close-btn" onClick={toggleModal}>❌ Fermer</button>
