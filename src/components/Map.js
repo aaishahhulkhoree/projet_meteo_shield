@@ -3,7 +3,6 @@ import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaf
 import 'leaflet/dist/leaflet.css';
 import axios from 'axios';
 import '../assets/styles/map.css';
-import { FaMapPin } from 'react-icons/fa';
 import L from 'leaflet';
 
 const Map = () => {
@@ -58,12 +57,7 @@ const Map = () => {
     });
 
     // Créer l'icône Pushpin de FontAwesome et l'utiliser comme icône personnalisée
-    const customIcon = L.divIcon({
-      className: 'leaflet-icon-pushpin', // Classe CSS pour l'icône personnalisée
-      html: `<i class="fa fa-map-pin" style="font-size: 25px; color: red;"></i>`,
-      iconSize: [25, 25], // Taille de l'icône
-      iconAnchor: [12, 25], // Position de l'ancrage de l'icône
-      popupAnchor: [0, -25], // Position du popup
+    const customIcon = L.divIcon({className: 'leaflet-icon-pushpin', // Classe CSS pour l'icône personnalisée 
     });
 
     return position ? (
