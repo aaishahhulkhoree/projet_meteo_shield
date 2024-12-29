@@ -5,7 +5,6 @@
   align-items: center;
   background: linear-gradient(to bottom, #f0f8ff, #a6c9ff);
   padding: 20px;
-  box-sizing: border-box;
   font-family: 'Arial', sans-serif;
 }
 
@@ -22,17 +21,15 @@
 /* Prévisions quotidiennes avec scroll horizontal */
 .daily-forecast {
   display: flex;
-  flex-wrap: nowrap;
-  justify-content: flex-start;
-  gap: 20px;
+  gap: 10px;
   overflow-x: auto;
-  padding-bottom: 10px;
-  width: 100%; /* Assure que le conteneur prend toute la largeur */
-  box-sizing: border-box;
+  margin-top: 50px;
+  width: 100%;
+  padding-bottom: 15px;
 }
 
 .daily-forecast::-webkit-scrollbar {
-  height: 8px; /* Taille de la barre de défilement */
+  height: 8px;
 }
 
 .daily-forecast::-webkit-scrollbar-thumb {
@@ -44,7 +41,7 @@
   background: #6d9cba;
 }
 
-/* Cartes de prévisions (quotidiennes) */
+/* Cartes de prévisions */
 .forecast-card {
   text-align: center;
   background-color: #fff;
@@ -52,11 +49,9 @@
   border-radius: 15px;
   border: 1px solid #e2e2e2;
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
-  width: 200px; /* Largeur ajustée pour une meilleure visibilité */
+  width: 200px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
-  overflow: hidden;
-  position: relative;
 }
 
 .forecast-card:hover {
@@ -70,6 +65,17 @@
   margin-top: 10px;
 }
 
+.forecast-card .forecast-weather,
+.forecast-card .forecast-temperature {
+  font-size: 14px;
+  color: #555;
+  transition: color 0.3s ease;
+}
+
+.forecast-card:hover .forecast-temperature {
+  color: #f39c12;
+}
+
 /* Prévisions horaires avec scroll horizontal */
 .hourly-forecast {
   margin-top: 50px;
@@ -80,9 +86,7 @@
 
 .hourly-list {
   display: flex;
-  justify-content: flex-start;
   gap: 15px;
-  flex-wrap: nowrap;
 }
 
 .hourly-card {
@@ -117,51 +121,13 @@
   overflow: hidden;
 }
 
-/* Barre de défilement personnalisée */
-.daily-forecast::-webkit-scrollbar,
-.hourly-forecast::-webkit-scrollbar {
-  height: 8px;
-}
-
-.daily-forecast::-webkit-scrollbar-thumb,
-.hourly-forecast::-webkit-scrollbar-thumb {
-  background: #8eb5e2;
-  border-radius: 10px;
-}
-
-.daily-forecast::-webkit-scrollbar-thumb:hover,
-.hourly-forecast::-webkit-scrollbar-thumb:hover {
-  background: #6d9cba;
-}
-
-/* Style général des cartes de prévisions */
-.forecast-card .forecast-date,
-.hourly-card .forecast-time {
-  font-size: 16px;
-  font-weight: bold;
-  color: #2d0606;
-}
-
-.forecast-card .forecast-temperature,
+.hourly-card .forecast-weather,
 .hourly-card .forecast-temperature {
-  font-size: 24px;
-  font-weight: bold;
-  color: #e74c3c;
-}
-
-.forecast-card .forecast-weather,
-.hourly-card .forecast-weather {
   font-size: 14px;
   color: #555;
-}
-
-/* Ajout de transitions sur les éléments au survol */
-.forecast-card .forecast-temperature,
-.hourly-card .forecast-temperature {
   transition: color 0.3s ease;
 }
 
-.forecast-card:hover .forecast-temperature,
 .hourly-card:hover .forecast-temperature {
   color: #f39c12;
 }
