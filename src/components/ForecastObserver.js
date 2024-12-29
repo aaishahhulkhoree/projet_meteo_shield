@@ -11,7 +11,6 @@ const ForecastObserver = () => {
   const [city, setCity] = useState(''); // Stocke le nom de la ville
   const [hourlyForecast, setHourlyForecast] = useState(null); // Stocke les prévisions horaires pour une journée
   const [selectedDate, setSelectedDate] = useState(''); // Stocke la date sélectionnée
-  //const [searchCity, setSearchCity] = useState(''); // Stocke la ville saisie
 
   // Fonction pour retourner à la page d'accueil
   const goHome = () => {
@@ -41,8 +40,12 @@ const ForecastObserver = () => {
               setCity(cityName);
               await PrevisionMeteo.mettreAJourPrevisions(cityName);
             },
-           
+            (error) => {
+              setError('La géolocalisation n\'est pas activée.');
+            }
           );
+        } else {
+          setError('La géolocalisation n\'est pas disponible.');
         }
       } catch (err) {
         setError('Erreur lors du chargement des prévisions météo.');
@@ -54,7 +57,7 @@ const ForecastObserver = () => {
     return () => {
       PrevisionMeteo.retirerObserver(observer);
     };
-  }); // Ajout de `searchCity` comme dépendance pour actualiser les prévisions /!\ maintenant je teste sans searchCity
+  }, []); // Ajout de `[]` comme dépendance pour exécuter l'effet une seule fois au montage
 
   // Gérer l'erreur ou le chargement
   if (error) {
@@ -63,9 +66,8 @@ const ForecastObserver = () => {
         <button className="home-btn" onClick={goHome}>
           <span>Retour à l&apos;accueil</span>
         </button>
-        <p>{error}</p>
 
-        {/* Inclure la barre de recherche après le message d'erreur */}
+        {/* Inclure la barre de recherche après le bouton accueil */}
         <SearchBar onSearch={async (city) => {
           try {
             setCity(city);
@@ -75,6 +77,8 @@ const ForecastObserver = () => {
             setError('Impossible de récupérer les prévisions pour cette ville.');
           }
         }} />
+
+        <p>{error}</p>
       </div>
     );
   }
@@ -85,6 +89,18 @@ const ForecastObserver = () => {
         <button className="home-btn" onClick={goHome}>
           <span>Retour à l&apos;accueil</span>
         </button>
+
+        {/* Inclure la barre de recherche après le bouton accueil */}
+        <SearchBar onSearch={async (city) => {
+          try {
+            setCity(city);
+            await PrevisionMeteo.mettreAJourPrevisions(city);
+            setError(''); // Effacer le message d'erreur si la recherche réussit
+          } catch (searchError) {
+            setError('Impossible de récupérer les prévisions pour cette ville.');
+          }
+        }} />
+
         <p>Chargement des prévisions...</p>
       </div>
     );
@@ -134,11 +150,12 @@ const ForecastObserver = () => {
         <button className="home-btn" onClick={goHome}>
           <span>Retour à l&apos;accueil</span>
         </button>
+
+        {/* Inclure la barre de recherche après le bouton retour */}
+        <SearchBar onSearch={handleSearch} />
+
         <h1>Prévisions météo pour {city || 'votre ville'}</h1>
         <h2>Prévisions sur 7 jours</h2>
-
-        {/* Inclure le composant SearchBar */}
-        <SearchBar onSearch={handleSearch} />
       </div>
 
       <div className="daily-forecast">
