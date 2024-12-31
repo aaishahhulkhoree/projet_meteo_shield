@@ -2,20 +2,24 @@ import React, { useState } from 'react';
 import '../assets/styles/temperature.css';
 import PropTypes from 'prop-types';
 
-const TemperatureAlert = ({ temp }) => {
-  // État pour suivre l'unité sélectionnée (Celsius par défaut)
-  const [unit, setUnit] = useState('C'); // 'C' pour Celsius, 'F' pour Fahrenheit
+const TemperatureAlert = ({ temp, initialUnit }) => {
+  // État pour suivre l'unité sélectionnée
+  const [unit, setUnit] = useState(initialUnit || 'C'); // 'C' pour Celsius, 'F' pour Fahrenheit
 
   // Fonction de conversion Celsius → Fahrenheit
   const convertToFahrenheit = (celsius) => (celsius * 9) / 5 + 32;
+  const convertToCelsius = (fahrenheit) => ((fahrenheit - 32) * 5) / 9;
+
+  // Température en °C utilisée pour l'évaluation des alertes
+  const tempInCelsius = unit === 'F' ? convertToCelsius(temp) : temp;
 
   // Température affichée en fonction de l'unité sélectionnée
   const displayTemp = unit === 'C' ? Math.round(temp) : Math.round(convertToFahrenheit(temp));
 
-  // Rendu de l'alerte en fonction de la température
+  // Rendu de l'alerte en fonction de la température en °C
   let alertContent = null;
 
-  if (temp > 35) {
+  if (tempInCelsius > 35) {
     alertContent = (
       <div className="alert temperature-alert extreme-heat">
         <h3>Alerte Chaleur Extrême !</h3>
@@ -24,7 +28,7 @@ const TemperatureAlert = ({ temp }) => {
         </p>
       </div>
     );
-  } else if (temp > 30 && temp <= 35) {
+  } else if (tempInCelsius > 30 && tempInCelsius <= 35) {
     alertContent = (
       <div className="alert temperature-alert moderate-heat">
         <h3>Alerte Chaleur !</h3>
@@ -33,7 +37,7 @@ const TemperatureAlert = ({ temp }) => {
         </p>
       </div>
     );
-  } else if (temp < 0) {
+  } else if (tempInCelsius < 0) {
     alertContent = (
       <div className="alert temperature-alert extreme-cold">
         <h3>Alerte Froid Extrême !</h3>
@@ -42,7 +46,7 @@ const TemperatureAlert = ({ temp }) => {
         </p>
       </div>
     );
-  } else if (temp >= 0 && temp <= 5) {
+  } else if (tempInCelsius >= 0 && tempInCelsius <= 5) {
     alertContent = (
       <div className="alert temperature-alert moderate-cold">
         <h3>Alerte Froid !</h3>
@@ -84,6 +88,7 @@ const TemperatureAlert = ({ temp }) => {
 
 TemperatureAlert.propTypes = {
   temp: PropTypes.number.isRequired,
+  initialUnit: PropTypes.string, // Unité de départ ('C' ou 'F')
 };
 
 export default TemperatureAlert;

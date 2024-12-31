@@ -5,6 +5,9 @@ import '../assets/styles/settings.css';
 const Settings = () => {
   const [alertType, setAlertType] = useState('storm');
   const [useGeolocation, setUseGeolocation] = useState(true); // State pour la géolocalisation (toggle switch)
+  const [temperatureUnit, setTemperatureUnit] = useState(
+    localStorage.getItem('temperatureUnit') || 'C'
+  );
   const navigate = useNavigate();
 
   const handleAlertChange = (e) => {
@@ -13,6 +16,16 @@ const Settings = () => {
 
   const handleToggleGeolocation = () => {
     setUseGeolocation(!useGeolocation);
+  };
+
+  const handleTemperatureChange = (e) => {
+    setTemperatureUnit(e.target.value);
+  };
+
+  const handleSave = () => {
+    localStorage.setItem('temperatureUnit', temperatureUnit);
+    alert('Préférences sauvegardées !');
+    navigate('/');
   };
 
   const goHome = () => {
@@ -28,7 +41,17 @@ const Settings = () => {
 
       <h1>Paramètres</h1>
       <p>Personnalisez vos préférences d&apos;alerte météo et de géolocalisation.</p>
-
+      <div className="setting-option">
+        <label htmlFor="temperatureUnit">Unité de température :</label>
+        <select
+          id="temperatureUnit"
+          value={temperatureUnit}
+          onChange={handleTemperatureChange}
+        >
+          <option value="C">Celsius (°C)</option>
+          <option value="F">Fahrenheit (°F)</option>
+        </select>
+      </div>
       <div className="setting-option">
         <label htmlFor="alertType">Type d&apos;alerte météo</label>
         <select 
@@ -58,7 +81,7 @@ const Settings = () => {
       </div>
 
       <div className="button-container">
-        <button className="save-button">Sauvegarder</button>
+        <button className="save-button" onClick={handleSave}>Sauvegarder</button>
       </div>
     </div>
   );
