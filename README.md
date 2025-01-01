@@ -7,9 +7,6 @@ This project, **MeteoShield**, is a web application designed to provide real-tim
 - **Interactive Map**: GeoJSON-powered map displaying danger zones (in red) and safe zones (in green).
 - **Customizable Notifications**: Users can personalize alerts based on location and preferred event types.
 - **Hourly and Weekly Forecasts**: Comprehensive weather updates for better planning.
-- **SOS Button**: Quick-access emergency feature for critical situations.
-- **Offline Mode**: Simplified data access when offline.
-- **Day/Night Mode**: Toggle between light and dark themes for user convenience.
 
 ## Getting Started
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
