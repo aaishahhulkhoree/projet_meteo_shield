@@ -7,7 +7,6 @@ import Flag from 'react-world-flags';
 import PrevisionMeteo from '../utils/PrevisionMeteo';
 import '../assets/styles/searchbar.css';
 
-
 const SearchBar = ({ onSearch }) => {
   const [searchCity, setSearchCity] = useState('');
   const [suggestions, setSuggestions] = useState([]);
@@ -27,7 +26,12 @@ const SearchBar = ({ onSearch }) => {
         const uniqueSuggestions = Array.from(new Set(data.list.map(item => item.name)))
           .map(name => data.list.find(item => item.name === name));
 
-        setSuggestions(uniqueSuggestions);
+        // Filtrer les arrondissements de Paris
+        const filteredSuggestions = uniqueSuggestions.filter(suggestion => {
+          return !(suggestion.name.startsWith('Paris ') && /\d{1,2}(er|e)?$/.test(suggestion.name));
+        });
+
+        setSuggestions(filteredSuggestions);
       }
     } catch (error) {
       console.error('Error fetching city suggestions:', error);
