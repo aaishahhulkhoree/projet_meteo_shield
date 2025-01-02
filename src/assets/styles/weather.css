@@ -7,11 +7,15 @@ body {
     color: #333;
   }
   
-  .weather-container {
+  .weather-container{
     max-width: 700px;
     background-color: #fff;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .weather-container p {
+    margin-top: 10px;
   }
   
   input[type="text"] {
@@ -23,19 +27,6 @@ body {
     font-size: 16px;
   }
   
-  button {
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    background-color: #007bff;
-    color: #fff;
-    cursor: pointer;
-    font-size: 16px;
-  }
-  
-  button:hover {
-    background-color: #0056b3;
-  }
   
   .loading, .error {
     margin-top: 20px;
@@ -70,33 +61,6 @@ body {
   
   img {
     margin-top: 10px;
-  }
-  
-  /* Toggle Switch */
-  .unit-toggle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 20px;
-  }
-  
-  .unit-toggle span {
-    margin-left: 10px;
-    font-size: 18px;
-    font-weight: bold;
-  }
-  
-  .switch {
-    position: relative;
-    display: inline-block;
-    width: 50px;
-    height: 25px;
-  }
-  
-  .switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
   }
   
   .slider {
