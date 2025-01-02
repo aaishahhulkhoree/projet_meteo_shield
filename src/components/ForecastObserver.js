@@ -155,7 +155,7 @@ const ForecastObserver = () => {
         <SearchBar onSearch={handleSearch} />
 
         <h1>Prévisions météo pour {city || 'votre ville'}</h1>
-        <h2>Prévisions sur 6 jours</h2>
+        <h2>Prévisions sur 5 jours</h2>
       </div>
 
       <div className="daily-forecast">
