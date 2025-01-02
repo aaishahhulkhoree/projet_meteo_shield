@@ -3,64 +3,52 @@ import '../assets/styles/temperature.css';
 import PropTypes from 'prop-types';
 
 const TemperatureAlert = ({ temp }) => {
-  // Température en °C utilisée pour l'évaluation des alertes
   const tempInCelsius = temp;
 
-  // Température affichée en Celsius
+  // Si la température est en Fahrenheit, on la convertit
   const displayTemp = Math.round(tempInCelsius);
 
-  // Rendu de l'alerte en fonction de la température en °C
   let alertContent = null;
 
-  if (tempInCelsius > 35) {
+  if (displayTemp > 95) {
     alertContent = (
       <div className="alert temperature-alert extreme-heat">
         <h3>Alerte Chaleur Extrême !</h3>
-        <p>
-          Température actuelle : {displayTemp}°C. Risque de chaleur extrême. Protégez-vous !
-        </p>
+        <p>Température actuelle : {displayTemp}°{localStorage.getItem('temperatureUnit')}</p>
       </div>
     );
-  } else if (tempInCelsius > 30 && tempInCelsius <= 35) {
+  } else if (displayTemp > 86 && displayTemp <= 95) {
     alertContent = (
       <div className="alert temperature-alert moderate-heat">
         <h3>Alerte Chaleur !</h3>
-        <p>
-          Température actuelle : {displayTemp}°C. Risque de chaleur modérée. Buvez beaucoup d&apos;eau !
-        </p>
+        <p>Température actuelle : {displayTemp}°{localStorage.getItem('temperatureUnit')}</p>
       </div>
     );
-  } else if (tempInCelsius < 0) {
+  } else if (displayTemp < 32) {
     alertContent = (
       <div className="alert temperature-alert extreme-cold">
         <h3>Alerte Froid Extrême !</h3>
-        <p>
-          Température actuelle : {displayTemp}°C. Risque de gel important.
-        </p>
+        <p>Température actuelle : {displayTemp}°{localStorage.getItem('temperatureUnit')}</p>
       </div>
     );
-  } else if (tempInCelsius >= 0 && tempInCelsius <= 5) {
+  } else if (displayTemp >= 32 && displayTemp <= 41) {
     alertContent = (
       <div className="alert temperature-alert moderate-cold">
         <h3>Alerte Froid !</h3>
-        <p>
-          Température actuelle : {displayTemp}°C. Risque de gel modéré.
-        </p>
+        <p>Température actuelle : {displayTemp}°{localStorage.getItem('temperatureUnit')}</p>
       </div>
     );
   }
 
   return (
     <div>
-      {/* Affichage de l'alerte s'il y en a */}
       {alertContent}
-
     </div>
   );
 };
 
 TemperatureAlert.propTypes = {
-  temp: PropTypes.number.isRequired, // Température en °C
+  temp: PropTypes.number.isRequired, // Température en °C ou °F selon les paramètres
 };
 
 export default TemperatureAlert;

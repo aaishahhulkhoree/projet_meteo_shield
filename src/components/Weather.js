@@ -9,12 +9,17 @@ import TsunamiAlert from './TsunamiAlert';
 import EarthquakeAlert from './EarthquakeAlert';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
-
 const Weather = ({ city }) => {
   const [forecast, setForecast] = useState(null);
   const [error, setError] = useState('');
   const [earthquakeData, setEarthquakeData] = useState(null);
   const [tsunamiWarning, setTsunamiWarning] = useState(false);
+
+  // Récupérer l'unité de température de localStorage
+  const temperatureUnit = localStorage.getItem('temperatureUnit') || 'C';
+
+  // Fonction pour convertir Celsius en Fahrenheit
+  const convertToFahrenheit = (celsius) => (celsius * 9/5) + 32;
 
   useEffect(() => {
     const fetchWeatherData = async () => {
@@ -49,9 +54,11 @@ const Weather = ({ city }) => {
     return <p>{error || 'Chargement des données météo...'}</p>;
   }
 
+  // Convertir la température selon l'unité choisie
+  const temperature = temperatureUnit === 'C' ? forecast.main.temp : convertToFahrenheit(forecast.main.temp);
+
   // Utilisation de l'icône météo
   const weatherIcon = `http://openweathermap.org/img/wn/${forecast.weather[0].icon}.png`;
-
 
   const windIconStyle = {
     fontSize: `${Math.min(forecast.wind.speed * 4, 40)}px`, 
@@ -61,7 +68,7 @@ const Weather = ({ city }) => {
   return (
     <div className="weather-container">
       <h2>Météo pour {city}</h2>
-      <p>Température : {Math.round(forecast.main.temp)}°C</p>
+      <p>Température : {Math.round(temperature)}°{temperatureUnit}</p>
       <div>
         {/* Affichage de l'icône météo */}
         <img src={weatherIcon} alt="Météo" />
@@ -75,7 +82,7 @@ const Weather = ({ city }) => {
 
       {/* Section des alertes */}
       <StormAlert windSpeed={forecast.wind.speed} />
-      <TemperatureAlert temp={forecast.main.temp} />
+      <TemperatureAlert temp={temperature} />
       <PrecipitationAlert rain={forecast.rain || 0} />
       <DroughtAlert rain={forecast.rain || 0} />
       <TsunamiAlert tsunamiWarning={tsunamiWarning} />
