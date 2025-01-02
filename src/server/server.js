@@ -1,3 +1,5 @@
+const fs = require('fs');
+const path = require('path');
 const express = require('express');
 const { Pool } = require('pg');
 const cors = require('cors');
@@ -16,6 +18,17 @@ const pool = new Pool({
   password: 'boubou14',
   port: 5432,
 });
+
+// Execution d'init.sql
+(async () => {
+  try {
+    const initSQL = fs.readFileSync(path.join(__dirname, 'init.sql')).toString();
+    await pool.query(initSQL);
+    console.log('Database initialized successfully');
+  } catch (err) {
+    console.error('Error initializing database:', err);
+  }
+})();
 
 // Middleware
 app.use(cors());

@@ -40,6 +40,16 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
    REACT_APP_OPENWEATHER_API_KEY=fd441e159a57c88c956ebf246cc1ae9c
    ```
 
+### Database Setup
+
+Before running the application, initialize the database:
+
+1. Ensure PostgreSQL is running on your system.
+2. Modify the `init.sql` file if required.
+3. Start the server using the following command:
+   ```bash
+   node server.js
+
 ### Running the Application
 To start the application in development mode:
 ```bash
