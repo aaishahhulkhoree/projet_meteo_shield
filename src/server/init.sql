@@ -47,4 +47,5 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER update_preferences_updated_at
 BEFORE UPDATE ON preferences_utilisateur
 FOR EACH ROW
-EXECUTE FUNCTION set_updated_at();
+EXECUTE PROCEDURE set_updated_at();
+
