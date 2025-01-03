@@ -18,9 +18,6 @@ const Weather = ({ city }) => {
   // Récupérer l'unité de température de localStorage
   const temperatureUnit = localStorage.getItem('temperatureUnit') || 'C';
 
-  // Fonction pour convertir Celsius en Fahrenheit
-  const convertToFahrenheit = (celsius) => (celsius * 9/5) + 32;
-
   useEffect(() => {
     const fetchWeatherData = async () => {
       if (!city) return;
@@ -54,9 +51,6 @@ const Weather = ({ city }) => {
     return <p>{error || 'Chargement des données météo...'}</p>;
   }
 
-  // Convertir la température selon l'unité choisie
-  const temperature = temperatureUnit === 'C' ? forecast.main.temp : convertToFahrenheit(forecast.main.temp);
-
   // Utilisation de l'icône météo
   const weatherIcon = `http://openweathermap.org/img/wn/${forecast.weather[0].icon}.png`;
 
@@ -64,6 +58,14 @@ const Weather = ({ city }) => {
     fontSize: `${Math.min(forecast.wind.speed * 4, 40)}px`, 
     color: '#9dc3fc', 
   };
+
+  // Température depuis l'API (en Celsius)
+  let temperature = forecast.main.temp;
+
+  // Conversion en Fahrenheit si l'unité est 'F'
+  if (temperatureUnit === 'F') {
+    temperature = (temperature * 9/5) + 32;
+  }
 
   return (
     <div className="weather-container">
@@ -82,7 +84,7 @@ const Weather = ({ city }) => {
 
       {/* Section des alertes */}
       <StormAlert windSpeed={forecast.wind.speed} />
-      <TemperatureAlert temp={temperature} />
+      <TemperatureAlert temp={temperature} /> {/* Température convertie si nécessaire */}
       <PrecipitationAlert rain={forecast.rain || 0} />
       <DroughtAlert rain={forecast.rain || 0} />
       <TsunamiAlert tsunamiWarning={tsunamiWarning} />
