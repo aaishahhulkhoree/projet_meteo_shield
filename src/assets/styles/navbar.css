@@ -3,8 +3,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: linear-gradient(90deg, #f7abab, #9dc3fc); /* Dégradé du rouge clair au bleu clair, similaire à celui du home-container */
-  padding: 15px 30px; /* Plus d'espace autour */
+  background: linear-gradient(90deg, #f7abab, #9dc3fc); /* Dégradé du rouge clair au bleu clair */
+  padding: 15px 30px;
   color: white;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -12,13 +12,31 @@
 .navbar-left {
   display: flex;
   align-items: center;
-  margin-left: 20px; /* Ajouter un espace entre MétéoShield et le bord gauche */
-  margin-right: 50px; /* Ajout d'un espacement pour augmenter la distance entre MétéoShield et les autres liens */
+  margin-left: 20px;
+  margin-right: 50px;
+}
+
+.refresh-btn {
+  background-color: transparent;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: color 0.3s, transform 0.3s;
+}
+
+.refresh-btn:hover {
+  color: #ffeb3b;
+  transform: rotate(360deg); /* Animation de rotation au hover */
 }
 
 .navbar-links {
   display: flex;
-  gap: 30px; /* Espacement plus large pour une meilleure lisibilité */
+  gap: 30px;
 }
 
 .nav-link {
@@ -26,27 +44,27 @@
   text-decoration: none;
   font-size: 1.2rem;
   transition: color 0.3s;
-  padding: 5px 0; /* Ajout d'un espacement vertical pour la séparation */
-  border-bottom: 2px solid transparent; /* Séparation entre les liens */
+  padding: 5px 0;
+  border-bottom: 2px solid transparent;
 }
 
 .nav-link:hover {
-  color: #ffeb3b; /* Jaune légèrement plus doux pour l'effet hover */
-  border-bottom: 2px solid #ffeb3b; /* Ajout de la séparation sous le lien au hover */
+  color: #ffeb3b;
+  border-bottom: 2px solid #ffeb3b;
 }
 
 .navbar-right {
   display: flex;
   align-items: center;
-  gap: 15px; /* Espacement plus petit entre le bouton Menu et les liens */
+  gap: 15px;
 }
 
 .menu-btn {
   background-color: white;
-  color: #726262; /* Rouge plus sombre pour le bouton */
+  color: #726262;
   border: none;
-  font-size: 1.5rem; /* Taille du texte plus grande */
-  padding: 10px 20px; /* Taille adaptée au texte */
+  font-size: 1.5rem;
+  padding: 10px 20px;
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.3s ease, color 0.3s ease;
@@ -61,21 +79,21 @@
 }
 
 .nav-username {
-  background-color: rgba(255, 255, 255, 0.2); /* Fond avec opacité */
-  padding: 12px 20px; /* Augmentation de l'espacement interne */
-  border-radius: 15px; /* Coins encore plus arrondis */
-  margin-left: 20px;  
-  display: inline-flex; /* Alignement flexible */
-  align-items: center; /* Centrer verticalement */
-  justify-content: center; /* Centrer horizontalement */
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3); /* Ombre légèrement plus prononcée */
-  transition: background-color 0.3s, transform 0.3s; /* Animation sur hover */
-  width: auto; /* La largeur s'ajuste automatiquement au contenu */
-  min-width: 150px; /* Largeur minimale pour uniformiser la taille */
-  height: 50px; /* Augmentation de la hauteur pour agrandir la case */
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 12px 20px;
+  border-radius: 15px;
+  margin-left: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s, transform 0.3s;
+  width: auto;
+  min-width: 150px;
+  height: 50px;
 }
 
 .nav-username:hover {
-  background-color: rgba(255, 255, 255, 0.4); /* Couleur de fond au hover */
-  transform: scale(1.1); /* Légère mise en valeur au hover */
+  background-color: rgba(255, 255, 255, 0.4);
+  transform: scale(1.1);
 }

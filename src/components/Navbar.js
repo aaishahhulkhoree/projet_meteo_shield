@@ -11,9 +11,9 @@ const Navbar = () => {
     setIsModalOpen(!isModalOpen);
   };
 
-  const handleHomeClick = () => {
-    // Rechargement de la page en forçant une navigation vers la racine
-    window.location.href = '/';
+  const handleRefreshClick = () => {
+    // Rafraîchissement de la page
+    window.location.reload();
   };
 
   useEffect(() => {
@@ -21,13 +21,22 @@ const Navbar = () => {
     if (storedUsername) {
       setUsername(storedUsername);
     }
+
+    // Mise en place de l'actualisation automatique toutes les 4 heures
+    const intervalId = setInterval(() => {
+      window.location.reload();
+    }, 14400000); // 4 heures en millisecondes
+
+    return () => clearInterval(intervalId); // Nettoyage de l'intervalle lors du démontage du composant
   }, []);
 
   return (
     <header className="navbar">
       <div className="navbar-left">
-        {/* Titre de l'application */}
-        <Link to="/" className="nav-link" onClick={handleHomeClick}>MétéoShield</Link>
+        {/* Bouton de rafraîchissement à la place du lien MétéoShield */}
+        <button className="nav-link refresh-btn" onClick={handleRefreshClick}>
+          MétéoShield
+        </button>
 
         {/* Message de bienvenue sous le titre */}
         {username && <div className="nav-username">Bienvenue, {username} !</div>}
