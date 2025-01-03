@@ -1,42 +1,98 @@
 /* Conteneur général des alertes */
 .alert {
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: 5px;
-    font-weight: bold;
-    text-align: center;
-    color: #fff;
-    display: block; /* Affichage par défaut */
+  padding: 20px;
+  margin: 15px 0;
+  border-radius: 8px;
+  font-weight: bold;
+  text-align: center;
+  color: #fff;
+  display: block; /* Affichage par défaut */
+  transition: transform 0.3s ease, opacity 0.3s ease; /* Animation pour l'effet d'apparition/disparition */
+}
+
+/* Effet au survol */
+.alert:hover {
+  transform: translateY(-5px); /* Décale légèrement l'alerte vers le haut */
+  opacity: 0.9; /* Légère réduction de l'opacité au survol */
+}
+
+/* Alerte Tempête (vent violent) */
+.storm-alert {
+  background-color: #e63946; /* Rouge foncé pour signaler un danger élevé */
+  border: 2px solid #fff; /* Bordure blanche pour augmenter le contraste */
+  animation: shake 0.5s ease-in-out infinite; /* Animation de secousse pour alerter visuellement */
+}
+
+/* Animation de secousse pour attirer l'attention */
+@keyframes shake {
+  0% {
+      transform: translateX(0);
   }
-  
-  /* Alerte Tempête (vent violent) */
-  .storm-alert {
-    background-color: #ff4d4d; /* Rouge pour signaler un danger élevé */
+  25% {
+      transform: translateX(-5px);
   }
-  
-  /* Alerte Température (trop chaud ou trop froid) */
-  .temperature-alert {
-    background-color: #ffcc00; /* Jaune pour signaler la chaleur ou le froid */
+  50% {
+      transform: translateX(5px);
   }
-  
-  /* Alerte Précipitation (risque d'inondation ou de tornade) */
-  .precipitation-alert {
-    background-color: #3399ff; /* Bleu pour signaler la pluie */
+  75% {
+      transform: translateX(-5px);
   }
-  
-  /* Alerte Sécheresse (manque de pluie) */
-  .drought-alert {
-    background-color: #ffb84d; /* Orange pour signaler la sécheresse */
+  100% {
+      transform: translateX(0);
   }
-  
-  /* CSS pour le texte des alertes */
+}
+
+/* Styles de titre dans les alertes */
+.alert h3 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+/* Styles du texte dans les alertes */
+.alert p {
+  margin: 5px 0 0;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* Texte spécifique pour les rafales violentes */
+.storm-alert .gust-alert {
+  font-size: 18px;
+  color: #fff;
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+/* Texte spécifique pour les prévisions de vent sévère */
+.storm-alert .forecast-alert {
+  font-size: 16px;
+  color: #fff;
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+/* Adaptation pour petits écrans */
+@media (max-width: 768px) {
+  .alert {
+      padding: 12px;
+      margin: 10px 0;
+  }
+
   .alert h3 {
-    margin: 0;
-    font-size: 18px;
+      font-size: 20px;
   }
-  
+
   .alert p {
-    margin: 0;
-    font-size: 14px;
+      font-size: 14px;
   }
-  
+
+  .storm-alert .gust-alert {
+      font-size: 16px;
+  }
+
+  .storm-alert .forecast-alert {
+      font-size: 14px;
+  }
+}

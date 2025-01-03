@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types'; // Import de PropTypes
+import '../assets/styles/alert.css'
+
 
 const StormAlert = ({ windSpeed, windGust, forecastWindSpeed }) => {
   // Condition pour un vent violent
