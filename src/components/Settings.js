@@ -1,25 +1,70 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import CountryNames from '../utils/CountryNames';
 import '../assets/styles/settings.css';
 
 const Settings = () => {
   const [alertType, setAlertType] = useState('storm');
-  const [useGeolocation, setUseGeolocation] = useState(true); // State pour la géolocalisation (toggle switch)
   const [temperatureUnit, setTemperatureUnit] = useState(
     localStorage.getItem('temperatureUnit') || 'C'
   );
+  const [preferredCities, setPreferredCities] = useState(() => {
+    const savedCities = localStorage.getItem('preferredCities');
+    return savedCities ? JSON.parse(savedCities) : [];
+  });
+  const [cityInput, setCityInput] = useState('');
+  const [citySuggestions, setCitySuggestions] = useState([]);
+
   const navigate = useNavigate();
 
-  const handleAlertChange = (e) => {
-    setAlertType(e.target.value);
+  const fetchCitySuggestions = async (query) => {
+    if (query.length < 3) {
+      setCitySuggestions([]);
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `https://api.openweathermap.org/geo/1.0/direct?q=${query}&limit=5&appid=fd441e159a57c88c956ebf246cc1ae9c`
+      );
+      if (!response.ok) {
+        throw new Error('Failed to fetch city suggestions');
+      }
+      const data = await response.json();
+      const formattedSuggestions = data.map((city) => ({
+        name: city.name,
+        country: CountryNames[city.country] || city.country,
+      }));
+      setCitySuggestions(formattedSuggestions);
+    } catch (error) {
+      console.error('Error fetching city suggestions:', error);
+    }
   };
 
-  const handleToggleGeolocation = () => {
-    setUseGeolocation(!useGeolocation);
+  const handleAlertChange = (e) => setAlertType(e.target.value);
+
+  const handleTemperatureChange = (e) => setTemperatureUnit(e.target.value);
+
+  const handleCityInputChange = (event) => {
+    const query = event.target.value;
+    setCityInput(query);
+    fetchCitySuggestions(query);
   };
 
-  const handleTemperatureChange = (e) => {
-    setTemperatureUnit(e.target.value);
+  const handleAddCity = (city) => {
+    if (!preferredCities.some((c) => c.name === city.name)) {
+      const updatedCities = [...preferredCities, city];
+      setPreferredCities(updatedCities);
+      localStorage.setItem('preferredCities', JSON.stringify(updatedCities));
+    }
+    setCityInput('');
+    setCitySuggestions([]);
+  };
+
+  const handleRemoveCity = (cityName) => {
+    const updatedCities = preferredCities.filter((city) => city.name !== cityName);
+    setPreferredCities(updatedCities);
+    localStorage.setItem('preferredCities', JSON.stringify(updatedCities));
   };
 
   const handleSave = () => {
@@ -28,19 +73,18 @@ const Settings = () => {
     navigate('/');
   };
 
-  const goHome = () => {
-    navigate('/');
-  };
+  const goHome = () => navigate('/');
 
   return (
     <div className="settings-container">
-      {/* Bouton retour à l'accueil */}
+
       <button className="home-btn" onClick={goHome}>
         <span>Retour à l&apos;accueil</span>
       </button>
 
       <h1>Paramètres</h1>
-      <p>Personnalisez vos préférences d&apos;alerte météo et de géolocalisation.</p>
+      <p>Personnalisez vos préférences d&apos;température, alerte météo et liste de villes préférée.</p>
+
       <div className="setting-option">
         <label htmlFor="temperatureUnit">Unité de température :</label>
         <select
@@ -52,13 +96,10 @@ const Settings = () => {
           <option value="F">Fahrenheit (°F)</option>
         </select>
       </div>
+
       <div className="setting-option">
         <label htmlFor="alertType">Type d&apos;alerte météo</label>
-        <select 
-          id="alertType" 
-          value={alertType} 
-          onChange={handleAlertChange}
-        >
+        <select id="alertType" value={alertType} onChange={handleAlertChange}>
           <option value="storm">Tempête</option>
           <option value="heatwave">Canicule</option>
           <option value="rain">Pluie intense</option>
@@ -68,21 +109,43 @@ const Settings = () => {
       </div>
 
       <div className="setting-option">
-        <label htmlFor="geolocation">Géolocalisation</label>
-        <div className="toggle-switch">
-          <input 
-            type="checkbox" 
-            id="geolocation" 
-            checked={useGeolocation} 
-            onChange={handleToggleGeolocation} 
+        <h3>Villes préférées :</h3>
+        <div className="city-input-container">
+          <input
+            type="text"
+            value={cityInput}
+            onChange={handleCityInputChange}
+            placeholder="Ajoutez une ville"
           />
-          <label htmlFor="geolocation" className="toggle-label"></label>
+          {citySuggestions.length > 0 && (
+            <ul className="city-suggestions">
+              {citySuggestions.map((city, index) => (
+                <li
+                  key={index}
+                  onClick={() => handleAddCity({ name: city.name, country: city.country })}
+                >
+                  {city.name}, {city.country}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
+        <ul className="preferred-cities-list">
+          {preferredCities.map((city, index) => (
+            <li key={index}>
+              {city.name}, {city.country}{' '}
+              <button onClick={() => handleRemoveCity(city.name)}>Supprimer</button>
+            </li>
+          ))}
+        </ul>
       </div>
 
       <div className="button-container">
-        <button className="save-button" onClick={handleSave}>Sauvegarder</button>
+        <button className="save-button" onClick={handleSave}>
+          Sauvegarder
+        </button>
       </div>
+      
     </div>
   );
 };
