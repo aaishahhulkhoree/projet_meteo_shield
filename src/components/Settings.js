@@ -15,6 +15,7 @@ const Settings = () => {
   const [cityInput, setCityInput] = useState('');
   const [citySuggestions, setCitySuggestions] = useState([]);
 
+  const apiKey = 'fd441e159a57c88c956ebf246cc1ae9c';
   const navigate = useNavigate();
 
   const fetchCitySuggestions = async (query) => {
@@ -25,7 +26,7 @@ const Settings = () => {
 
     try {
       const response = await fetch(
-        `https://api.openweathermap.org/geo/1.0/direct?q=${query}&limit=5&appid=fd441e159a57c88c956ebf246cc1ae9c`
+        `https://api.openweathermap.org/geo/1.0/direct?q=${query}&limit=5&appid=${apiKey}`
       );
       if (!response.ok) {
         throw new Error('Failed to fetch city suggestions');
@@ -77,14 +78,11 @@ const Settings = () => {
 
   return (
     <div className="settings-container">
-
       <button className="home-btn" onClick={goHome}>
         <span>Retour à l&apos;accueil</span>
       </button>
-
       <h1>Paramètres</h1>
-      <p>Personnalisez vos préférences d&apos;température, alerte météo et liste de villes préférée.</p>
-
+      <p>Personnalisez vos préférences de température, alerte météo et liste de villes préférées.</p>
       <div className="setting-option">
         <label htmlFor="temperatureUnit">Unité de température :</label>
         <select
@@ -96,9 +94,8 @@ const Settings = () => {
           <option value="F">Fahrenheit (°F)</option>
         </select>
       </div>
-
       <div className="setting-option">
-        <label htmlFor="alertType">Type d&apos;alerte météo</label>
+        <label htmlFor="alertType">Type d&apos;alerte météo :</label>
         <select id="alertType" value={alertType} onChange={handleAlertChange}>
           <option value="storm">Tempête</option>
           <option value="heatwave">Canicule</option>
@@ -107,7 +104,6 @@ const Settings = () => {
           <option value="tsunami">Tsunami</option>
         </select>
       </div>
-
       <div className="setting-option">
         <h3>Villes préférées :</h3>
         <div className="city-input-container">
@@ -118,34 +114,33 @@ const Settings = () => {
             placeholder="Ajoutez une ville"
           />
           {citySuggestions.length > 0 && (
-            <ul className="city-suggestions">
+            <div className="suggestions-dropdown">
               {citySuggestions.map((city, index) => (
-                <li
+                <div
                   key={index}
+                  className="suggestion-item"
                   onClick={() => handleAddCity({ name: city.name, country: city.country })}
                 >
                   {city.name}, {city.country}
-                </li>
+                </div>
               ))}
-            </ul>
+            </div>
           )}
         </div>
         <ul className="preferred-cities-list">
           {preferredCities.map((city, index) => (
-            <li key={index}>
+            <div key={index} className="preferred-city-item">
               {city.name}, {city.country}{' '}
-              <button onClick={() => handleRemoveCity(city.name)}>Supprimer</button>
-            </li>
+              <button onClick={() => handleRemoveCity(city.name)} className="delete-button">Supprimer</button>
+            </div>
           ))}
         </ul>
       </div>
-
       <div className="button-container">
         <button className="save-button" onClick={handleSave}>
           Sauvegarder
         </button>
       </div>
-      
     </div>
   );
 };
