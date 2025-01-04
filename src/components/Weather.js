@@ -7,7 +7,6 @@ import PrecipitationAlert from './PrecipitationAlert';
 import DroughtAlert from './DroughtAlert';
 import TsunamiAlert from './TsunamiAlert';
 import EarthquakeAlert from './EarthquakeAlert';
-import '@fortawesome/fontawesome-free/css/all.min.css';
 
 const Weather = ({ city }) => {
   const [forecast, setForecast] = useState(null);
@@ -18,13 +17,28 @@ const Weather = ({ city }) => {
   // Récupérer l'unité de température de localStorage
   const temperatureUnit = localStorage.getItem('temperatureUnit') || 'C';
 
+  const translateDescription = (description) => {
+    const translations = {
+      'clear sky': 'Ciel dégagé',
+      'few clouds': 'Quelques nuages',
+      'scattered clouds': 'Nuages épars',
+      'broken clouds': 'Nuages fragmentés',
+      'shower rain': 'Averses',
+      'rain': 'Pluie',
+      'thunderstorm': 'Orage',
+      'snow': 'Neige',
+      'mist': 'Brume',
+    };
+    return translations[description] || description;
+  };
+
   useEffect(() => {
     const fetchWeatherData = async () => {
       if (!city) return;
 
       try {
         const response = await fetch(
-          `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=fd441e159a57c88c956ebf246cc1ae9c`
+          `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&lang=fr&appid=fd441e159a57c88c956ebf246cc1ae9c`
         );
         const data = await response.json();
         setForecast(data);
@@ -73,7 +87,11 @@ const Weather = ({ city }) => {
       <p>Température : {Math.round(temperature)}°{temperatureUnit}</p>
       <div>
         {/* Affichage de l'icône météo */}
-        <img src={weatherIcon} alt="Météo" />
+        <img src={weatherIcon} alt="Météo" className='icon-weather'/>
+      </div>
+
+      <div>
+        <p>Description : {translateDescription(forecast.weather[0].description)}</p>
       </div>
       
       <div>
@@ -81,7 +99,6 @@ const Weather = ({ city }) => {
         <p><i className="fas fa-wind" style={windIconStyle}></i> 
         &nbsp; {Math.round(forecast.wind.speed)} m/s</p>
       </div>
-
       {/* Section des alertes */}
       <StormAlert windSpeed={forecast.wind.speed} />
       <TemperatureAlert temp={temperature} /> {/* Température convertie si nécessaire */}

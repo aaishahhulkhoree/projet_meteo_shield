@@ -196,6 +196,7 @@ const ForecastObserver = () => {
                   <img
                     src={`https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`}
                     alt={item.weather[0].description}
+                    className="forecast-icon"
                   />
                 </div>
               );
