@@ -1,8 +1,8 @@
 // src/components/SearchBar.js
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { FaSearch } from 'react-icons/fa';  
-import CountryNames from '../utils/CountryNames'; 
+import { FaSearch } from 'react-icons/fa';
+import CountryNames from '../utils/CountryNames';
 import Flag from 'react-world-flags';
 import PrevisionMeteo from '../utils/PrevisionMeteo';
 import '../assets/styles/searchbar.css';
@@ -20,15 +20,33 @@ const SearchBar = ({ onSearch }) => {
     }
 
     try {
-      const response = await fetch(`https://api.openweathermap.org/data/2.5/find?q=${query}&type=like&appid=${apiKey}`);
+      const response = await fetch(
+        `https://api.openweathermap.org/data/2.5/find?q=${query}&type=like&appid=${apiKey}`
+      );
       const data = await response.json();
       if (data && data.list) {
-        const uniqueSuggestions = Array.from(new Set(data.list.map(item => item.name)))
-          .map(name => data.list.find(item => item.name === name));
+        // Suppression des doublons en utilisant un objet
+        const seenCities = {};
+        const uniqueSuggestions = data.list.filter((item) => {
+          const key = `${item.name}-${item.sys.country}`;
+          if (seenCities[key]) {
+            return false;
+          }
+          seenCities[key] = true;
+          return true;
+        });
 
-        // Filtrer les arrondissements de Paris
-        const filteredSuggestions = uniqueSuggestions.filter(suggestion => {
-          return !(suggestion.name.startsWith('Paris ') && /\d{1,2}(er|e)?$/.test(suggestion.name));
+        // Filtrer les arrondissements et les villes qui commencent par "arrondissement de"
+        const filteredSuggestions = uniqueSuggestions.filter((suggestion) => {
+          const cityName = suggestion.name.toLowerCase();
+
+          // Filtrer les arrondissements (ex : Paris 12e, Marseille 14, etc.)
+          const isArrondissement = /\d{1,2}(er|e)?$/.test(cityName);
+
+          // Filtrer les villes qui commencent par "arrondissement de" (ex : "arrondissement de Paris")
+          const isArrondissementOf = cityName.startsWith('arrondissement de');
+
+          return !isArrondissement && !isArrondissementOf;
         });
 
         setSuggestions(filteredSuggestions);
@@ -70,7 +88,7 @@ const SearchBar = ({ onSearch }) => {
                 <li
                   key={index}
                   onClick={() => {
-                    setSuggestions([]);  // Effacer les suggestions après un clic
+                    setSuggestions([]); // Effacer les suggestions après un clic
                     onSearch(cityDetails); // Appeler la fonction de recherche pour mettre à jour la météo
                   }}
                   className="suggestion-item"
