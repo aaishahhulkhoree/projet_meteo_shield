@@ -1,13 +1,5 @@
--- Drop tables if they exist
-DROP TABLE IF EXISTS weather_logs CASCADE;
-DROP TABLE IF EXISTS preferences_utilisateur CASCADE;
-DROP TABLE IF EXISTS utilisateurs CASCADE;
-
--- Drop function if it exists
-DROP FUNCTION IF EXISTS set_updated_at;
-
 -- Create table utilisateurs
-CREATE TABLE utilisateurs (
+CREATE TABLE IF NOT EXISTS utilisateurs (
     id_utilisateur SERIAL PRIMARY KEY,
     username VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
@@ -16,7 +8,7 @@ CREATE TABLE utilisateurs (
 );
 
 -- Create table preferences_utilisateur
-CREATE TABLE preferences_utilisateur (
+CREATE TABLE IF NOT EXISTS preferences_utilisateur (
     id_preference SERIAL PRIMARY KEY,
     id_utilisateur INTEGER REFERENCES utilisateurs(id_utilisateur) ON DELETE CASCADE,
     temperature_unit VARCHAR(10) DEFAULT 'C',
@@ -26,7 +18,7 @@ CREATE TABLE preferences_utilisateur (
 );
 
 -- Create table weather_logs
-CREATE TABLE weather_logs (
+CREATE TABLE IF NOT EXISTS weather_logs (
     id SERIAL PRIMARY KEY,
     city_name VARCHAR(100) NOT NULL,
     temperature NUMERIC NOT NULL,
@@ -44,8 +36,17 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- Create trigger for preferences_utilisateur
-CREATE TRIGGER update_preferences_updated_at
-BEFORE UPDATE ON preferences_utilisateur
-FOR EACH ROW
-EXECUTE PROCEDURE set_updated_at();
-
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1
+        FROM pg_trigger
+        WHERE tgname = 'update_preferences_updated_at'
+    ) THEN
+        CREATE TRIGGER update_preferences_updated_at
+        BEFORE UPDATE ON preferences_utilisateur
+        FOR EACH ROW
+        EXECUTE FUNCTION set_updated_at();
+    END IF;
+END;
+$$;
