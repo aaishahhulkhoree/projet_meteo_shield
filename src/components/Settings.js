@@ -32,10 +32,19 @@ const Settings = () => {
         throw new Error('Failed to fetch city suggestions');
       }
       const data = await response.json();
-      const formattedSuggestions = data.map((city) => ({
-        name: city.name,
-        country: CountryNames[city.country] || city.country,
-      }));
+      const formattedSuggestions = data
+        .map((city) => ({
+          name: city.name,
+          country: CountryNames[city.country] || city.country,
+        }))
+        // Supprimer les doublons dans les suggestions
+        .filter(
+          (suggestion, index, self) =>
+            index === self.findIndex((c) => c.name === suggestion.name && c.country === suggestion.country)
+        )
+        // Exclure les villes déjà ajoutées
+        .filter((suggestion) => !preferredCities.some((c) => c.name === suggestion.name));
+
       setCitySuggestions(formattedSuggestions);
     } catch (error) {
       console.error('Error fetching city suggestions:', error);
@@ -131,7 +140,9 @@ const Settings = () => {
           {preferredCities.map((city, index) => (
             <div key={index} className="preferred-city-item">
               {city.name}, {city.country}{' '}
-              <button onClick={() => handleRemoveCity(city.name)} className="delete-button">Supprimer</button>
+              <button onClick={() => handleRemoveCity(city.name)} className="delete-button">
+                Supprimer
+              </button>
             </div>
           ))}
         </ul>
