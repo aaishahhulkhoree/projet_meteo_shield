@@ -19,16 +19,26 @@ const pool = new Pool({
   port: 5432,
 });
 
-// Execution d'init.sql
-(async () => {
+// Fonction pour initialiser la base de données
+const initializeDatabase = async () => {
   try {
-    const initSQL = fs.readFileSync(path.join(__dirname, 'init.sql')).toString();
-    await pool.query(initSQL);
-    console.log('Database initialized successfully');
+      const result = await pool.query(`
+          SELECT to_regclass('public.utilisateurs') AS table_exists;
+      `);
+      if (result.rows[0].table_exists === null) {
+          const initSql = fs.readFileSync(path.join(__dirname, 'init.sql'), 'utf8');
+          await pool.query(initSql);
+          console.log('Base de données initialisée avec succès');
+      } else {
+          console.log('Base de données déjà initialisée.');
+      }
   } catch (err) {
-    console.error('Error initializing database:', err);
+      console.error('Erreur lors de l\'initialisation de la base de données :', err);
   }
-})();
+};
+
+// Appeler la fonction d'initialisation
+initializeDatabase();
 
 // Middleware
 app.use(cors());
