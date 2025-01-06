@@ -78,6 +78,88 @@ p {
   background-color: #0033aa;
 }
 
+.city-input-container {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  margin: 10px auto 0;
+}
+
+.city-input-container input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.city-input-container input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Dropdown des suggestions */
+.suggestions-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+/* Chaque suggestion */
+.suggestion-item {
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.suggestion-item:hover {
+  background-color: #f0f0f0;
+}
+
+/* Liste des villes préférées */
+.preferred-cities-list {
+  list-style: none;
+  padding: 0;
+  margin: 15px 0;
+}
+
+.preferred-city-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 10px;
+  margin-bottom: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.preferred-city-item button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #ff4d4d;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.preferred-city-item button:hover {
+  background-color: #ff1a1a;
+}
+
+
 /* --- Home Button --- */
 .home-btn {
   background: linear-gradient(135deg, #3ba0f3, #dd6462); /* Dégradé bleu-rouge */
@@ -183,6 +265,8 @@ p {
   }
 
   .setting-option select {
+    margin-top: 10px;
+    margin-bottom: 10px;
     font-size: 12px;
   }
 
