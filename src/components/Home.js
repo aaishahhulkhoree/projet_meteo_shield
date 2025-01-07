@@ -7,7 +7,7 @@ import PrevisionMeteo from '../utils/PrevisionMeteo';
 import SearchBar from '../components/SearchBar';
 
 const Home = () => {
-  const [displayedCity, setDisplayedCity] = useState('');
+  const [city, setcity] = useState('');
   const [preferredCities] = useState(() => {
     const savedCities = localStorage.getItem('preferredCities');
     return savedCities ? JSON.parse(savedCities) : [];
@@ -27,8 +27,7 @@ const Home = () => {
     }
 
     try {
-      setDisplayedCity(city); console.log(city);
-      await PrevisionMeteo.mettreAJourPrevisions(city);
+      setcity(city); console.log(city);
 
       // Naviguer vers la route spécifique
       navigate(`/${city}`);
@@ -41,7 +40,7 @@ const Home = () => {
   // Gestion de la sélection via la liste des villes préférées
   const handleCitySelect = (event) => {
     const selectedCity = event.target.value;
-    setDisplayedCity(selectedCity);
+    setcity(selectedCity);
     navigate(`/${selectedCity}`);
     console.log(selectedCity);
   };
@@ -57,7 +56,7 @@ const Home = () => {
           setHumidity(`${today.main.humidity}%`);
           setPressure(`${today.main.pressure} hPa`);
           setWindSpeed(`${today.wind.speed} m/s`);
-          setDisplayedCity(today.name); 
+          setcity(today.name); 
         }
       },
     };
@@ -79,19 +78,19 @@ const Home = () => {
           <select
             id="preferred-cities-select"
             onChange={handleCitySelect}
-            value={displayedCity}
+            value={city}
           >
             <option value="">--Choisissez une ville--</option>
-            {preferredCities.map((city, index) => (
-              <option key={index} value={city.name}>
-                {city.name}, {city.country}
+            {preferredCities.map((citySelect, index) => (
+              <option key={index} value={citySelect.name}>
+                {citySelect.name}, {citySelect.country}
               </option>
             ))}
           </select>
         </div>
       )}
       <Weather
-        city={displayedCity}
+        city={city}
         temperature={temperature}
         weather={weather}
         humidity={humidity}
@@ -101,6 +100,5 @@ const Home = () => {
     </div>
   );
 };
-console.log(displayedCity);
 
 export default Home;

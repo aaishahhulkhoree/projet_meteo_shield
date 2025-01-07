@@ -41,7 +41,7 @@ const Weather = ({ city }) => {
           `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&lang=fr&appid=fd441e159a57c88c956ebf246cc1ae9c`
         );
         const data = await response.json();
-        setForecast(data);
+        //setForecast(data);
         if (data.cod !== 200) {
           setError('Ville non trouvée ou données météo indisponibles.');
           setForecast(null);
