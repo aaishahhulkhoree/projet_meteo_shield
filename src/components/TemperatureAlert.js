@@ -23,7 +23,7 @@ const TemperatureAlert = ({ temp }) => {
           <p>Température actuelle : {displayTemp}°{unit}</p>
         </div>
       );
-    } else if (tempInCelsius > 30 && tempInCelsius <= 35) {
+    } else if (tempInCelsius > 24 && tempInCelsius <= 35) {
       alertContent = (
         <div className="alert temperature-alert moderate-heat">
           <h3>Alerte Chaleur !</h3>

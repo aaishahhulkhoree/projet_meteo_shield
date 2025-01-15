@@ -7,7 +7,7 @@ import PrevisionMeteo from '../utils/PrevisionMeteo';
 import SearchBar from '../components/SearchBar';
 
 const Home = () => {
-  const [city, setcity] = useState('');
+  const [city, setCity] = useState('');
   const [preferredCities] = useState(() => {
     const savedCities = localStorage.getItem('preferredCities');
     return savedCities ? JSON.parse(savedCities) : [];
@@ -17,7 +17,71 @@ const Home = () => {
   const [humidity, setHumidity] = useState('');
   const [pressure, setPressure] = useState('');
   const [windSpeed, setWindSpeed] = useState('');
+  const [geoLocationWeather, setGeoLocationWeather] = useState(null);
+  const [alertMessage, setAlertMessage] = useState('');
+  const [showAlert, setShowAlert] = useState(false); // Alerte par défaut masquée
   const navigate = useNavigate();
+
+  // Fonction pour récupérer la météo selon la géolocalisation
+  const fetchWeatherByGeoLocation = async (lat, lon) => {
+    try {
+      const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&lang=fr&appid=fd441e159a57c88c956ebf246cc1ae9c`;
+      const response = await fetch(url);
+      const data = await response.json();
+
+      if (data.cod !== 200) {
+        alert('Impossible de récupérer les données météo.');
+      } else {
+        setGeoLocationWeather(data);
+        checkWeatherAlerts(data); // Vérification des alertes météo
+      }
+    } catch (error) {
+      console.error('Erreur de récupération des données météo :', error);
+      alert('Erreur de récupération des données météo.');
+    }
+  };
+
+  // Fonction pour vérifier les alertes météo (ex: tempêtes, fortes pluies, etc.)
+  const checkWeatherAlerts = (data) => {
+    const weatherCondition = data.weather[0].main;
+    const cityName = data.name; // Récupérer le nom de la ville
+    switch (weatherCondition) {
+      case 'Thunderstorm':
+        setAlertMessage(`Alerte : Orage en cours à ${cityName}.`);
+        break;
+      case 'Rain':
+        setAlertMessage(`Alerte : Pluie forte à ${cityName}.`);
+        break;
+      case 'Snow':
+        setAlertMessage(`Alerte : Neige à ${cityName}.`);
+        break;
+      case 'Mist':
+      case 'Fog':
+        setAlertMessage(`Alerte : Brume ou brouillard à ${cityName}.`);
+        break;
+      default:
+        setAlertMessage('');
+    }
+  };
+
+  // Fonction pour fermer l'alerte
+  const closeAlert = () => {
+    setShowAlert(false); // Fermer l'alerte
+  };
+
+  // Récupérer la position géographique de l'utilisateur et afficher la météo correspondante
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        fetchWeatherByGeoLocation(latitude, longitude);
+      },
+      (err) => {
+        console.error('Erreur de géolocalisation :', err);
+        alert('Impossible de récupérer votre position géographique.');
+      }
+    );
+  }, []);
 
   // Gestion de la recherche via la barre de recherche
   const handleSearch = async (city) => {
@@ -27,9 +91,8 @@ const Home = () => {
     }
 
     try {
-      setcity(city); console.log(city);
-
-      // Naviguer vers la route spécifique
+      setCity(city);
+      setAlertMessage('');
       navigate(`/${city}`);
     } catch (error) {
       console.error('Erreur lors de la mise à jour des données météo :', error);
@@ -40,9 +103,9 @@ const Home = () => {
   // Gestion de la sélection via la liste des villes préférées
   const handleCitySelect = (event) => {
     const selectedCity = event.target.value;
-    setcity(selectedCity);
+    setCity(selectedCity);
+    setAlertMessage('');
     navigate(`/${selectedCity}`);
-    console.log(selectedCity);
   };
 
   // Mettre à jour les données météo lorsque la ville change
@@ -56,7 +119,8 @@ const Home = () => {
           setHumidity(`${today.main.humidity}%`);
           setPressure(`${today.main.pressure} hPa`);
           setWindSpeed(`${today.wind.speed} m/s`);
-          setcity(today.name); 
+          setCity(today.name);
+          setAlertMessage('');
         }
       },
     };
@@ -67,6 +131,25 @@ const Home = () => {
       PrevisionMeteo.retirerObserver(observer);
     };
   }, []);
+
+  // Vérification des alertes supplémentaires pour la géolocalisation
+  useEffect(() => {
+    if (geoLocationWeather) {
+      const weatherCondition = geoLocationWeather.weather[0].main;
+      const cityName = geoLocationWeather.name; // Récupérer le nom de la ville
+      if (
+        weatherCondition === 'Thunderstorm' ||
+        weatherCondition === 'Rain' ||
+        weatherCondition === 'Snow' ||
+        weatherCondition === 'Mist' ||
+        weatherCondition === 'Fog'
+      ) {
+        setShowAlert(true); // Afficher l'alerte météo
+      } else {
+        setShowAlert(false); // Alerte masquée si pas d'événement météo
+      }
+    }
+  }, [geoLocationWeather]);
 
   return (
     <div className="home-container">
@@ -89,6 +172,17 @@ const Home = () => {
           </select>
         </div>
       )}
+
+      {/* Affichage de l'alerte météo si disponible */}
+      {showAlert && alertMessage && (
+        <div className="alert-container">
+          <div className="alert-message">
+            {alertMessage}
+            <button className="close-alert" onClick={closeAlert}>Fermer</button>
+          </div>
+        </div>
+      )}
+
       <Weather
         city={city}
         temperature={temperature}
