@@ -62,7 +62,11 @@ const Weather = ({ city }) => {
   }, [city]);
 
   if (!forecast) {
-    return <p>{error || 'Chargement des données météo...'}</p>;
+    return (
+      <>
+        {error ? <p>{error}</p> : <h4>Chargement des données météo...</h4>}
+      </>
+    );
   }
 
   // Utilisation de l'icône météo
