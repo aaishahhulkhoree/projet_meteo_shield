@@ -12,7 +12,6 @@ CREATE TABLE IF NOT EXISTS preferences_utilisateur (
     id_preference SERIAL PRIMARY KEY,
     id_utilisateur INTEGER REFERENCES utilisateurs(id_utilisateur) ON DELETE CASCADE,
     temperature_unit VARCHAR(10) DEFAULT 'C',
-    geolocation_enabled BOOLEAN DEFAULT TRUE,
     alert_type TEXT[],
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -22,8 +21,8 @@ CREATE TABLE IF NOT EXISTS weather_logs (
     id SERIAL PRIMARY KEY,
     city_name VARCHAR(100) NOT NULL,
     temperature NUMERIC NOT NULL,
-    description VARCHAR(255),
-    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    detail VARCHAR(255),
+    jour TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Create or replace function set_updated_at

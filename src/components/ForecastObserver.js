@@ -16,7 +16,7 @@ const ForecastObserver = () => {
     navigate('/');
   };
 
-  const translateDescription = (description) => {
+  const translatedetail = (detail) => {
     const translations = {
       'clear sky': 'Ciel dégagé',
       'few clouds': 'Quelques nuages',
@@ -33,7 +33,7 @@ const ForecastObserver = () => {
       'heavy intensity rain': 'Pluie intense',
       'light snow': 'Neige légère',
     };
-    return translations[description] || description;
+    return translations[detail] || detail;
   };
 
   useEffect(() => {
@@ -132,7 +132,7 @@ const ForecastObserver = () => {
     date,
     min: Math.round(Math.min(...data.map((item) => item.main.temp_min))),
     max: Math.round(Math.max(...data.map((item) => item.main.temp_max))),
-    description: translateDescription(data[0].weather[0].description),
+    detail: translatedetail(data[0].weather[0]?.description),
     hourly: data,
   }));
 
@@ -174,10 +174,10 @@ const ForecastObserver = () => {
             <h4>{new Date(item.date).toLocaleDateString()}</h4>
             <img
               src={`https://openweathermap.org/img/wn/${item.hourly[0].weather[0].icon}@2x.png`}
-              alt={item.hourly[0].weather[0].description}
+              alt={item.hourly[0].weather[0].detail}
               className="forecast-icon"
             />
-            <p>Description : {item.description}</p>
+            <p>Détail : {item.detail}</p>
             <p>Temp. min : {item.min}°C</p>
             <p>Temp. max : {item.max}°C</p>
           </div>
@@ -196,7 +196,7 @@ const ForecastObserver = () => {
                 <p>Température : {Math.round(item.main.temp)}°C</p>
                 <img
                   src={`https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`}
-                  alt={item.weather[0].description}
+                  alt={item.weather[0].detail}
                 />
               </div>
             ))}
