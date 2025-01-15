@@ -8,7 +8,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 6000;
 
 // Configurer PostgreSQL
 const pool = new Pool({
@@ -47,9 +47,9 @@ app.use(express.json());
 // Route pour enregistrer les données météo
 app.post('/api/weather', async (req, res) => {
   const { city_name, temperature, description } = req.body;
-  const query = 'INSERT INTO weather_logs (city_name, temperature, description) VALUES ($1, $2, $3)';
+  const query = 'INSERT INTO weather_logs (city_name, temperature, detail) VALUES ($1, $2, $3)';
   try {
-    await pool.query(query, [city_name, temperature, description]);
+    await pool.query(query, [city_name, temperature, detail]);
     res.status(201).send('Data saved');
   } catch (error) {
     console.error('Error saving data:', error);
@@ -60,7 +60,7 @@ app.post('/api/weather', async (req, res) => {
 // Route pour récupérer les données météo
 app.get('/api/weather', async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM weather_logs ORDER BY timestamp DESC LIMIT 10');
+    const result = await pool.query('SELECT * FROM weather_logs ORDER BY jour DESC LIMIT 10');
     res.json(result.rows);
   } catch (error) {
     console.error('Error fetching data:', error);

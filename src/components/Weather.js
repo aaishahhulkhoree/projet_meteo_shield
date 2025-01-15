@@ -17,7 +17,7 @@ const Weather = ({ city }) => {
   // Récupérer l'unité de température de localStorage
   const temperatureUnit = localStorage.getItem('temperatureUnit') || 'C';
 
-  const translateDescription = (description) => {
+  const translatedetail = (detail) => {
     const translations = {
       'clear sky': 'Ciel dégagé',
       'few clouds': 'Quelques nuages',
@@ -29,7 +29,7 @@ const Weather = ({ city }) => {
       'snow': 'Neige',
       'mist': 'Brume',
     };
-    return translations[description] || description;
+    return translations[detail] || detail;
   };
 
   useEffect(() => {
@@ -91,7 +91,7 @@ const Weather = ({ city }) => {
       </div>
 
       <div>
-        <p>Description : {translateDescription(forecast.weather[0].description)}</p>
+        <p>Détail : {translatedetail(forecast.weather[0]?.description)}</p>
       </div>
       
       <div>
