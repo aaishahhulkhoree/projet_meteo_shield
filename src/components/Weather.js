@@ -7,6 +7,8 @@ import PrecipitationAlert from './PrecipitationAlert';
 import DroughtAlert from './DroughtAlert';
 import TsunamiAlert from './TsunamiAlert';
 import EarthquakeAlert from './EarthquakeAlert';
+import '@fortawesome/fontawesome-free/css/all.min.css';
+
 
 const Weather = ({ city }) => {
   const [forecast, setForecast] = useState(null);
