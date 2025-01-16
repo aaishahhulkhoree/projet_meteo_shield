@@ -16,14 +16,23 @@ CREATE TABLE IF NOT EXISTS preferences_utilisateur (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Create table weather_logs
-CREATE TABLE IF NOT EXISTS weather_logs (
-    id SERIAL PRIMARY KEY,
-    city_name VARCHAR(100) NOT NULL,
-    temperature NUMERIC NOT NULL,
-    detail VARCHAR(255),
-    jour TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+-- Create table villes_favorites
+CREATE TABLE IF NOT EXISTS villes_favorites (
+    id_ville_favorite SERIAL PRIMARY KEY,
+    id_utilisateur INTEGER REFERENCES utilisateurs(id_utilisateur) ON DELETE CASCADE,
+    villes TEXT[] NOT NULL
 );
+
+-- Create table weather_logs 
+CREATE TABLE IF NOT EXISTS weather_logs (
+    id_log SERIAL PRIMARY KEY,
+    id_ville_favorite INTEGER REFERENCES villes_favorites(id_ville_favorite) ON DELETE CASCADE,
+    city_name TEXT NOT NULL,
+    jour DATE NOT NULL,
+    temperature REAL NOT NULL,
+    detail TEXT NOT NULL
+);
+
 
 -- Create or replace function set_updated_at
 CREATE OR REPLACE FUNCTION set_updated_at()

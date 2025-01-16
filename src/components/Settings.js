@@ -37,12 +37,10 @@ const Settings = () => {
           name: city.name,
           country: CountryNames[city.country] || city.country,
         }))
-        // Supprimer les doublons dans les suggestions
         .filter(
           (suggestion, index, self) =>
             index === self.findIndex((c) => c.name === suggestion.name && c.country === suggestion.country)
         )
-        // Exclure les villes déjà ajoutées
         .filter((suggestion) => !preferredCities.some((c) => c.name === suggestion.name));
 
       setCitySuggestions(formattedSuggestions);
@@ -77,10 +75,50 @@ const Settings = () => {
     localStorage.setItem('preferredCities', JSON.stringify(updatedCities));
   };
 
+  const syncWithDatabase = async () => {
+    const userId = localStorage.getItem('userId');
+    if (!userId) {
+      alert('Vous devez être connecté pour sauvegarder vos préférences.');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:5000/api/villes-favorites', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId, villes: preferredCities.map((city) => city.name) }),
+      });
+
+      if (response.ok) {
+        const logResponse = await fetch('http://localhost:5000/api/weather-logs', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ userId }),
+        });
+
+        if (logResponse.ok) {
+          alert('Préférences sauvegardées avec succès et historique météo mis à jour !');
+        } else {
+          alert('Préférences sauvegardées, mais échec de la mise à jour des logs météo.');
+        }
+        navigate('/');
+      } else {
+        const errorData = await response.json();
+        alert(`Erreur : ${errorData.message}`);
+      }
+    } catch (error) {
+      console.error('Erreur lors de la synchronisation des préférences avec la base de données :', error);
+      alert('Une erreur est survenue. Veuillez réessayer.');
+    }
+  };
+
   const handleSave = () => {
     localStorage.setItem('temperatureUnit', temperatureUnit);
-    alert('Préférences sauvegardées !');
-    navigate('/');
+    syncWithDatabase();
   };
 
   const goHome = () => navigate('/');
