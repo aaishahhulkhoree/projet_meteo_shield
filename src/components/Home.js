@@ -45,6 +45,8 @@ const Home = () => {
   const checkWeatherAlerts = (data) => {
     const weatherCondition = data.weather[0].main;
     const cityName = data.name; // Récupérer le nom de la ville
+    console.log(cityName);
+    console.log(weatherCondition);
     switch (weatherCondition) {
       case 'Thunderstorm':
         setAlertMessage(`Alerte : Orage en cours à ${cityName}.`);
@@ -59,8 +61,11 @@ const Home = () => {
       case 'Fog':
         setAlertMessage(`Alerte : Brume ou brouillard à ${cityName}.`);
         break;
+      case 'Clouds':
+        setAlertMessage(`Alerte : Ciel couvert à ${cityName}.`);
+        break;
       default:
-        setAlertMessage('');
+        setAlertMessage('YOOOOOOO');
     }
   };
 
@@ -136,13 +141,15 @@ const Home = () => {
   useEffect(() => {
     if (geoLocationWeather) {
       const weatherCondition = geoLocationWeather.weather[0].main;
-      const cityName = geoLocationWeather.name; // Récupérer le nom de la ville
       if (
         weatherCondition === 'Thunderstorm' ||
         weatherCondition === 'Rain' ||
         weatherCondition === 'Snow' ||
         weatherCondition === 'Mist' ||
-        weatherCondition === 'Fog'
+        weatherCondition === 'Fog'  ||
+        weatherCondition === 'Clouds' ||
+        weatherCondition === 'Overcast'
+
       ) {
         setShowAlert(true); // Afficher l'alerte météo
       } else {
