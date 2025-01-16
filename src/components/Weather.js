@@ -102,7 +102,7 @@ const Weather = ({ city }) => {
       
       <div>
         {/* Affichage de l'icône du vent */}
-        <p><i className="fas fa-wind" style={windIconStyle}></i> 
+        <p><i className="fa-solid fa-wind" style={windIconStyle}></i> 
         &nbsp; {Math.round(forecast.wind.speed)} m/s</p>
       </div>
       {/* Section des alertes */}
