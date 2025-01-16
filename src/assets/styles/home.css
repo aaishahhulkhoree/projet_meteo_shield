@@ -35,3 +35,17 @@
   /* Animation de secousse */
   animation: shake 0.5s ease-in-out infinite, fadeInOut 5s ease-in-out forwards;
 }
+
+.close-alert-btn {
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: #fff;
+  transition: color 0.3s ease-in-out;
+  margin-left: 10px;
+}
+
+.close-alert-btn:hover {
+  color: #ff4d4d; /* Rouge vif au survol */
+}

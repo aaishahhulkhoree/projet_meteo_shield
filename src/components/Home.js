@@ -49,23 +49,34 @@ const Home = () => {
     console.log(weatherCondition);
     switch (weatherCondition) {
       case 'Thunderstorm':
-        setAlertMessage(`Alerte : Orage en cours à ${cityName}.`);
+        setAlertMessage(`Alerte : Orage violent en cours à ${cityName}.`);
         break;
       case 'Rain':
-        setAlertMessage(`Alerte : Pluie forte à ${cityName}.`);
+        setAlertMessage(`Alerte : Pluie intense à ${cityName}.`);
         break;
       case 'Snow':
-        setAlertMessage(`Alerte : Neige à ${cityName}.`);
+        setAlertMessage(`Alerte : Chutes de neige à ${cityName}.`);
         break;
       case 'Mist':
       case 'Fog':
         setAlertMessage(`Alerte : Brume ou brouillard à ${cityName}.`);
         break;
-      case 'Clouds':
-        setAlertMessage(`Alerte : Ciel couvert à ${cityName}.`);
+      case 'Extreme':
+        setAlertMessage(`Alerte : Conditions météo extrêmes à ${cityName}. Restez en sécurité !`);
         break;
+        case 'Tsunami':
+          setAlertMessage(`Alerte : Risque de tsunami à ${cityName}. Éloignez-vous des côtes !`);
+          break;
       default:
-        setAlertMessage('YOOOOOOO');
+        if (weatherCondition === 'Drought'){
+          setAlertMessage(`Alerte : Sécheresse à ${cityName}. Prenez des précautions !`);
+        } else if (weatherCondition === 'Flood') {
+          setAlertMessage(`Alerte : Inondation à ${cityName}. Restez en sécurité !`);
+        } else if (weatherCondition === 'Storm'){
+          setAlertMessage('Alerte : Tempête à ${cityName}. Ne sortez pas !');
+        } else {
+          setAlertMessage('Aucune Alerte Extrême Détéctée');
+        }
     }
   };
 
@@ -147,13 +158,16 @@ const Home = () => {
         weatherCondition === 'Snow' ||
         weatherCondition === 'Mist' ||
         weatherCondition === 'Fog'  ||
-        weatherCondition === 'Clouds' ||
-        weatherCondition === 'Overcast'
+        weatherCondition === 'Drought' ||
+        weatherCondition === 'Flood' ||
+        weatherCondition === 'Tsunami' ||
+        weatherCondition === 'Storm'
 
       ) {
         setShowAlert(true); // Afficher l'alerte météo
       } else {
         setShowAlert(false); // Alerte masquée si pas d'événement météo
+
       }
     }
   }, [geoLocationWeather]);
@@ -185,7 +199,10 @@ const Home = () => {
         <div className="alert-container">
           <div className="alert-message">
             {alertMessage}
-            <button className="close-alert" onClick={closeAlert}>Fermer</button>
+            {/* Bouton de fermeture avec un design amélioré */}
+<button className="close-alert-btn" onClick={closeAlert}>
+  ✖
+</button>
           </div>
         </div>
       )}
