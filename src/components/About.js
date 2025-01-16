@@ -20,32 +20,31 @@ const About = () => {
 
       <h2>À propos de MeteoShield</h2>
       <p>
-        <strong>MeteoShield</strong> est une application mobile innovante conçue pour
+        <strong>MeteoShield</strong> est un site web innovant conçu pour
         fournir des alertes météorologiques en temps réel, avec une attention particulière
         portée aux événements extrêmes comme les tempêtes, sécheresses, tsunamis et autres
         phénomènes météorologiques qui peuvent mettre en danger la vie des utilisateurs.
       </p>
       <p>
-        Grâce à une technologie de géolocalisation avancée et des notifications personnalisées,
-        MeteoShield permet à chaque utilisateur de recevoir des alertes adaptées à sa localisation
+        Grâce à une technologie de géolocalisation avancée et de notification personnalisée,
+        MeteoShield permet à chaque utilisateur de recevoir une alerte précise et adaptée à sa localisation
         et à ses préférences en termes de type d&apos;événement. Vous pouvez ainsi être informé des
         conditions météorologiques à risque, où que vous soyez.
       </p>
-      <h3>Fonctionnalités clés :</h3>
+      <h3>Fonctionnalités principales :</h3>
       <ul>
-        <li>Alertes personnalisées pour les événements météorologiques extrêmes (tempêtes, sécheresse, tsunamis, etc.).</li>
-        <li>Géolocalisation en temps réel pour des alertes spécifiques à votre région.</li>
-        <li>Visualisation interactive des zones de danger sur une carte, avec une distinction entre zones sûres et dangereuses.</li>
-        <li>Mode jour/nuit pour une lecture facile des prévisions et alertes.</li>
-        <li>Accès à des prévisions heure par heure et sur la semaine.</li>
-        <li>Mode hors ligne avec des données simplifiées en cas de connexion limitée.</li>
-        <li>Bouton SOS pour un accès rapide aux fonctions d&apos;urgence.</li>
+        <li>Alerte personnalisée pour les événements météorologiques extrêmes (tempêtes, sécheresse, tsunamis, etc.).</li>
+        <li>Géolocalisation en temps réel pour des alertes spécifiques à votre ville.</li>
+        <li>Visualisation interactive affichant une carte et une temperature lorsque l&apos;on clique sur une zone</li>
+        <li>Prévisions détaillées heure par heure et sur 5 jours</li>
       </ul>
       <h3>Notre Mission</h3>
       <p>
-        Notre mission est de rendre le suivi des conditions météorologiques extrêmes plus accessible,
-        afin de protéger les individus et les communautés face aux dangers que peuvent représenter ces événements.
-        MeteoShield s&apos;efforce d&apos;offrir une interface simple, claire et utile pour tous.
+        MeteoShield a pour objectif de rendre la surveillance des conditions météorologiques 
+        plus accessible et réactive. En fournissant des alertes précises et des outils intuitifs, 
+        nous aidons les individus et les communautés à mieux se préparer et à limiter les impacts 
+        des événements climatiques extrêmes. Notre engagement : une interface claire, efficace et 
+        accessible à tous.
       </p>
     </div>
   );
