@@ -18,7 +18,8 @@ const Navbar = () => {
 
   useEffect(() => {
     const storedUsername = localStorage.getItem('username');
-    if (storedUsername) {
+    const storedUserId = localStorage.getItem('userId');
+    if (storedUsername && storedUserId) {
       setUsername(storedUsername);
     }
 

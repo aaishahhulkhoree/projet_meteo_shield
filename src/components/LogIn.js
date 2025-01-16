@@ -27,7 +27,9 @@ const Login = () => {
 
       if (response.ok) {
         const data = await response.json();
+        console.log('Données de connexion reçues :', data); // Ajoutez cette ligne
         alert('Connexion réussie !');
+        localStorage.setItem('userId', data.userId); //Stocke de l'id localement
         localStorage.setItem('username', data.username); //Stocke du pseudo localement
         setEmail('');
         setMotdepasse('');

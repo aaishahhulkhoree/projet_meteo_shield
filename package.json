@@ -17,6 +17,8 @@
     "express": "^4.21.2",
     "init": "^0.1.2",
     "leaflet": "^1.9.4",
+    "node-fetch": "^3.3.2",
+    "node-notifier": "^10.0.1",
     "pg": "^8.13.1",
     "prop-types": "^15.8.1",
     "react": "^19.0.0",
