@@ -33,6 +33,8 @@ CREATE TABLE IF NOT EXISTS weather_logs (
     detail TEXT NOT NULL
 );
 
+CREATE UNIQUE INDEX unique_weather_logs ON weather_logs (city_name, jour);
+
 
 -- Create or replace function set_updated_at
 CREATE OR REPLACE FUNCTION set_updated_at()

@@ -182,89 +182,87 @@ app.post('/api/weather-logs', async (req, res) => {
   const { userId } = req.body;
 
   if (!userId) {
-      return res.status(400).json({ message: 'Utilisateur manquant.' });
+    return res.status(400).json({ message: 'Utilisateur manquant.' });
   }
 
   try {
-      // Récupérer les villes préférées
-      const villesQuery = `
-          SELECT villes FROM villes_favorites WHERE id_utilisateur = $1
+    // Récupérer les villes favorites actuelles
+    const villesQuery = `
+      SELECT villes FROM villes_favorites WHERE id_utilisateur = $1
+    `;
+    const villesResult = await pool.query(villesQuery, [userId]);
+
+    if (villesResult.rows.length === 0) {
+      // Si aucune ville favorite, supprimer les logs correspondants
+      const deleteQuery = `
+        DELETE FROM weather_logs WHERE id_ville_favorite = (
+          SELECT id_ville_favorite FROM villes_favorites WHERE id_utilisateur = $1
+        )
       `;
-      const villesResult = await pool.query(villesQuery, [userId]);
+      await pool.query(deleteQuery, [userId]);
+      return res.status(200).json({ message: 'Aucune ville favorite. Logs supprimés.' });
+    }
 
-      if (villesResult.rows.length === 0) {
-          // Supprimer tout l'historique si aucune ville favorite
-          const deleteLogsQuery = `
-              DELETE FROM weather_logs
-              WHERE id_ville_favorite = (
-                  SELECT id_ville_favorite FROM villes_favorites WHERE id_utilisateur = $1
-              )
+    const villes = villesResult.rows[0].villes;
+
+    for (const city of villes) {
+      // Étape 1 : Obtenir les coordonnées de la ville via l'API de géocodage
+      const geoResponse = await fetch(
+        `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=fd441e159a57c88c956ebf246cc1ae9c`
+      );
+      const geoData = await geoResponse.json();
+
+      if (!geoData || geoData.length === 0) {
+        console.error(`Impossible de trouver les coordonnées pour la ville : ${city}`);
+        continue;
+      }
+
+      const { lat, lon } = geoData[0];
+      console.log(`Coordonnées pour ${city}: lat=${lat}, lon=${lon}`);
+
+      // Étape 2 : Récupérer les données météo historiques pour les 5 derniers jours
+      for (let i = 1; i <= 5; i++) {
+        const date = new Date();
+        date.setDate(date.getDate() - i);
+        const timestamp = Math.floor(date.getTime() / 1000);
+
+        const weatherResponse = await fetch(
+          `https://api.openweathermap.org/data/2.5/onecall/timemachine?lat=${lat}&lon=${lon}&dt=${timestamp}&appid=fd441e159a57c88c956ebf246cc1ae9c&units=metric`
+        );
+        const weatherData = await weatherResponse.json();
+        console.log(`Réponse API pour ${city} à la date ${date}:`, weatherData);
+
+        if (weatherData.current) {
+          const { temp, weather } = weatherData.current;
+          const description = weather?.[0]?.description || 'Non spécifié';
+
+          const upsertQuery = `
+            INSERT INTO weather_logs (id_ville_favorite, city_name, jour, temperature, detail)
+            VALUES (
+              (SELECT id_ville_favorite FROM villes_favorites WHERE id_utilisateur = $1),
+              $2, $3, $4, $5
+            )
+            ON CONFLICT (city_name, jour) DO NOTHING
           `;
-          await pool.query(deleteLogsQuery, [userId]);
-          return res.status(200).json({ message: 'Historique supprimé car aucune ville favorite.' });
+          await pool.query(upsertQuery, [
+            userId,
+            city,
+            date.toISOString().split('T')[0],
+            temp,
+            description,
+          ]);
+        } else {
+          console.error(`Pas de données disponibles pour la ville ${city} à la date ${date}`);
+        }
       }
+    }
 
-      const villes = villesResult.rows[0].villes;
-
-      // Supprimer les entrées des villes qui ne sont plus dans la liste préférée
-      const currentCitiesQuery = `
-          SELECT DISTINCT city_name FROM weather_logs
-          WHERE id_ville_favorite = (
-              SELECT id_ville_favorite FROM villes_favorites WHERE id_utilisateur = $1
-          )
-      `;
-      const currentCitiesResult = await pool.query(currentCitiesQuery, [userId]);
-      const currentCities = currentCitiesResult.rows.map(row => row.city_name);
-
-      const citiesToDelete = currentCities.filter(city => !villes.includes(city));
-      if (citiesToDelete.length > 0) {
-          const deleteLogsQuery = `
-              DELETE FROM weather_logs
-              WHERE id_ville_favorite = (
-                  SELECT id_ville_favorite FROM villes_favorites WHERE id_utilisateur = $1
-              )
-              AND city_name = ANY($2)
-          `;
-          await pool.query(deleteLogsQuery, [userId, citiesToDelete]);
-      }
-
-      // Ajouter ou mettre à jour les données météo pour les villes préférées
-      for (const city of villes) {
-          for (let i = 1; i <= 5; i++) {
-              const date = new Date();
-              date.setDate(date.getDate() - i);
-
-              const response = await fetch(
-                  `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=YOUR_API_KEY`
-              );
-              const data = await response.json();
-
-              const upsertQuery = `
-                  INSERT INTO weather_logs (id_ville_favorite, city_name, jour, temperature, detail)
-                  VALUES (
-                      (SELECT id_ville_favorite FROM villes_favorites WHERE id_utilisateur = $1),
-                      $2, $3, $4, $5
-                  )
-                  ON CONFLICT (city_name, jour) DO NOTHING
-              `;
-              await pool.query(upsertQuery, [
-                  userId,
-                  city,
-                  date.toISOString().split('T')[0],
-                  data.main.temp,
-                  data.weather[0].description,
-              ]);
-          }
-      }
-
-      res.status(200).json({ message: 'Historique des données météo mis à jour avec succès.' });
+    res.status(200).json({ message: 'Historique des données météo mis à jour avec succès.' });
   } catch (error) {
-      console.error('Erreur lors de la mise à jour des données météo :', error.message);
-      res.status(500).json({ message: 'Erreur interne du serveur.' });
+    console.error('Erreur lors de la mise à jour des données météo :', error.message);
+    res.status(500).json({ message: 'Erreur interne du serveur.' });
   }
 });
-
-
 
 app.listen(port, () => {
   console.log(`Serveur en écoute sur le port ${port}`);
