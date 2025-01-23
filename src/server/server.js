@@ -140,40 +140,30 @@ app.post('/api/villes-favorites', async (req, res) => {
   }
 
   try {
-      const checkExistenceQuery = 'SELECT id_ville_favorite FROM villes_favorites WHERE id_utilisateur = $1';
-      const result = await pool.query(checkExistenceQuery, [userId]);
+    const checkExistenceQuery = 'SELECT id_ville_favorite FROM villes_favorites WHERE id_utilisateur = $1';
+    const result = await pool.query(checkExistenceQuery, [userId]);
 
-      if (villes && villes.length > 0) {
-          // Si la liste de villes n'est pas vide, insérer ou mettre à jour
-          if (result.rows.length > 0) {
-              const updateQuery = `
-                  UPDATE villes_favorites
-                  SET villes = $1
-                  WHERE id_utilisateur = $2
-              `;
-              await pool.query(updateQuery, [villes, userId]);
-          } else {
-              const insertQuery = `
-                  INSERT INTO villes_favorites (id_utilisateur, villes)
-                  VALUES ($1, $2)
-              `;
-              await pool.query(insertQuery, [userId, villes]);
-          }
-          res.status(200).json({ message: 'Villes préférées mises à jour avec succès.' });
-      } else {
-          // Si la liste de villes est vide, supprimer la ligne
-          if (result.rows.length > 0) {
-              const deleteQuery = `
-                  DELETE FROM villes_favorites
-                  WHERE id_utilisateur = $1
-              `;
-              await pool.query(deleteQuery, [userId]);
-          }
-          res.status(200).json({ message: 'Villes préférées supprimées avec succès.' });
-      }
+    if (result.rows.length > 0) {
+      // Mettre à jour les villes même si la liste est vide
+      const updateQuery = `
+        UPDATE villes_favorites
+        SET villes = $1
+        WHERE id_utilisateur = $2
+      `;
+      await pool.query(updateQuery, [villes, userId]);
+    } else {
+      // Insérer une nouvelle ligne si elle n'existe pas
+      const insertQuery = `
+        INSERT INTO villes_favorites (id_utilisateur, villes)
+        VALUES ($1, $2)
+      `;
+      await pool.query(insertQuery, [userId, villes]);
+    }
+
+    res.status(200).json({ message: 'Villes préférées mises à jour avec succès.' });
   } catch (error) {
-      console.error('Erreur lors de la gestion des villes préférées :', error.message);
-      res.status(500).json({ message: 'Erreur interne du serveur.' });
+    console.error('Erreur lors de la gestion des villes préférées :', error.message);
+    res.status(500).json({ message: 'Erreur interne du serveur.' });
   }
 });
 
