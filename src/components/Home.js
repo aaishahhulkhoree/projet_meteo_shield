@@ -8,10 +8,7 @@ import SearchBar from '../components/SearchBar';
 
 const Home = () => {
   const [city, setCity] = useState('');
-  const [preferredCities] = useState(() => {
-    const savedCities = localStorage.getItem('preferredCities');
-    return savedCities ? JSON.parse(savedCities) : [];
-  });
+  const [preferredCities, setPreferredCities] = useState([]);
   const [temperature, setTemperature] = useState('');
   const [weather, setWeather] = useState('');
   const [humidity, setHumidity] = useState('');
@@ -19,10 +16,35 @@ const Home = () => {
   const [windSpeed, setWindSpeed] = useState('');
   const [geoLocationWeather, setGeoLocationWeather] = useState(null);
   const [alertMessage, setAlertMessage] = useState('');
-  const [showAlert, setShowAlert] = useState(false); // Alerte par défaut masquée
+  const [showAlert, setShowAlert] = useState(false);
   const navigate = useNavigate();
 
-  // Fonction pour récupérer la météo selon la géolocalisation
+  useEffect(() => {
+    const fetchPreferredCities = async () => {
+      const userId = localStorage.getItem('userId');
+      if (!userId) {
+        setPreferredCities([]);
+        return;
+      }
+
+      try {
+        const response = await fetch(`http://localhost:5000/api/villes-favorites/${userId}`);
+        if (response.ok) {
+          const data = await response.json();
+          setPreferredCities(data.villes || []);
+        } else {
+          console.error('Erreur lors de la récupération des villes favorites.');
+          setPreferredCities([]);
+        }
+      } catch (error) {
+        console.error('Erreur réseau lors de la récupération des villes favorites :', error);
+        setPreferredCities([]);
+      }
+    };
+
+    fetchPreferredCities();
+  }, []);
+
   const fetchWeatherByGeoLocation = async (lat, lon) => {
     try {
       const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&lang=fr&appid=fd441e159a57c88c956ebf246cc1ae9c`;
@@ -33,7 +55,7 @@ const Home = () => {
         alert('Impossible de récupérer les données météo.');
       } else {
         setGeoLocationWeather(data);
-        checkWeatherAlerts(data); // Vérification des alertes météo
+        checkWeatherAlerts(data);
       }
     } catch (error) {
       console.error('Erreur de récupération des données météo :', error);
@@ -41,12 +63,9 @@ const Home = () => {
     }
   };
 
-  // Fonction pour vérifier les alertes météo (ex: tempêtes, fortes pluies, etc.)
   const checkWeatherAlerts = (data) => {
     const weatherCondition = data.weather[0].main;
-    const cityName = data.name; // Récupérer le nom de la ville
-    console.log(cityName);
-    console.log(weatherCondition);
+    const cityName = data.name;
     switch (weatherCondition) {
       case 'Thunderstorm':
         setAlertMessage(`Alerte : Orage violent en cours à ${cityName}.`);
@@ -80,12 +99,10 @@ const Home = () => {
     }
   };
 
-  // Fonction pour fermer l'alerte
   const closeAlert = () => {
-    setShowAlert(false); // Fermer l'alerte
+    setShowAlert(false);
   };
 
-  // Récupérer la position géographique de l'utilisateur et afficher la météo correspondante
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -99,7 +116,6 @@ const Home = () => {
     );
   }, []);
 
-  // Gestion de la recherche via la barre de recherche
   const handleSearch = async (city) => {
     if (!city) {
       alert('Veuillez entrer un nom de ville');
@@ -116,7 +132,6 @@ const Home = () => {
     }
   };
 
-  // Gestion de la sélection via la liste des villes préférées
   const handleCitySelect = (event) => {
     const selectedCity = event.target.value;
     setCity(selectedCity);
@@ -186,27 +201,21 @@ const Home = () => {
           >
             <option value="">--Choisissez une ville--</option>
             {preferredCities.map((citySelect, index) => (
-              <option key={index} value={citySelect.name}>
-                {citySelect.name}, {citySelect.country}
+              <option key={index} value={citySelect}>
+                {citySelect}
               </option>
             ))}
           </select>
         </div>
       )}
-
-      {/* Affichage de l'alerte météo si disponible */}
       {showAlert && alertMessage && (
         <div className="alert-container">
           <div className="alert-message">
             {alertMessage}
-            {/* Bouton de fermeture avec un design amélioré */}
-<button className="close-alert-btn" onClick={closeAlert}>
-  ✖
-</button>
+            <button className="close-alert-btn" onClick={closeAlert}>✖</button>
           </div>
         </div>
       )}
-
       <Weather
         city={city}
         temperature={temperature}

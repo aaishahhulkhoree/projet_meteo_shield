@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import CountryNames from '../utils/CountryNames';
 import '../assets/styles/settings.css';
 
 const Settings = () => {
@@ -8,74 +7,51 @@ const Settings = () => {
   const [temperatureUnit, setTemperatureUnit] = useState(
     localStorage.getItem('temperatureUnit') || 'C'
   );
-  const [preferredCities, setPreferredCities] = useState(() => {
-    const savedCities = localStorage.getItem('preferredCities');
-    return savedCities ? JSON.parse(savedCities) : [];
-  });
+  const [preferredCities, setPreferredCities] = useState([]);
   const [cityInput, setCityInput] = useState('');
-  const [citySuggestions, setCitySuggestions] = useState([]);
-
-  const apiKey = 'fd441e159a57c88c956ebf246cc1ae9c';
   const navigate = useNavigate();
+  const apiKey = 'fd441e159a57c88c956ebf246cc1ae9c';
 
-  const fetchCitySuggestions = async (query) => {
-    if (query.length < 3) {
-      setCitySuggestions([]);
+  // Charger les villes favorites depuis l'API au chargement
+  useEffect(() => {
+    const fetchPreferredCities = async () => {
+      const userId = localStorage.getItem('userId');
+      if (!userId) return;
+
+      try {
+        const response = await fetch(`http://localhost:5000/api/villes-favorites/${userId}`);
+        if (response.ok) {
+          const data = await response.json();
+          setPreferredCities(data.villes || []);
+        }
+      } catch (error) {
+        console.error('Erreur lors de la récupération des villes favorites :', error);
+      }
+    };
+
+    fetchPreferredCities();
+  }, []);
+
+  // Ajouter une ville à la liste
+  const handleAddCity = () => {
+    if (!cityInput.trim()) {
+      alert('Veuillez entrer un nom de ville valide.');
       return;
     }
 
-    try {
-      const response = await fetch(
-        `https://api.openweathermap.org/geo/1.0/direct?q=${query}&limit=5&appid=${apiKey}`
-      );
-      if (!response.ok) {
-        throw new Error('Failed to fetch city suggestions');
-      }
-      const data = await response.json();
-      const formattedSuggestions = data
-        .map((city) => ({
-          name: city.name,
-          country: CountryNames[city.country] || city.country,
-        }))
-        .filter(
-          (suggestion, index, self) =>
-            index === self.findIndex((c) => c.name === suggestion.name && c.country === suggestion.country)
-        )
-        .filter((suggestion) => !preferredCities.some((c) => c.name === suggestion.name));
-
-      setCitySuggestions(formattedSuggestions);
-    } catch (error) {
-      console.error('Error fetching city suggestions:', error);
-    }
-  };
-
-  const handleAlertChange = (e) => setAlertType(e.target.value);
-
-  const handleTemperatureChange = (e) => setTemperatureUnit(e.target.value);
-
-  const handleCityInputChange = (event) => {
-    const query = event.target.value;
-    setCityInput(query);
-    fetchCitySuggestions(query);
-  };
-
-  const handleAddCity = (city) => {
-    if (!preferredCities.some((c) => c.name === city.name)) {
-      const updatedCities = [...preferredCities, city];
-      setPreferredCities(updatedCities);
-      localStorage.setItem('preferredCities', JSON.stringify(updatedCities));
+    if (!preferredCities.includes(cityInput)) {
+      setPreferredCities((prev) => [...prev, cityInput]);
     }
     setCityInput('');
-    setCitySuggestions([]);
   };
 
+  // Supprimer une ville de la liste
   const handleRemoveCity = (cityName) => {
-    const updatedCities = preferredCities.filter((city) => city.name !== cityName);
-    setPreferredCities(updatedCities);
-    localStorage.setItem('preferredCities', JSON.stringify(updatedCities));
+    setPreferredCities((prev) => prev.filter((city) => city !== cityName));
   };
 
-  const syncWithDatabase = async () => {
+  // Sauvegarder les préférences (villes favorites) via l'API
+  const handleSave = async () => {
     const userId = localStorage.getItem('userId');
     if (!userId) {
       alert('Vous devez être connecté pour sauvegarder vos préférences.');
@@ -85,42 +61,22 @@ const Settings = () => {
     try {
       const response = await fetch('http://localhost:5000/api/villes-favorites', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ userId, villes: preferredCities.map((city) => city.name) }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId, villes: preferredCities }),
       });
 
       if (response.ok) {
-        const logResponse = await fetch('http://localhost:5000/api/weather-logs', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ userId }),
-        });
-
-        if (logResponse.ok) {
-          alert('Préférences sauvegardées avec succès et historique météo mis à jour !');
-        } else {
-          alert('Préférences sauvegardées, mais échec de la mise à jour des logs météo.');
-        }
+        alert('Préférences sauvegardées avec succès.');
         navigate('/');
       } else {
-        const errorData = await response.json();
-        alert(`Erreur : ${errorData.message}`);
+        alert('Erreur lors de la sauvegarde des préférences.');
       }
     } catch (error) {
-      console.error('Erreur lors de la synchronisation des préférences avec la base de données :', error);
-      alert('Une erreur est survenue. Veuillez réessayer.');
+      console.error('Erreur lors de la sauvegarde des préférences :', error);
     }
   };
 
-  const handleSave = () => {
-    localStorage.setItem('temperatureUnit', temperatureUnit);
-    syncWithDatabase();
-  };
-
+  // Retour à l'accueil
   const goHome = () => navigate('/');
 
   return (
@@ -129,21 +85,16 @@ const Settings = () => {
         <span>Retour à l&apos;accueil</span>
       </button>
       <h1>Paramètres</h1>
-      <p>Personnalisez vos préférences de température, alerte météo et liste de villes préférées.</p>
       <div className="setting-option">
-        <label htmlFor="temperatureUnit">Unité de température :</label>
-        <select
-          id="temperatureUnit"
-          value={temperatureUnit}
-          onChange={handleTemperatureChange}
-        >
+        <label>Unité de température :</label>
+        <select value={temperatureUnit} onChange={(e) => setTemperatureUnit(e.target.value)}>
           <option value="C">Celsius (°C)</option>
           <option value="F">Fahrenheit (°F)</option>
         </select>
       </div>
       <div className="setting-option">
-        <label htmlFor="alertType">Type d&apos;alerte météo :</label>
-        <select id="alertType" value={alertType} onChange={handleAlertChange}>
+        <label>Type d&apos;alerte météo :</label>
+        <select value={alertType} onChange={(e) => setAlertType(e.target.value)}>
           <option value="storm">Tempête</option>
           <option value="heatwave">Canicule</option>
           <option value="rain">Pluie intense</option>
@@ -153,43 +104,23 @@ const Settings = () => {
       </div>
       <div className="setting-option">
         <h3>Villes préférées :</h3>
-        <div className="city-input-container">
-          <input
-            type="text"
-            value={cityInput}
-            onChange={handleCityInputChange}
-            placeholder="Ajoutez une ville"
-          />
-          {citySuggestions.length > 0 && (
-            <div className="suggestions-dropdown">
-              {citySuggestions.map((city, index) => (
-                <div
-                  key={index}
-                  className="suggestion-item"
-                  onClick={() => handleAddCity({ name: city.name, country: city.country })}
-                >
-                  {city.name}, {city.country}
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-        <ul className="preferred-cities-list">
+        <input
+          type="text"
+          value={cityInput}
+          onChange={(e) => setCityInput(e.target.value)}
+          placeholder="Ajoutez une ville"
+        />
+        <button className="add-button" onClick={handleAddCity}>Ajouter</button>
+        <ul>
           {preferredCities.map((city, index) => (
-            <div key={index} className="preferred-city-item">
-              {city.name}, {city.country}{' '}
-              <button onClick={() => handleRemoveCity(city.name)} className="delete-button">
-                Supprimer
-              </button>
-            </div>
+            <li key={index}>
+              {city}
+              <button className="delete-button" onClick={() => handleRemoveCity(city)}>Supprimer</button>
+            </li>
           ))}
         </ul>
       </div>
-      <div className="button-container">
-        <button className="save-button" onClick={handleSave}>
-          Sauvegarder
-        </button>
-      </div>
+      <button className="save-button" onClick={handleSave}>Sauvegarder</button>
     </div>
   );
 };

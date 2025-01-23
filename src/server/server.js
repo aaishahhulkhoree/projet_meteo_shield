@@ -177,6 +177,24 @@ app.post('/api/villes-favorites', async (req, res) => {
   }
 });
 
+// Route pour récupérer les villes favorites d'un utilisateur
+app.get('/api/villes-favorites/:userId', async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const result = await pool.query('SELECT villes FROM villes_favorites WHERE id_utilisateur = $1', [userId]);
+    if (result.rows.length > 0) {
+      res.status(200).json({ villes: result.rows[0].villes });
+    } else {
+      res.status(404).json({ villes: [] });
+    }
+  } catch (error) {
+    console.error('Erreur lors de la récupération des villes favorites :', error.message);
+    res.status(500).json({ message: 'Erreur interne du serveur.' });
+  }
+});
+
+
 //Route pour l'historique des données météo
 app.post('/api/weather-logs', async (req, res) => {
   const { userId } = req.body;
@@ -208,7 +226,7 @@ app.post('/api/weather-logs', async (req, res) => {
     for (const city of villes) {
       // Étape 1 : Obtenir les coordonnées de la ville via l'API de géocodage
       const geoResponse = await fetch(
-        `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=fd441e159a57c88c956ebf246cc1ae9c`
+        `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=214ead2b8884d5132939cc3cbae224c7`
       );
       const geoData = await geoResponse.json();
 
@@ -227,7 +245,7 @@ app.post('/api/weather-logs', async (req, res) => {
         const timestamp = Math.floor(date.getTime() / 1000);
 
         const weatherResponse = await fetch(
-          `https://api.openweathermap.org/data/2.5/onecall/timemachine?lat=${lat}&lon=${lon}&dt=${timestamp}&appid=fd441e159a57c88c956ebf246cc1ae9c&units=metric`
+          `https://api.openweathermap.org/data/2.5/onecall/timemachine?lat=${lat}&lon=${lon}&dt=${timestamp}&appid=214ead2b8884d5132939cc3cbae224c7&units=metric`
         );
         const weatherData = await weatherResponse.json();
         console.log(`Réponse API pour ${city} à la date ${date}:`, weatherData);

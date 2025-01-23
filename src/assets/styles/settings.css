@@ -63,7 +63,8 @@ p {
   background-color: #0033aa;
 }
 
-.delete-button {
+.delete-button,
+.add-button {
   margin-bottom: 5px;
   padding: 8px 12px;
   background-color: #0044cc;
