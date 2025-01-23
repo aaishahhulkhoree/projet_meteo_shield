@@ -10,13 +10,15 @@ const Settings = () => {
   const [preferredCities, setPreferredCities] = useState([]);
   const [cityInput, setCityInput] = useState('');
   const navigate = useNavigate();
-  const apiKey = 'fd441e159a57c88c956ebf246cc1ae9c';
 
   // Charger les villes favorites depuis l'API au chargement
   useEffect(() => {
     const fetchPreferredCities = async () => {
       const userId = localStorage.getItem('userId');
-      if (!userId) return;
+      if (!userId) {
+        setPreferredCities([]); // Réinitialiser les villes favorites si non connecté
+        return;
+      }
 
       try {
         const response = await fetch(`http://localhost:5000/api/villes-favorites/${userId}`);

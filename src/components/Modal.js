@@ -12,6 +12,7 @@ const Modal = ({ toggleModal }) => {
   };
 
   const handleLogout = () => {
+    localStorage.removeItem('userId'); // Supprime le userId
     localStorage.removeItem('username'); // Supprimer le pseudo
     window.location.href = '/'; // Rediriger vers Home
   };
