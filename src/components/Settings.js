@@ -9,16 +9,15 @@ const Settings = () => {
   );
   const [preferredCities, setPreferredCities] = useState([]);
   const [cityInput, setCityInput] = useState('');
+  const [citySuggestions, setCitySuggestions] = useState([]);
   const navigate = useNavigate();
+  const apiKey = 'fd441e159a57c88c956ebf246cc1ae9c';
 
   // Charger les villes favorites depuis l'API au chargement
   useEffect(() => {
     const fetchPreferredCities = async () => {
       const userId = localStorage.getItem('userId');
-      if (!userId) {
-        setPreferredCities([]); // Réinitialiser les villes favorites si non connecté
-        return;
-      }
+      if (!userId) return;
 
       try {
         const response = await fetch(`http://localhost:5000/api/villes-favorites/${userId}`);
@@ -34,17 +33,43 @@ const Settings = () => {
     fetchPreferredCities();
   }, []);
 
-  // Ajouter une ville à la liste
-  const handleAddCity = () => {
-    if (!cityInput.trim()) {
-      alert('Veuillez entrer un nom de ville valide.');
+  // Récupération des suggestions de villes
+  const fetchCitySuggestions = async (query) => {
+    if (query.length < 3) {
+      setCitySuggestions([]);
       return;
     }
 
-    if (!preferredCities.includes(cityInput)) {
-      setPreferredCities((prev) => [...prev, cityInput]);
+    try {
+      const response = await fetch(
+        `https://api.openweathermap.org/geo/1.0/direct?q=${query}&limit=5&appid=${apiKey}`
+      );
+      const data = await response.json();
+
+      // Formater les suggestions et supprimer les doublons
+      const formattedSuggestions = data
+        .map((city) => ({
+          name: city.name,
+          country: city.country,
+        }))
+        .filter(
+          (suggestion, index, self) =>
+            index === self.findIndex((s) => s.name === suggestion.name && s.country === suggestion.country)
+        );
+
+      setCitySuggestions(formattedSuggestions);
+    } catch (error) {
+      console.error('Erreur lors de la récupération des suggestions de villes :', error);
+    }
+  };
+
+  // Ajouter une ville à la liste
+  const handleAddCity = (city) => {
+    if (!preferredCities.includes(city.name)) {
+      setPreferredCities((prev) => [...prev, city.name]);
     }
     setCityInput('');
+    setCitySuggestions([]);
   };
 
   // Supprimer une ville de la liste
@@ -64,7 +89,10 @@ const Settings = () => {
       const response = await fetch('http://localhost:5000/api/villes-favorites', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId, villes: preferredCities }),
+        body: JSON.stringify({
+          userId,
+          villes: preferredCities,
+        }),
       });
 
       if (response.ok) {
@@ -78,7 +106,6 @@ const Settings = () => {
     }
   };
 
-  // Retour à l'accueil
   const goHome = () => navigate('/');
 
   return (
@@ -109,10 +136,24 @@ const Settings = () => {
         <input
           type="text"
           value={cityInput}
-          onChange={(e) => setCityInput(e.target.value)}
+          onChange={(e) => {
+            const value = e.target.value;
+            setCityInput(value);
+            fetchCitySuggestions(value);
+          }}
           placeholder="Ajoutez une ville"
         />
-        <button className="add-button" onClick={handleAddCity}>Ajouter</button>
+        <div className="city-suggestions">
+          {citySuggestions.map((city, index) => (
+            <div
+              key={index}
+              onClick={() => handleAddCity(city)}
+              className="suggestion-item"
+            >
+              {city.name}, {city.country}
+            </div>
+          ))}
+        </div>
         <ul>
           {preferredCities.map((city, index) => (
             <li key={index}>
