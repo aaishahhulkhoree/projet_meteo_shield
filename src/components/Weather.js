@@ -27,10 +27,15 @@ const Weather = ({ city }) => {
     rain: { '1h': 0 }, // Aucune précipitation
   };
 
+  //Simulation de données pour tester l'alerte precipitation
   const rain ={
     '1h': 110,
   }
   
+  //Simulation de données pour tester l'alerte tempete/storm
+  const windSpeed = 75; // Mets cette valeur pour tester différentes alertes
+  const forecastWindSpeed = 60; // Mets cette valeur pour tester les prévisions
+
   const [temperatureUnit, setTemperatureUnit] = useState('C'); // Valeur par défaut
 
   const translatedetail = (detail) => {
@@ -147,7 +152,7 @@ const Weather = ({ city }) => {
 
       <StormAlert windSpeed={forecast.wind.speed} />
       <TemperatureAlert temp={temperature} />
-      <PrecipitationAlert rain={rain} />
+      <PrecipitationAlert rain={forecast.rain} />
       <DroughtAlert rain={forecast.rain || { '1h': 0 }} humidity={forecast.main.humidity} temp={forecast.main.temp} />
       <TsunamiAlert tsunamiWarning={tsunamiWarning} />
       <EarthquakeAlert earthquakeData={earthquakeData} />
