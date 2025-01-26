@@ -47,13 +47,15 @@
   }
   
   .detail {
-    background-color: #fffce0; /* Couleur bleu clair pour le détail */
+    background-color: #ffffff; /* Couleur bleu clair pour le détail */
     border-radius: 5px;
     padding: 10px;
     margin: 10px 0;
     text-align: center;
     font-size: 14px;
     color: #333; /* Couleur du texte */
+    border: 1.5px solid;
+    border-color: rgb(242, 246, 195);
   }
   
   .detail p {

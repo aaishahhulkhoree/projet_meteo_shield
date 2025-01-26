@@ -138,11 +138,14 @@ const Weather = ({ city }) => {
       <div className='temperature'>
         <p > 🌡️ Température : {Math.round(temperature)}°{temperatureUnit}</p>
       </div>
-      <p> <img src={weatherIcon} alt="Météo" className='icon-weather' /> </p>
-      
+
       <div className='detail'>
         <p > 🔍 Détail : {translatedetail(forecast.weather[0]?.description)}</p>
-      </div>
+      
+
+      <p> <img src={weatherIcon} alt="Météo" className='icon-weather' /> </p>
+    </div>
+      
 
       <PressureInfo pressure={forecast.main.pressure} />
       <HumidityInfo humidity={forecast.main.humidity}/>
