@@ -1,0 +1,66 @@
+/* Container pour l'alerte */
+.tsunami-alert {
+    background-color: #e30404; /* Rouge vif pour attirer l'attention */
+    color: white; /* Texte en blanc */
+    padding: 15px;
+    margin: 20px auto;
+    border-radius: 10px;
+    width: 80%; /* Largeur responsive */
+    max-width: 600px; /* Maximum largeur */
+    font-size: 16px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: shake-container 1s infinite alternate; /* Animation de secousse pour le container */
+  }
+  
+  /* Animation de secousse pour l'encadrant */
+  @keyframes shake-container {
+    0% {
+      transform: translateX(-10px);
+    }
+    100% {
+      transform: translateX(10px);
+    }
+  }
+  
+  .tsunami-alert h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .tsunami-alert p {
+    font-size: 18px;
+    margin: 5px 0;
+  }
+  
+  .tsunami-alert .alert-time {
+    font-size: 14px;
+    color: #ffffffb3;
+    margin-top: 10px;
+  }
+  
+  /* Style pour l'icône */
+  .tsunami-alert .alert-icon {
+    font-size: 40px;
+    margin-bottom: 10px;
+  }
+  
+  /* Style responsive */
+  @media (max-width: 600px) {
+    .tsunami-alert {
+      width: 95%;
+      font-size: 14px;
+    }
+  
+    .tsunami-alert h2 {
+      font-size: 20px;
+    }
+  
+    .tsunami-alert p {
+      font-size: 16px;
+    }
+  }
+  

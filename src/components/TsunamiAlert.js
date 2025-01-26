@@ -1,11 +1,13 @@
 import React from 'react';
+import "../assets/styles/tsunami.css"
+
 import PropTypes from 'prop-types'; // Import de PropTypes
 
 const TsunamiAlert = ({ tsunamiWarning }) => {
   if (tsunamiWarning && tsunamiWarning.detected) {
     return (
       <div className="alert tsunami-alert">
-        <h3>Alerte Tsunami !</h3>
+        <h3>🌊 Alerte Tsunami !</h3>
         <p><strong>Lieu :</strong> {tsunamiWarning.location}</p>
         <p><strong>Gravité :</strong> {tsunamiWarning.severity}</p>
         <p><strong>Heure de l&apos;alerte :</strong> {new Date(tsunamiWarning.alertTime).toLocaleString()}</p>
