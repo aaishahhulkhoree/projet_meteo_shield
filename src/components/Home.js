@@ -71,7 +71,7 @@ const Home = () => {
         setAlertMessage(`Alerte : Orage violent en cours à ${cityName}.`);
         break;
       case 'Rain':
-        setAlertMessage(`Alerte : Pluie intense à ${cityName}.`);
+        setAlertMessage(`Alerte : Pluie à ${cityName}.`);
         break;
       case 'Snow':
         setAlertMessage(`Alerte : Chutes de neige à ${cityName}.`);
@@ -98,6 +98,8 @@ const Home = () => {
         }
     }
   };
+
+ 
 
   const closeAlert = () => {
     setShowAlert(false);

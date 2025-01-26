@@ -106,4 +106,5 @@
 .home-btn span {
   position: relative;
   z-index: 1; /* Placer le texte au-dessus de l'animation */
+  color : white;
 }

@@ -2,8 +2,6 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../assets/styles/about.css';
 
-//interface AboutProps {}
-
 const About = () => {
   const navigate = useNavigate();
 
@@ -20,10 +18,9 @@ const About = () => {
 
       <h2>À propos de MeteoShield</h2>
       <p>
-        <strong>MeteoShield</strong> est un site web innovant conçu pour
-        fournir des alertes météorologiques en temps réel, avec une attention particulière
-        portée aux événements extrêmes comme les tempêtes, sécheresses, tsunamis et autres
-        phénomènes météorologiques qui peuvent mettre en danger la vie des utilisateurs.
+        <strong>MeteoShield</strong> est un site web innovant conçu pour fournir des informations météorologiques essentielles et alertes météorologiques en temps réel. Nous mettons un accent particulier 
+        sur la sécurité face aux événements extrêmes comme les tempêtes, les vagues de chaleur, les inondations, 
+        et les tsunamis.
       </p>
       <p>
         Grâce à une technologie de géolocalisation avancée et de notification personnalisée,
