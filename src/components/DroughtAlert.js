@@ -2,11 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types'; // Import de PropTypes
 
 const DroughtAlert = ({ rain, humidity, temp }) => {
+
   // Vérification si les précipitations sont absentes ou faibles
   const isNoRain = !rain || rain['1h'] < 1; // Moins de 1 mm de pluie dans l'heure
   const isLowHumidity = humidity < 30; // Humidité inférieure à 30%
   const isHighTemp = temp > 30; // Température supérieure à 30°C
-
+  const precipitation = rain['1h'] || 0; // Vérifier si la clé '1h' existe
+  if (precipitation < 2 && humidity < 30 && temp > 30) {
+    return <p className="alert-drought">⚠️ Risque de sécheresse élevé !</p>;
+  }
   // Si la température est élevée, l'humidité est faible, et il n'y a pas de pluie
   if (isNoRain && isLowHumidity && isHighTemp) {
     return (

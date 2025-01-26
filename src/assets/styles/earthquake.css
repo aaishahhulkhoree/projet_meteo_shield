@@ -1,0 +1,46 @@
+/* Style général de l'alerte tremblement de terre */
+.alert.earthquake-alert {
+    background-color: #ffcccc; /* Couleur de fond jaune pour l'alerte */
+    color: #333; /* Couleur du texte */
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Ombre légère autour de l'alerte */
+    font-family: Arial, sans-serif;
+    max-width: 500px; /* Limite la largeur de l'alerte */
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  /* Titre de l'alerte */
+  .alert.earthquake-alert h3 {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #f55656; /* Rouge pour attirer l'attention */
+  }
+  
+  /* Texte des détails de l'alerte */
+  .alert.earthquake-alert p {
+    font-size: 1.1em;
+    margin: 5px 0;
+  }
+  
+  /* Mise en valeur des données (Magnitude, Profondeur, Lieu) */
+  .alert.earthquake-alert strong {
+    font-weight: bold;
+    color: #333; /* Utilise une couleur sombre pour le texte important */
+  }
+  
+  /* Adaptation pour les petits écrans (responsive) */
+  @media screen and (max-width: 600px) {
+    .alert.earthquake-alert {
+      padding: 10px;
+      font-size: 1em;
+    }
+  
+    .alert.earthquake-alert h3 {
+      font-size: 1.2em;
+    }
+  }
+  

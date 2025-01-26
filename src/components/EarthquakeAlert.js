@@ -1,7 +1,14 @@
 import React from 'react';
+import '../assets/styles/earthquake.css';
 import PropTypes from 'prop-types'; // Import de PropTypes
 
+
 const EarthquakeAlert = ({ earthquakeData, preferences }) => {
+
+  if (!earthquakeData || !earthquakeData.magnitude || !earthquakeData.location || !earthquakeData.depth) {
+    return null; // Évite d'afficher une alerte si les données sont incomplètes
+  }
+
   // Vérifie si les données sont présentes et si le tremblement de terre dépasse le seuil de magnitude
   if (earthquakeData && earthquakeData.magnitude >= 8) {
     return (

@@ -16,6 +16,18 @@ const Weather = ({ city }) => {
   const [earthquakeData, setEarthquakeData] = useState(null);
   const [tsunamiWarning, setTsunamiWarning] = useState(false);
 
+  // Simulation de données pour tester l'alerte sécheresse
+  const testData = {
+    main: {
+      temp: 35,  // Température élevée
+      humidity: 25, // Faible humidité
+    },
+    weather: [{ description: 'clear sky', icon: '01d' }],
+    wind: { speed: 5 },
+    rain: { '1h': 0 }, // Aucune précipitation
+  };
+  
+
   // Récupérer l'unité de température de localStorage
   const temperatureUnit = localStorage.getItem('temperatureUnit') || 'C';
 
@@ -52,7 +64,7 @@ const Weather = ({ city }) => {
           setForecast(data);
 
           // Simuler des données d'alertes
-          setEarthquakeData({ magnitude: 5, location: 'Tokyo' });
+          setEarthquakeData({ magnitude: 8.2, depth: 10, location: 'Tokyo' });
           setTsunamiWarning(true);
         }
       } catch (err) {
@@ -109,7 +121,7 @@ const Weather = ({ city }) => {
       <StormAlert windSpeed={forecast.wind.speed} />
       <TemperatureAlert temp={temperature} /> {/* Température convertie si nécessaire */}
       <PrecipitationAlert rain={forecast.rain || 0} />
-      <DroughtAlert rain={forecast.rain || 0} />
+      <DroughtAlert rain={forecast.rain || { '1h': 0 }} humidity={forecast.main.humidity} temp={forecast.main.temp} />
       <TsunamiAlert tsunamiWarning={tsunamiWarning} />
       <EarthquakeAlert earthquakeData={earthquakeData} />
     </div>

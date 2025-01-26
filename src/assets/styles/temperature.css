@@ -8,18 +8,18 @@
 
   
   .extreme-heat{
-    background-color: #e74c3c; /* Rouge vif */
+    background-color: #ea6253; /* Rouge vif */
   }
   
   .moderate-heat {
-    background-color: #e67e22; /* Orange */
+    background-color: #e99c58; /* Orange */
   }
   
   .extreme-cold{
-    background-color: #3498db; /* Bleu foncé */
+    background-color: #4da2da; /* Bleu foncé */
   }
   
   .moderate-cold {
-    background-color: #4449ad; /* Violet */
+    background-color: #71a8fa; /* Violet */
   }
   
