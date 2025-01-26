@@ -1,0 +1,31 @@
+/* Alerte Pluie Extrême */
+.extreme-rain {
+    background-color: #ff3333; /* Rouge vif pour alerte grave */
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+    margin: 20px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-size: 18px;
+  }
+  
+  .heavy-rain {
+    background-color: #ff9933; /* Orange pour alerte moins grave */
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+    margin: 20px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-size: 18px;
+  }
+  
+  .moderate-rain {
+    background-color: #66cc66; /* Vert pour alerte modérée */
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+    margin: 20px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-size: 18px;
+  }
+  

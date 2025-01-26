@@ -1,4 +1,5 @@
 import React from 'react';
+import "../assets/styles/precipitation.css";
 import PropTypes from 'prop-types';
 
 const PrecipitationAlert = ({ rain }) => {

@@ -26,6 +26,10 @@ const Weather = ({ city }) => {
     wind: { speed: 5 },
     rain: { '1h': 0 }, // Aucune précipitation
   };
+
+  const rain ={
+    '1h': 110,
+  }
   
   const [temperatureUnit, setTemperatureUnit] = useState('C'); // Valeur par défaut
 
@@ -55,6 +59,8 @@ const Weather = ({ city }) => {
           if (data && data.temperature_unit) {
             setTemperatureUnit(data.temperature_unit);
           }
+
+
         } catch (error) {
           console.error('Erreur lors de la récupération des préférences utilisateur :', error);
         }
@@ -86,7 +92,16 @@ const Weather = ({ city }) => {
 
           // Simuler des données d'alertes
           //setEarthquakeData({ magnitude: 8.2, depth: 10, location: 'Tokyo' });
-          //setTsunamiWarning(true);
+          setTsunamiWarning(true);
+
+          
+          // Simuler une alerte tsunami pour le test
+        /*setTsunamiWarning({
+          detected: true,
+          location: 'Océan Pacifique',
+          severity: 'Haute',
+          alertTime: new Date().toISOString(),
+        });*/
         }
       } catch (err) {
         setError('Une erreur est survenue lors de la récupération des données météo.');
@@ -132,7 +147,7 @@ const Weather = ({ city }) => {
 
       <StormAlert windSpeed={forecast.wind.speed} />
       <TemperatureAlert temp={temperature} />
-      <PrecipitationAlert rain={forecast.rain || 0} />
+      <PrecipitationAlert rain={rain} />
       <DroughtAlert rain={forecast.rain || { '1h': 0 }} humidity={forecast.main.humidity} temp={forecast.main.temp} />
       <TsunamiAlert tsunamiWarning={tsunamiWarning} />
       <EarthquakeAlert earthquakeData={earthquakeData} />
