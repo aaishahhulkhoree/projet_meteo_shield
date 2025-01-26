@@ -3,34 +3,41 @@ import { useNavigate } from 'react-router-dom';
 import '../assets/styles/settings.css';
 
 const Settings = () => {
-  const [alertType, setAlertType] = useState('storm');
-  const [temperatureUnit, setTemperatureUnit] = useState(
-    localStorage.getItem('temperatureUnit') || 'C'
-  );
+  const [alertType, setAlertType] = useState('');
+  const [temperatureUnit, setTemperatureUnit] = useState('C');
   const [preferredCities, setPreferredCities] = useState([]);
-  const [cityInput, setCityInput] = useState('');
   const [citySuggestions, setCitySuggestions] = useState([]);
+  const [cityInput, setCityInput] = useState('');
   const navigate = useNavigate();
   const apiKey = 'fd441e159a57c88c956ebf246cc1ae9c';
 
-  // Charger les villes favorites depuis l'API au chargement
+  // Récupérer les préférences et les villes favorites depuis l'API au chargement
   useEffect(() => {
-    const fetchPreferredCities = async () => {
+    const fetchPreferencesAndCities = async () => {
       const userId = localStorage.getItem('userId');
       if (!userId) return;
 
       try {
-        const response = await fetch(`http://localhost:5000/api/villes-favorites/${userId}`);
-        if (response.ok) {
-          const data = await response.json();
-          setPreferredCities(data.villes || []);
+        // Récupérer les préférences utilisateur
+        const preferencesResponse = await fetch(`http://localhost:5000/api/preferences-utilisateur/${userId}`);
+        if (preferencesResponse.ok) {
+          const preferencesData = await preferencesResponse.json();
+          setTemperatureUnit(preferencesData.temperatureUnit || 'C');
+          setAlertType(preferencesData.alert_type || []);
+        }
+
+        // Récupérer les villes favorites
+        const citiesResponse = await fetch(`http://localhost:5000/api/villes-favorites/${userId}`);
+        if (citiesResponse.ok) {
+          const citiesData = await citiesResponse.json();
+          setPreferredCities(citiesData.villes || []);
         }
       } catch (error) {
-        console.error('Erreur lors de la récupération des villes favorites :', error);
+        console.error('Erreur lors de la récupération des données :', error);
       }
     };
 
-    fetchPreferredCities();
+    fetchPreferencesAndCities();
   }, []);
 
   // Récupération des suggestions de villes
@@ -62,14 +69,17 @@ const Settings = () => {
       console.error('Erreur lors de la récupération des suggestions de villes :', error);
     }
   };
-
   // Ajouter une ville à la liste
-  const handleAddCity = (city) => {
-    if (!preferredCities.includes(city.name)) {
-      setPreferredCities((prev) => [...prev, city.name]);
+  const handleAddCity = () => {
+    if (!cityInput.trim()) {
+      alert('Veuillez entrer un nom de ville valide.');
+      return;
+    }
+
+    if (!preferredCities.includes(cityInput)) {
+      setPreferredCities((prev) => [...prev, cityInput]);
     }
     setCityInput('');
-    setCitySuggestions([]);
   };
 
   // Supprimer une ville de la liste
@@ -77,7 +87,15 @@ const Settings = () => {
     setPreferredCities((prev) => prev.filter((city) => city !== cityName));
   };
 
-  // Sauvegarder les préférences (villes favorites) via l'API
+  // Gérer les changements de types d'alertes météo
+  const handleAlertTypeChange = (e) => {
+    const value = e.target.value;
+    setAlertType((prev) =>
+      prev.includes(value) ? prev.filter((type) => type !== value) : [...prev, value]
+    );
+  };
+
+  // Sauvegarder les préférences utilisateur (température, alertes) et les villes favorites
   const handleSave = async () => {
     const userId = localStorage.getItem('userId');
     if (!userId) {
@@ -86,7 +104,23 @@ const Settings = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/api/villes-favorites', {
+      // Sauvegarder les préférences utilisateur
+      const preferencesResponse = await fetch('http://localhost:5000/api/preferences-utilisateur', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId,
+          temperatureUnit,
+          alertType,
+        }),
+      });
+
+      if (!preferencesResponse.ok) {
+        throw new Error('Erreur lors de la sauvegarde des préférences utilisateur.');
+      }
+
+      // Sauvegarder les villes favorites
+      const citiesResponse = await fetch('http://localhost:5000/api/villes-favorites', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -95,17 +129,19 @@ const Settings = () => {
         }),
       });
 
-      if (response.ok) {
-        alert('Préférences sauvegardées avec succès.');
-        navigate('/');
-      } else {
-        alert('Erreur lors de la sauvegarde des préférences.');
+      if (!citiesResponse.ok) {
+        throw new Error('Erreur lors de la sauvegarde des villes favorites.');
       }
+
+      alert('Préférences sauvegardées avec succès.');
+      navigate('/');
     } catch (error) {
-      console.error('Erreur lors de la sauvegarde des préférences :', error);
+      console.error('Erreur lors de la sauvegarde des données :', error);
+      alert('Une erreur est survenue lors de la sauvegarde.');
     }
   };
 
+  // Retour à l'accueil
   const goHome = () => navigate('/');
 
   return (
@@ -123,7 +159,7 @@ const Settings = () => {
       </div>
       <div className="setting-option">
         <label>Type d&apos;alerte météo :</label>
-        <select value={alertType} onChange={(e) => setAlertType(e.target.value)}>
+        <select multiple value={alertType} onChange={handleAlertTypeChange}>
           <option value="storm">Tempête</option>
           <option value="heatwave">Canicule</option>
           <option value="rain">Pluie intense</option>

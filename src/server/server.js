@@ -184,6 +184,60 @@ app.get('/api/villes-favorites/:userId', async (req, res) => {
   }
 });
 
+// Route pour récupérer les préférences utilisateur
+app.get('/api/preferences-utilisateur/:userId', async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const query = 'SELECT temperature_unit, alert_type FROM preferences_utilisateur WHERE id_utilisateur = $1';
+    const result = await pool.query(query, [userId]);
+
+    if (result.rows.length > 0) {
+      res.status(200).json(result.rows[0]);
+    } else {
+      res.status(404).json({ message: 'Préférences utilisateur introuvables.' });
+    }
+  } catch (error) {
+    console.error('Erreur lors de la récupération des préférences utilisateur :', error.message);
+    res.status(500).json({ message: 'Erreur interne du serveur.' });
+  }
+});
+
+// Route pour sauvegarder ou mettre à jour les préférences utilisateur
+app.post('/api/preferences-utilisateur', async (req, res) => {
+  const { userId, temperatureUnit, alertType } = req.body;
+
+  if (!userId || !temperatureUnit || !Array.isArray(alertType)) {
+    return res.status(400).json({ message: 'Données manquantes pour les préférences utilisateur.' });
+  }
+
+  try {
+    const checkQuery = 'SELECT id_preference FROM preferences_utilisateur WHERE id_utilisateur = $1';
+    const result = await pool.query(checkQuery, [userId]);
+
+    if (result.rows.length > 0) {
+      // Mise à jour des préférences existantes
+      const updateQuery = `
+        UPDATE preferences_utilisateur
+        SET temperature_unit = $1, alert_type = $2, updated_at = CURRENT_TIMESTAMP
+        WHERE id_utilisateur = $3
+      `;
+      await pool.query(updateQuery, [temperatureUnit, alertType, userId]);
+    } else {
+      // Insertion de nouvelles préférences
+      const insertQuery = `
+        INSERT INTO preferences_utilisateur (id_utilisateur, temperature_unit, alert_type)
+        VALUES ($1, $2, $3)
+      `;
+      await pool.query(insertQuery, [userId, temperatureUnit, alertType]);
+    }
+
+    res.status(200).json({ message: 'Préférences utilisateur sauvegardées avec succès.' });
+  } catch (error) {
+    console.error('Erreur lors de la sauvegarde des préférences utilisateur :', error.message);
+    res.status(500).json({ message: 'Erreur interne du serveur.' });
+  }
+});
 
 //Route pour l'historique des données météo
 app.post('/api/weather-logs', async (req, res) => {
