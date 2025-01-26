@@ -14,7 +14,7 @@ const Weather = ({ city }) => {
   const [error, setError] = useState('');
   const [earthquakeData, setEarthquakeData] = useState(null);
   const [tsunamiWarning, setTsunamiWarning] = useState(false);
-<<<<<<< HEAD
+
 
   // Simulation de données pour tester l'alerte sécheresse
   const testData = {
@@ -27,12 +27,7 @@ const Weather = ({ city }) => {
     rain: { '1h': 0 }, // Aucune précipitation
   };
   
-
-  // Récupérer l'unité de température de localStorage
-  const temperatureUnit = localStorage.getItem('temperatureUnit') || 'C';
-=======
   const [temperatureUnit, setTemperatureUnit] = useState('C'); // Valeur par défaut
->>>>>>> 4849f09d90382714db98fb7f5ed173b3bc1506fd
 
   const translatedetail = (detail) => {
     const translations = {
@@ -90,8 +85,8 @@ const Weather = ({ city }) => {
           setForecast(data);
 
           // Simuler des données d'alertes
-          setEarthquakeData({ magnitude: 8.2, depth: 10, location: 'Tokyo' });
-          setTsunamiWarning(true);
+          //setEarthquakeData({ magnitude: 8.2, depth: 10, location: 'Tokyo' });
+          //setTsunamiWarning(true);
         }
       } catch (err) {
         setError('Une erreur est survenue lors de la récupération des données météo.');
