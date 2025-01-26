@@ -126,7 +126,7 @@ const Settings = () => {
 
   return (
     <div className="settings-container">
-      <button className="home-btn" onClick={goHome}>Retour à l&apos;accueil</button>
+      <button className="home-btn" onClick={goHome}> <span> Retour à l&apos;accueil</span></button>
       <h1>Paramètres</h1>
       <div className="setting-option">
         <label>Unité de température :</label>
