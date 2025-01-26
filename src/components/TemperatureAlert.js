@@ -40,14 +40,14 @@ const TemperatureAlert = ({ temp }) => {
 
   // Logique d'alerte selon l'unité de température et la valeur de temp
   if (unit === 'C') {
-    if (tempInCelsius > 35) {
+    if (tempInCelsius > 28) {
       alertContent = (
         <div className="alert temperature-alert extreme-heat">
           <h3>Alerte Chaleur Extrême !</h3>
           <p>Température actuelle : {displayTemp}°{unit}</p>
         </div>
       );
-    } else if (tempInCelsius > 24 && tempInCelsius <= 35) {
+    } else if (tempInCelsius > 20 && tempInCelsius <= 35) {
       alertContent = (
         <div className="alert temperature-alert moderate-heat">
           <h3>Alerte Chaleur !</h3>
@@ -61,7 +61,7 @@ const TemperatureAlert = ({ temp }) => {
           <p>Température actuelle : {displayTemp}°{unit}</p>
         </div>
       );
-    } else if (tempInCelsius >= 0 && tempInCelsius <= 5) {
+    } else if (tempInCelsius >= 0 && tempInCelsius <= 10) {
       alertContent = (
         <div className="alert temperature-alert moderate-cold">
           <h3>Alerte Froid !</h3>
