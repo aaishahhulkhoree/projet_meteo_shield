@@ -12,11 +12,10 @@ const Modal = ({ toggleModal }) => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('userId'); // Supprime le userId
-    localStorage.removeItem('username'); // Supprimer le pseudo
-    window.location.href = '/'; // Rediriger vers Home
+    localStorage.clear();
+    window.location.href = '/';
   };
-
+  
   return (
     <div className="modal-overlay active">
       <div className="modal-content">

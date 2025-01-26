@@ -9,12 +9,12 @@ import TsunamiAlert from './TsunamiAlert';
 import EarthquakeAlert from './EarthquakeAlert';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
-
 const Weather = ({ city }) => {
   const [forecast, setForecast] = useState(null);
   const [error, setError] = useState('');
   const [earthquakeData, setEarthquakeData] = useState(null);
   const [tsunamiWarning, setTsunamiWarning] = useState(false);
+<<<<<<< HEAD
 
   // Simulation de données pour tester l'alerte sécheresse
   const testData = {
@@ -30,6 +30,9 @@ const Weather = ({ city }) => {
 
   // Récupérer l'unité de température de localStorage
   const temperatureUnit = localStorage.getItem('temperatureUnit') || 'C';
+=======
+  const [temperatureUnit, setTemperatureUnit] = useState('C'); // Valeur par défaut
+>>>>>>> 4849f09d90382714db98fb7f5ed173b3bc1506fd
 
   const translatedetail = (detail) => {
     const translations = {
@@ -46,16 +49,39 @@ const Weather = ({ city }) => {
     return translations[detail] || detail;
   };
 
+  // Récupérer l'unité de température depuis la base de données si connecté
+  useEffect(() => {
+    const fetchUserPreferences = async () => {
+      const userId = localStorage.getItem('userId');
+      if (userId) {
+        try {
+          const response = await fetch(`http://localhost:5000/api/preferences-utilisateur/${userId}`);
+          const data = await response.json();
+          if (data && data.temperature_unit) {
+            setTemperatureUnit(data.temperature_unit);
+          }
+        } catch (error) {
+          console.error('Erreur lors de la récupération des préférences utilisateur :', error);
+        }
+      } else {
+        const localUnit = localStorage.getItem('temperatureUnit');
+        setTemperatureUnit(localUnit || 'C');
+      }
+    };
+
+    fetchUserPreferences();
+  }, []);
+
   useEffect(() => {
     const fetchWeatherData = async () => {
       if (!city) return;
 
       try {
+        const units = temperatureUnit === 'C' ? 'metric' : 'imperial';
         const response = await fetch(
-          `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&lang=fr&appid=fd441e159a57c88c956ebf246cc1ae9c`
+          `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=${units}&lang=fr&appid=fd441e159a57c88c956ebf246cc1ae9c`
         );
         const data = await response.json();
-        //setForecast(data);
         if (data.cod !== 200) {
           setError('Ville non trouvée ou données météo indisponibles.');
           setForecast(null);
@@ -73,7 +99,7 @@ const Weather = ({ city }) => {
     };
 
     fetchWeatherData();
-  }, [city]);
+  }, [city, temperatureUnit]);
 
   if (!forecast) {
     return (
@@ -83,43 +109,34 @@ const Weather = ({ city }) => {
     );
   }
 
-  // Utilisation de l'icône météo
   const weatherIcon = `http://openweathermap.org/img/wn/${forecast.weather[0].icon}.png`;
 
   const windIconStyle = {
-    fontSize: `${Math.min(forecast.wind.speed * 4, 40)}px`, 
-    color: '#9dc3fc', 
+    fontSize: `${Math.min(forecast.wind.speed * 4, 40)}px`,
+    color: '#9dc3fc',
   };
 
-  // Température depuis l'API (en Celsius)
   let temperature = forecast.main.temp;
-
-  // Conversion en Fahrenheit si l'unité est 'F'
-  if (temperatureUnit === 'F') {
-    temperature = (temperature * 9/5) + 32;
-  }
 
   return (
     <div className="weather-container">
       <h2>Météo pour {city}</h2>
       <p>Température : {Math.round(temperature)}°{temperatureUnit}</p>
       <div>
-        {/* Affichage de l'icône météo */}
-        <img src={weatherIcon} alt="Météo" className='icon-weather'/>
+        <img src={weatherIcon} alt="Météo" className='icon-weather' />
       </div>
 
       <div>
         <p>Détail : {translatedetail(forecast.weather[0]?.description)}</p>
       </div>
-      
+
       <div>
-        {/* Affichage de l'icône du vent */}
-        <p><i className="fa-solid fa-wind" style={windIconStyle}></i> 
+        <p><i className="fa-solid fa-wind" style={windIconStyle}></i>
         &nbsp; {Math.round(forecast.wind.speed)} m/s</p>
       </div>
-      {/* Section des alertes */}
+
       <StormAlert windSpeed={forecast.wind.speed} />
-      <TemperatureAlert temp={temperature} /> {/* Température convertie si nécessaire */}
+      <TemperatureAlert temp={temperature} />
       <PrecipitationAlert rain={forecast.rain || 0} />
       <DroughtAlert rain={forecast.rain || { '1h': 0 }} humidity={forecast.main.humidity} temp={forecast.main.temp} />
       <TsunamiAlert tsunamiWarning={tsunamiWarning} />
