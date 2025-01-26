@@ -10,29 +10,38 @@ const Settings = () => {
   const [preferredCities, setPreferredCities] = useState([]);
   const [cityInput, setCityInput] = useState('');
   const [citySuggestions, setCitySuggestions] = useState([]);
+  const [isUserConnected, setIsUserConnected] = useState(false);
   const navigate = useNavigate();
   const apiKey = 'fd441e159a57c88c956ebf246cc1ae9c';
 
   useEffect(() => {
     const fetchPreferencesAndCities = async () => {
       const userId = localStorage.getItem('userId');
-      if (!userId) return;
+      setIsUserConnected(!!userId);
+      if (!userId) {
+        const storedTemperatureUnit = localStorage.getItem('temperatureUnit') || 'C';
+        const storedAlertType = JSON.parse(localStorage.getItem('alertType')) || [];
 
-      try {
-        const preferencesResponse = await fetch(`http://localhost:5000/api/preferences-utilisateur/${userId}`);
-        if (preferencesResponse.ok) {
-          const preferencesData = await preferencesResponse.json();
-          setTemperatureUnit(preferencesData.temperatureUnit || 'C');
-          setAlertType(preferencesData.alertType || []);
+        setTemperatureUnit(storedTemperatureUnit);
+        setAlertType(storedAlertType);
+      }
+      else {
+        try {
+          const preferencesResponse = await fetch(`http://localhost:5000/api/preferences-utilisateur/${userId}`);
+          if (preferencesResponse.ok) {
+            const preferencesData = await preferencesResponse.json();
+            setTemperatureUnit(preferencesData.temperatureUnit || 'C');
+            setAlertType(preferencesData.alertType || []);
+          }
+  
+          const citiesResponse = await fetch(`http://localhost:5000/api/villes-favorites/${userId}`);
+          if (citiesResponse.ok) {
+            const citiesData = await citiesResponse.json();
+            setPreferredCities(citiesData.villes || []);
+          }
+        } catch (error) {
+          console.error('Erreur lors de la récupération des données :', error);
         }
-
-        const citiesResponse = await fetch(`http://localhost:5000/api/villes-favorites/${userId}`);
-        if (citiesResponse.ok) {
-          const citiesData = await citiesResponse.json();
-          setPreferredCities(citiesData.villes || []);
-        }
-      } catch (error) {
-        console.error('Erreur lors de la récupération des données :', error);
       }
     };
 
@@ -76,8 +85,10 @@ const Settings = () => {
   const handleSave = async () => {
     const userId = localStorage.getItem('userId');
     if (!userId) {
-      alert('Vous devez être connecté pour sauvegarder vos préférences.');
-      return;
+      // Sauvegarde dans le localStorage pour un utilisateur non connecté
+      localStorage.setItem('temperatureUnit', temperatureUnit);
+      localStorage.setItem('alertType', JSON.stringify(alertType));
+      alert('Préférences sauvegardées localement.');
     }
 
     try {
@@ -134,6 +145,7 @@ const Settings = () => {
           <option value="tsunami">Tsunami</option>
         </select>
       </div>
+      {isUserConnected && (
       <div className="setting-option">
         <h3>Villes préférées :</h3>
         <input
@@ -151,12 +163,13 @@ const Settings = () => {
           {preferredCities.map((city, index) => (
             <li key={index}>
               {city}
-              <button onClick={() => handleRemoveCity(city)}>Supprimer</button>
+              <button className="delete-button" onClick={() => handleRemoveCity(city)}>Supprimer</button>
             </li>
           ))}
         </ul>
       </div>
-      <button onClick={handleSave}>Sauvegarder</button>
+      )}
+      <button className="save-button" onClick={handleSave}>Sauvegarder</button>
     </div>
   );
 };
