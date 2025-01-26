@@ -7,6 +7,9 @@ import PrecipitationAlert from './PrecipitationAlert';
 import DroughtAlert from './DroughtAlert';
 import TsunamiAlert from './TsunamiAlert';
 import EarthquakeAlert from './EarthquakeAlert';
+import WindSpeedInfo from './WindSpeedInfo';
+import PressureInfo from './PressureInfo';
+import HumidityInfo from './HumidityInfo';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 const Weather = ({ city }) => {
@@ -126,30 +129,24 @@ const Weather = ({ city }) => {
 
   const weatherIcon = `http://openweathermap.org/img/wn/${forecast.weather[0].icon}.png`;
 
-  const windIconStyle = {
-    fontSize: `${Math.min(forecast.wind.speed * 4, 40)}px`,
-    color: '#9dc3fc',
-  };
 
   let temperature = forecast.main.temp;
 
   return (
     <div className="weather-container">
       <h2>Météo pour {city}</h2>
-      <p>Température : {Math.round(temperature)}°{temperatureUnit}</p>
-      <div>
-        <img src={weatherIcon} alt="Météo" className='icon-weather' />
+      <div className='temperature'>
+        <p > 🌡️ Température : {Math.round(temperature)}°{temperatureUnit}</p>
+      </div>
+      <p> <img src={weatherIcon} alt="Météo" className='icon-weather' /> </p>
+      
+      <div className='detail'>
+        <p > 🔍 Détail : {translatedetail(forecast.weather[0]?.description)}</p>
       </div>
 
-      <div>
-        <p>Détail : {translatedetail(forecast.weather[0]?.description)}</p>
-      </div>
-
-      <div>
-        <p><i className="fa-solid fa-wind" style={windIconStyle}></i>
-        &nbsp; {Math.round(forecast.wind.speed)} m/s</p>
-      </div>
-
+      <PressureInfo pressure={forecast.main.pressure} />
+      <HumidityInfo humidity={forecast.main.humidity}/>
+      <WindSpeedInfo windSpeed={forecast.wind.speed}/>
       <StormAlert windSpeed={forecast.wind.speed} />
       <TemperatureAlert temp={temperature} />
       <PrecipitationAlert rain={forecast.rain} />

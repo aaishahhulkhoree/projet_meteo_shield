@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 const PressureInfo = ({ pressure }) => {
   return (
     <div className="pressure-info">
-      <p>Pression : {pressure} hPa</p>
+      <p> 🌬️ Pression : {pressure} hPa</p>
     </div>
   );
 };

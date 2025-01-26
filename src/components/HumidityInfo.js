@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 const HumidityInfo = ({ humidity }) => {
   return (
     <div className="humidity-info">
-      <p>Humidité : {humidity}%</p>
+      <p> 💧 Humidité : {humidity}%</p>
     </div>
   );
 };

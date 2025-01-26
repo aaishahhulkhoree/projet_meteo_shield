@@ -1,5 +1,5 @@
-.pressure-info {
-    background-color: #f2fff0; /* Couleur bleu clair pour le fond */
+.windspeed-info {
+    background-color: #e0f0fa; /* Couleur bleu clair pour le vent */
     border-radius: 5px;
     padding: 10px;
     margin: 10px 0;
@@ -8,7 +8,7 @@
     color: #333; /* Couleur du texte */
   }
   
-  .pressure-info p {
+  .windspeed-info p {
     margin: 0;
     font-weight: bold;
   }

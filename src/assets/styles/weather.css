@@ -30,3 +30,34 @@
   h4 {
     padding: 20px;
   }
+
+  .temperature {
+    background-color: #fff4ef; /* Couleur jaune clair pour la température */
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 0;
+    text-align: center;
+    font-size: 14px;
+    color: #333; /* Couleur du texte */
+  }
+  
+  .temperature p {
+    margin: 0;
+    font-weight: bold;
+  }
+  
+  .detail {
+    background-color: #fffce0; /* Couleur bleu clair pour le détail */
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 0;
+    text-align: center;
+    font-size: 14px;
+    color: #333; /* Couleur du texte */
+  }
+  
+  .detail p {
+    margin: 0;
+    font-weight: bold;
+  }
+  
