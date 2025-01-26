@@ -4,7 +4,7 @@ This project, **MeteoShield**, is a web application designed to provide real-tim
 
 ## Features
 - **Real-Time Alerts**: Notifications for extreme weather events such as storms, floods, heatwaves, and more.
-- **Interactive Map**: GeoJSON-powered map displaying danger zones (in red) and safe zones (in green).
+- **Interactive Map**: GeoJSON-powered map.
 - **Customizable Notifications**: Users can personalize alerts based on location and preferred event types.
 - **Hourly and Weekly Forecasts**: Comprehensive weather updates for better planning.
 
@@ -13,7 +13,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ### Prerequisites
 - Node.js (v16 or higher)
-- npm (v7 or higher)
+- npm (v7 or higher) or yarn
 
 ### Installation
 1. Clone the repository:
