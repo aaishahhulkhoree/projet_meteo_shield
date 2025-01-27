@@ -20,10 +20,7 @@ const Settings = () => {
       setIsUserConnected(!!userId);
       if (!userId) {
         const storedTemperatureUnit = localStorage.getItem('temperatureUnit') || 'C';
-        const storedAlertType = JSON.parse(localStorage.getItem('alertType')) || [];
-
         setTemperatureUnit(storedTemperatureUnit);
-        setAlertType(storedAlertType);
       }
       else {
         try {
@@ -59,12 +56,20 @@ const Settings = () => {
         `https://api.openweathermap.org/geo/1.0/direct?q=${query}&limit=5&appid=${apiKey}`
       );
       const data = await response.json();
-      const formattedSuggestions = data.map((city) => ({
-        name: city.name,
-        country: city.country,
-      }));
 
-      setCitySuggestions(formattedSuggestions);
+      const uniqueSuggestions = data
+        .map((city) => ({
+          name: city.name,
+          country: city.country,
+        }))
+        .filter(
+          (city, index, self) =>
+            index === self.findIndex(
+              (c) => c.name === city.name && c.country === city.country
+            )
+        );
+
+      setCitySuggestions(uniqueSuggestions);
     } catch (error) {
       console.error('Erreur lors de la récupération des suggestions de villes :', error);
     }
@@ -87,7 +92,6 @@ const Settings = () => {
     if (!userId) {
       // Sauvegarde dans le localStorage pour un utilisateur non connecté
       localStorage.setItem('temperatureUnit', temperatureUnit);
-      localStorage.setItem('alertType', JSON.stringify(alertType));
       alert('Préférences sauvegardées localement.');
       navigate('/');
     }
@@ -164,11 +168,17 @@ const Settings = () => {
           />
         </div>
         
-        <div className="city-suggestions">
+        <div className="suggestions-dropdown">
           {citySuggestions.map((city, index) => (
-            <div key={index} onClick={() => handleAddCity(city)}>{city.name}, {city.country}</div>
+            <div
+              key={index}
+              className="suggestion-item"
+              onClick={() => handleAddCity(city)}
+            >
+              {city.name}, {city.country}
+            </div>
           ))}
-        </div>
+        </div>        
         <ul>
           {preferredCities.map((city, index) => (
             <li key={index}>
