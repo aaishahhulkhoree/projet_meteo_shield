@@ -148,12 +148,18 @@ const Settings = () => {
       {isUserConnected && (
       <div className="setting-option">
         <h3>Villes préférées :</h3>
-        <input
-          type="text"
-          value={cityInput}
-          onChange={(e) => fetchCitySuggestions(e.target.value)}
-          placeholder="Ajoutez une ville"
-        />
+        <div className='enter-city'>
+          <input
+            type="text"
+            value={cityInput}
+            onChange={(e) => {
+              setCityInput(e.target.value);
+              fetchCitySuggestions(e.target.value);
+            }}
+            placeholder="Ajoutez une ville"
+          />
+        </div>
+        
         <div className="city-suggestions">
           {citySuggestions.map((city, index) => (
             <div key={index} onClick={() => handleAddCity(city)}>{city.name}, {city.country}</div>
