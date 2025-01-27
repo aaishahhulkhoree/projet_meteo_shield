@@ -89,36 +89,38 @@ const Settings = () => {
       localStorage.setItem('temperatureUnit', temperatureUnit);
       localStorage.setItem('alertType', JSON.stringify(alertType));
       alert('Préférences sauvegardées localement.');
+      navigate('/');
     }
-
-    try {
-      const preferencesResponse = await fetch('http://localhost:5000/api/preferences-utilisateur', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          userId,
-          temperatureUnit,
-          alertType,
-        }),
-      });
-
-      const citiesResponse = await fetch('http://localhost:5000/api/villes-favorites', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          userId,
-          villes: preferredCities,
-        }),
-      });
-
-      if (preferencesResponse.ok && citiesResponse.ok) {
-        alert('Préférences sauvegardées avec succès.');
-        navigate('/');
-      } else {
-        alert('Erreur lors de la sauvegarde des préférences.');
+    else {
+      try {
+        const preferencesResponse = await fetch('http://localhost:5000/api/preferences-utilisateur', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            userId,
+            temperatureUnit,
+            alertType,
+          }),
+        });
+  
+        const citiesResponse = await fetch('http://localhost:5000/api/villes-favorites', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            userId,
+            villes: preferredCities,
+          }),
+        });
+  
+        if (preferencesResponse.ok && citiesResponse.ok) {
+          alert('Préférences sauvegardées avec succès.');
+          navigate('/');
+        } else {
+          alert('Erreur lors de la sauvegarde des préférences.');
+        }
+      } catch (error) {
+        console.error('Erreur lors de la sauvegarde des préférences :', error);
       }
-    } catch (error) {
-      console.error('Erreur lors de la sauvegarde des préférences :', error);
     }
   };
 
@@ -135,6 +137,7 @@ const Settings = () => {
           <option value="F">Fahrenheit (°F)</option>
         </select>
       </div>
+      {isUserConnected && (
       <div className="setting-option">
         <label>Type d&apos;alerte météo :</label>
         <select multiple value={alertType} onChange={(e) => setAlertType(Array.from(e.target.selectedOptions, opt => opt.value))}>
@@ -145,6 +148,7 @@ const Settings = () => {
           <option value="tsunami">Tsunami</option>
         </select>
       </div>
+      )}
       {isUserConnected && (
       <div className="setting-option">
         <h3>Villes préférées :</h3>
