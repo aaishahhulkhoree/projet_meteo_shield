@@ -87,6 +87,14 @@ const Settings = () => {
     setPreferredCities((prev) => prev.filter((city) => city !== cityName));
   };
 
+  const handleToggleAlert = (alert) => {
+    setAlertType((prevAlerts) =>
+      prevAlerts.includes(alert)
+        ? prevAlerts.filter((a) => a !== alert) // Supprime si déjà présent
+        : [...prevAlerts, alert] // Ajoute si non présent
+    );
+  };
+
   const handleSave = async () => {
     const userId = localStorage.getItem('userId');
     if (!userId) {
@@ -142,16 +150,20 @@ const Settings = () => {
         </select>
       </div>
       {isUserConnected && (
-      <div className="setting-option">
-        <label>Type d&apos;alerte météo :</label>
-        <select multiple value={alertType} onChange={(e) => setAlertType(Array.from(e.target.selectedOptions, opt => opt.value))}>
-          <option value="storm">Tempête</option>
-          <option value="heatwave">Canicule</option>
-          <option value="rain">Pluie intense</option>
-          <option value="earthquake">Séisme</option>
-          <option value="tsunami">Tsunami</option>
-        </select>
-      </div>
+        <div className="setting-option">
+          <label>Type d&apos;alerte météo :</label>
+          <div className="alert-options">
+            {["storm", "heatwave", "rain", "earthquake", "tsunami"].map((alert) => (
+              <button
+                key={alert}
+                className={`alert-button ${alertType.includes(alert) ? "selected" : ""}`}
+                onClick={() => handleToggleAlert(alert)}
+              >
+                {alert.charAt(0).toUpperCase() + alert.slice(1)}
+              </button>
+            ))}
+          </div>
+        </div>
       )}
       {isUserConnected && (
       <div className="setting-option">

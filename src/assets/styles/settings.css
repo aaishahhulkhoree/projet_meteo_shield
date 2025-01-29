@@ -162,6 +162,37 @@ p {
   background-color: #ff1a1a;
 }
 
+/* Boutons des types d'alerte */
+.alert-options {
+  display: flex;
+  gap: 23px;
+  margin-top: 10px;
+}
+
+.alert-button {
+  padding: 10px 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-size: 14px;
+}
+
+.alert-button.selected {
+  background-color: #007bff;
+  color: white;
+  border: 1px solid #0056b3;
+}
+
+.alert-button:hover {
+  background-color: #d6d6d6;
+}
+
+.alert-button.selected:hover {
+  background-color: #0056b3;
+}
+
 
 /* --- Home Button --- */
 .home-btn {
