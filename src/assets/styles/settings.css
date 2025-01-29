@@ -85,11 +85,11 @@ p {
 .city-input-container {
   position: relative;
   width: 100%;
-  max-width: 400px;
+  max-width: 200px;
   margin: 10px auto 0;
 }
 
-.city-input-container input {
+.city-input-container {
   width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
@@ -97,9 +97,10 @@ p {
   font-size: 16px;
   outline: none;
   transition: border-color 0.3s;
+  margin-bottom: 10px;
 }
 
-.city-input-container input:focus {
+.city-input-container:focus {
   border-color: #007bff;
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }

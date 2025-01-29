@@ -156,7 +156,7 @@ const Settings = () => {
       {isUserConnected && (
       <div className="setting-option">
         <h3>Villes préférées :</h3>
-        <div className='enter-city'>
+        <div>
           <input
             type="text"
             value={cityInput}
@@ -165,6 +165,7 @@ const Settings = () => {
               fetchCitySuggestions(e.target.value);
             }}
             placeholder="Ajoutez une ville"
+            className="city-input-container"
           />
         </div>
         
