@@ -34,11 +34,13 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
    ```
 4. Install  ```react-scripts``` : 
 
-```npm install react-scripts --save```
+   ```bash
+   npm install react-scripts --save```
 
 5. Install  ```useNavigate``` : 
 
-```npm install react-router-dom --save```
+   ```bash
+   npm install react-router-dom --save```
 
 
 ### Configuration
