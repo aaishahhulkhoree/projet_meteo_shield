@@ -18,7 +18,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ### Installation
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/meteoshield.git
+   git clone https://github.com/aaishah.hulkhoree/meteoshield.git
    ```
 2. Navigate to the project directory:
    ```bash
@@ -32,6 +32,14 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
    ```bash
    yarn add
    ```
+4. Install  ```react-scripts``` : 
+
+```npm install react-scripts --save```
+
+5. Install  ```useNavigate``` : 
+
+```npm install react-router-dom --save```
+
 
 ### Configuration
 1. Create a `.env` file in the root directory.
