@@ -2,9 +2,16 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../assets/styles/about.css';
 
+/**
+ * Composant About - Présente les informations sur l'application MeteoShield.
+ * Ce composant affiche une description des fonctionnalités et de la mission de l'application.
+ */
 const About = () => {
   const navigate = useNavigate(); // Hook pour la navigation entre les pages
 
+  /**
+   * Fonction pour rediriger l'utilisateur vers la page d'accueil.
+   */
   const goHome = (event) => {
     navigate('/'); // Redirige vers la page d'accueil
   };
@@ -16,6 +23,7 @@ const About = () => {
         <span>Retour à l&apos;accueil</span>
       </button>
 
+      {/* Titre principal de la section "À propos" */}
       <h2>À propos de MeteoShield</h2>
       <p>
         {/* Présentation de MeteoShield et sa mission principale */}

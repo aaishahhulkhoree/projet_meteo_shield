@@ -1,3 +1,9 @@
+/**
+ * Composant ForecastObserver
+ * Ce composant observe et affiche les prévisions météorologiques sur plusieurs jours.
+ * Il permet également d'afficher les prévisions horaires pour une journée spécifique.
+ */
+
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PrevisionMeteo from '../utils/PrevisionMeteo';
@@ -6,16 +12,24 @@ import '../assets/styles/forecast.css';
 
 const ForecastObserver = () => {
   const navigate = useNavigate();
-  const [forecast, setForecast] = useState(null);
-  const [error, setError] = useState('');
-  const [city, setCity] = useState('');
-  const [hourlyForecast, setHourlyForecast] = useState(null);
-  const [selectedDate, setSelectedDate] = useState('');
+  const [forecast, setForecast] = useState(null); // Stocke les prévisions météorologiques
+  const [error, setError] = useState(''); // Stocke les erreurs éventuelles
+  const [city, setCity] = useState(''); // Stocke le nom de la ville sélectionnée
+  const [hourlyForecast, setHourlyForecast] = useState(null); // Stocke les prévisions horaires
+  const [selectedDate, setSelectedDate] = useState(''); // Stocke la date sélectionnée pour afficher les détails horaires
 
+   /**
+   * Redirige l'utilisateur vers la page d'accueil
+   */
   const goHome = () => {
     navigate('/');
   };
 
+  /**
+   * Traduit les descriptions météorologiques en français
+   * @param {string} detail - Description en anglais de la météo
+   * @returns {string} - Description traduite en français
+   */
   const translatedetail = (detail) => {
     const translations = {
       'clear sky': 'Ciel dégagé',
@@ -36,6 +50,9 @@ const ForecastObserver = () => {
     return translations[detail] || detail;
   };
 
+  /**
+   * Effet qui ajoute un observateur pour écouter les mises à jour de météo
+   */
   useEffect(() => {
     const observer = {
       mettreAJour: (data) => {
@@ -48,6 +65,10 @@ const ForecastObserver = () => {
 
     PrevisionMeteo.ajouterObserver(observer);
 
+    /**
+     * Fonction qui récupère la localisation de l'utilisateur
+     * et met à jour les prévisions météo de sa ville actuelle.
+     */
     const fetchLocationAndForecast = async () => {
       try {
         if ('geolocation' in navigator) {
@@ -77,6 +98,9 @@ const ForecastObserver = () => {
     };
   }, []);
 
+  /**
+   * Gestion des erreurs
+   */
   if (error) {
     return (
       <div className="forecast-container">
@@ -121,6 +145,9 @@ const ForecastObserver = () => {
     );
   }
 
+  /**
+   * Structure les données météorologiques en fonction des jours
+   */
   const groupedData = forecast.list.reduce((acc, item) => {
     const date = item.dt_txt.split(' ')[0];
     if (!acc[date]) acc[date] = [];
@@ -128,6 +155,9 @@ const ForecastObserver = () => {
     return acc;
   }, {});
 
+  /**
+   * Création d'un tableau des prévisions journalières pour affichage
+   */
   const dailyForecasts = Object.entries(groupedData).slice(0, 6).map(([date, data]) => ({
     date,
     min: Math.round(Math.min(...data.map((item) => item.main.temp_min))),
@@ -136,11 +166,19 @@ const ForecastObserver = () => {
     hourly: data,
   }));
 
+   /**
+   * Gère le clic sur une prévision journalière pour afficher le détail horaire
+   * @param {string} date - La date sélectionnée
+   */
   const handleDayClick = (date) => {
     setSelectedDate(date);
     setHourlyForecast(groupedData[date]);
   };
 
+   /**
+   * Gère la recherche d'une ville et met à jour les prévisions météo
+   * @param {string} city - Nom de la ville recherchée
+   */
   const handleSearch = async (city) => {
     if (!city) {
       alert('Veuillez entrer un nom de ville');
