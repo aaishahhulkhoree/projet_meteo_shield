@@ -20,6 +20,7 @@
     "node-fetch": "^3.3.2",
     "node-notifier": "^10.0.1",
     "pg": "^8.13.1",
+    "postgres": "^3.4.5",
     "prop-types": "^15.8.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

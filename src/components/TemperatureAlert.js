@@ -2,10 +2,22 @@ import React, { useEffect, useState } from 'react';
 import '../assets/styles/temperature.css';
 import PropTypes from 'prop-types';
 
+/**
+ * Composant TemperatureAlert qui affiche des alertes de température selon l'unité et la température actuelle.
+ * 
+ * @param {Object} props - Les propriétés du composant.
+ * @param {number} props.temp - La température actuelle en °C ou °F.
+ * 
+ * @returns {JSX.Element} - Retourne un élément JSX affichant une alerte de température ou null si aucune alerte n'est nécessaire.
+ */
 const TemperatureAlert = ({ temp }) => {
-  const [unit, setUnit] = useState('C'); // Valeur par défaut
+  const [unit, setUnit] = useState('C'); // Valeur par défaut de l'unité
 
-  // Charger l'unité de température depuis l'API ou le localStorage
+  /**
+   * Utilisation du hook useEffect pour récupérer l'unité de température préférée de l'utilisateur depuis l'API ou le localStorage.
+   * 
+   * @returns {void} - Aucun retour, mais met à jour l'état de l'unité avec la valeur récupérée.
+   */
   useEffect(() => {
     const fetchTemperatureUnit = async () => {
       const userId = localStorage.getItem('userId');
@@ -30,7 +42,7 @@ const TemperatureAlert = ({ temp }) => {
     fetchTemperatureUnit();
   }, []);
 
-  // Si l'unité est Celsius, convertir la température en Fahrenheit si nécessaire
+  // Conversion des températures selon l'unité choisie (Celsius ou Fahrenheit)
   const tempInCelsius = unit === 'C' ? temp : (temp - 32) * (5 / 9); // Conversion de F à C
   const tempInFahrenheit = unit === 'F' ? temp : (tempInCelsius * 9) / 5 + 32; // Conversion de C à F
 
@@ -38,7 +50,12 @@ const TemperatureAlert = ({ temp }) => {
 
   let alertContent = null;
 
-  // Logique d'alerte selon l'unité de température et la valeur de temp
+  /**
+   * Logique d'affichage d'alertes selon l'unité de température et la valeur de temp.
+   * Cette logique crée des alertes spécifiques pour différentes gammes de températures en Celsius ou Fahrenheit.
+   * 
+   * @returns {JSX.Element | null} - Retourne l'alerte correspondante ou null si aucune condition n'est remplie.
+   */
   if (unit === 'C') {
     if (tempInCelsius > 28) {
       alertContent = (
@@ -104,6 +121,12 @@ const TemperatureAlert = ({ temp }) => {
   return <div>{alertContent}</div>;
 };
 
+/**
+ * Définition des PropTypes pour valider les propriétés du composant.
+ * 
+ * @param {Object} props - Les propriétés du composant.
+ * @param {number} props.temp - La température en °C ou °F.
+ */
 TemperatureAlert.propTypes = {
   temp: PropTypes.number.isRequired, // Température en °C ou °F selon les paramètres
 };
