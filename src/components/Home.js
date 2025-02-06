@@ -6,7 +6,12 @@ import Navbar from './Navbar';
 import PrevisionMeteo from '../utils/PrevisionMeteo';
 import SearchBar from '../components/SearchBar';
 
+/**
+ * Composant principal représentant la page d'accueil de l'application.
+ * Il permet d'afficher la météo d'une ville via une recherche ou la géolocalisation de l'utilisateur.
+ */
 const Home = () => {
+  // États pour stocker différentes données de l'application
   const [city, setCity] = useState('');
   const [preferredCities, setPreferredCities] = useState([]);
   const [temperature, setTemperature] = useState('');
@@ -19,11 +24,14 @@ const Home = () => {
   const [showAlert, setShowAlert] = useState(false);
   const navigate = useNavigate();
 
+   /**
+   * Récupère la liste des villes favorites de l'utilisateur connecté
+   */
   useEffect(() => {
     const fetchPreferredCities = async () => {
       const userId = localStorage.getItem('userId');
       if (!userId) {
-        setPreferredCities([]);
+        setPreferredCities([]); // Si pas connecté, pas de villes favorites
         return;
       }
 
@@ -45,6 +53,11 @@ const Home = () => {
     fetchPreferredCities();
   }, []);
 
+  /**
+   * Récupère les données météo via la géolocalisation de l'utilisateur
+   * @param {float} lat - Latitude de l'utilisateur
+   * @param {float} lon - Longitude de l'utilisateur
+   */
   const fetchWeatherByGeoLocation = async (lat, lon) => {
     try {
       const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&lang=fr&appid=fd441e159a57c88c956ebf246cc1ae9c`;
@@ -63,6 +76,10 @@ const Home = () => {
     }
   };
 
+  /**
+   * Vérifie si la météo actuelle nécessite une alerte.
+   * @param {Object} data - Données météo récupérées
+   */
   const checkWeatherAlerts = (data) => {
     const weatherCondition = data.weather[0].main;
     const cityName = data.name;
@@ -98,13 +115,17 @@ const Home = () => {
         }
     }
   };
-
  
-
+  /**
+   * Ferme l'alerte affichée
+   */
   const closeAlert = () => {
     setShowAlert(false);
   };
 
+  /**
+   * Utilise la géolocalisation de l'utilisateur pour récupérer la météo actuelle
+   */
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -118,6 +139,10 @@ const Home = () => {
     );
   }, []);
 
+  /**
+   * Gère la recherche d'une ville par l'utilisateur
+   * @param {string} city - Nom de la ville recherchée
+   */
   const handleSearch = async (city) => {
     if (!city) {
       alert('Veuillez entrer un nom de ville');
@@ -134,6 +159,10 @@ const Home = () => {
     }
   };
 
+  /**
+   * Gère la sélection d'une ville favorite par l'utilisateur
+   * @param {Event} event - Événement de sélection
+   */
   const handleCitySelect = (event) => {
     const selectedCity = event.target.value;
     setCity(selectedCity);
@@ -141,7 +170,9 @@ const Home = () => {
     navigate(`/${selectedCity}`);
   };
 
-  // Mettre à jour les données météo lorsque la ville change
+  /**
+   * Met à jour les données météo lorsque la ville change
+   */
   useEffect(() => {
     const observer = {
       mettreAJour: (data) => {

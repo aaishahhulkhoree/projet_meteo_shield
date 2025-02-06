@@ -1,6 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types'; // Import de PropTypes
+import PropTypes from 'prop-types'; // Import de PropTypes pour valider les types des props
 
+/**
+ * Composant DroughtAlert qui affiche une alerte en cas de risque de sécheresse.
+ * Il se base sur l'absence de pluie, une faible humidité et une température élevée.
+ *
+ * @param {Object} rain - Objet contenant les données de précipitations.
+ * @param {number} rain - rain['1h'] La quantité de pluie en mm durant la dernière heure.
+ * @param {number} humidity - Pourcentage d'humidité relative.
+ * @param {number} temp - Température actuelle en degrés Celsius.
+ * @returns {JSX.Element|null} - Retourne une alerte en cas de sécheresse ou null si aucun risque.
+ */
 const DroughtAlert = ({ rain, humidity, temp }) => {
 
   // Vérification si les précipitations sont absentes ou faibles
@@ -8,10 +18,11 @@ const DroughtAlert = ({ rain, humidity, temp }) => {
   const isLowHumidity = humidity < 30; // Humidité inférieure à 30%
   const isHighTemp = temp > 30; // Température supérieure à 30°C
   const precipitation = rain['1h'] || 0; // Vérifier si la clé '1h' existe
+  // Condition stricte pour un risque de sécheresse élevé
   if (precipitation < 2 && humidity < 30 && temp > 30) {
     return <p className="alert-drought">⚠️ Risque de sécheresse élevé !</p>;
   }
-  // Si la température est élevée, l'humidité est faible, et il n'y a pas de pluie
+  // Condition générale pour afficher une alerte sécheresse si toutes les conditions sont réunies
   if (isNoRain && isLowHumidity && isHighTemp) {
     return (
       <div className="alert drought-alert">
@@ -21,7 +32,7 @@ const DroughtAlert = ({ rain, humidity, temp }) => {
     );
   }
 
-  // Si la bruine est présente, on ne déclenche pas l'alerte sécheresse
+  // Si la pluie est présente en quantité significative (>= 1 mm), on ne déclenche pas l'alerte sécheresse
   if (rain && rain['1h'] >= 1) {
     return null; // Pas de sécheresse, il y a des précipitations
   }

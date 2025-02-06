@@ -1,3 +1,8 @@
+/**
+ * @file Map.js
+ * @description Composant React pour afficher une carte interactive avec Leaflet. Permet de récupérer la température et des informations sur un lieu lorsqu'on clique sur la carte.
+ */
+
 import React, { useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -6,7 +11,11 @@ import '../assets/styles/map.css';
 import L from 'leaflet';
 import { useNavigate } from 'react-router-dom'; // Si vous utilisez React Router pour la navigation
 
+/**
+ * Composant principal de la carte interactive
+ */
 const Map = () => {
+  // États pour stocker la position sélectionnée, la température, le nom du lieu, le code postal et le pays
   const [position, setPosition] = useState(null);
   const [temperature, setTemperature] = useState(null);
   const [placeName, setPlaceName] = useState('');
@@ -17,7 +26,11 @@ const Map = () => {
   
   const navigate = useNavigate();
 
-  // Fonction pour récupérer la température via l'API OpenWeather
+  /**
+   * Fonction pour récupérer la température d'un lieu via l'API OpenWeatherMap
+   * @param {number} lat - Latitude du lieu sélectionné
+   * @param {number} lng - Longitude du lieu sélectionné
+   */
   const getTemperature = async (lat, lng) => {
     const apiKey = 'fd441e159a57c88c956ebf246cc1ae9c';
     const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&appid=${apiKey}&units=metric`;
@@ -30,7 +43,12 @@ const Map = () => {
     }
   };
 
-  // Fonction pour récupérer le nom du lieu, code postal et pays via l'API Nominatim de OpenStreetMap
+   /**
+   * Fonction pour récupérer les informations du lieu (ville, code postal, pays)
+   * via l'API Nominatim de OpenStreetMap
+   * @param {number} lat - Latitude du lieu sélectionné
+   * @param {number} lng - Longitude du lieu sélectionné
+   */
   const getPlaceName = async (lat, lng) => {
     const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`;
 
@@ -48,7 +66,9 @@ const Map = () => {
     }
   };
 
-  // Composant pour capturer les clics sur la carte
+   /**
+   * Composant interne pour capturer les clics sur la carte et afficher un marqueur
+   */
   const LocationMarker = () => {
     useMapEvents({
       click(e) {
@@ -79,7 +99,9 @@ const Map = () => {
     ) : null;
   };
 
-  // Fonction pour revenir à la page d'accueil
+  /**
+   * Fonction pour naviguer vers la page d'accueil
+   */
   const goHome = () => {
     navigate('/'); // Utilisation de useNavigate pour rediriger vers l'accueil
   };

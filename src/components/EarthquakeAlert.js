@@ -1,10 +1,23 @@
 import React from 'react';
 import '../assets/styles/earthquake.css';
-import PropTypes from 'prop-types'; // Import de PropTypes
+import PropTypes from 'prop-types';  // Import de PropTypes pour la validation des props
 
-
+/**
+ * Composant EarthquakeAlert
+ * Ce composant affiche une alerte en cas de tremblement de terre si l'amplitude dépasse un seuil défini.
+ * 
+ * @param {Object} props - Les propriétés du composant.
+ * @param {Object} props.earthquakeData - Les données du tremblement de terre.
+ * @param {number} props.earthquakeData.magnitude - La magnitude du tremblement de terre.
+ * @param {string} props.earthquakeData.location - L'emplacement du tremblement de terre.
+ * @param {number} props.earthquakeData.depth - La profondeur du tremblement de terre en kilomètres.
+ * @param {Object} [props.preferences] - Les préférences de l'utilisateur (optionnelles).
+ * 
+ * @returns {JSX.Element|null} - Retourne un composant affichant l'alerte ou null si les données sont insuffisantes.
+ */
 const EarthquakeAlert = ({ earthquakeData, preferences }) => {
 
+  // Vérifie si les données essentielles sont présentes, sinon retourne null (ne rien afficher)
   if (!earthquakeData || !earthquakeData.magnitude || !earthquakeData.location || !earthquakeData.depth) {
     return null; // Évite d'afficher une alerte si les données sont incomplètes
   }

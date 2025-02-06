@@ -3,19 +3,38 @@ import { Link } from 'react-router-dom';
 import '../assets/styles/navbar.css'; // Import du fichier CSS mis à jour
 import Modal from './Modal'; // Import du composant Modal
 
+/**
+ * Composant Navbar - Barre de navigation du site
+ * 
+ * Cette barre de navigation permet à l'utilisateur de naviguer entre les différentes pages du site.
+ * Elle affiche également un message de bienvenue si l'utilisateur est connecté et inclut un menu déroulant.
+ */
 const Navbar = () => {
+  // État pour gérer l'ouverture et la fermeture du menu modal
   const [isModalOpen, setIsModalOpen] = useState(false);
+  // État pour stocker le nom d'utilisateur
   const [username, setUsername] = useState('');
 
+  /**
+   * Fonction pour ouvrir ou fermer le menu modal
+   */
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
 
+  /**
+   * Fonction pour rafraîchir la page lorsqu'on clique sur le titre "MétéoShield"
+   */
   const handleRefreshClick = () => {
     // Rafraîchissement de la page
     window.location.reload();
   };
 
+  /**
+   * useEffect qui s'exécute au montage du composant :
+   * - Récupère le nom d'utilisateur depuis le localStorage
+   * - Met en place un rafraîchissement automatique de la page toutes les 4 heures
+   */
   useEffect(() => {
     const storedUsername = localStorage.getItem('username');
     const storedUserId = localStorage.getItem('userId');

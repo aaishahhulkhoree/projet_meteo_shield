@@ -1,7 +1,19 @@
 import React from 'react';
-import PropTypes from 'prop-types'; // Import de PropTypes
+import PropTypes from 'prop-types'; // Import de PropTypes pour la validation des props
 
+/**
+ * Composant LocationAlert
+ * Ce composant affiche une alerte météorologique si la ville actuelle est incluse dans les préférences utilisateur.
+ *
+ * @param {Object} props - Propriétés du composant
+ * @param {string} props.city - Nom de la ville à vérifier
+ * @param {Object} props.userPreferences - Préférences de l'utilisateur, incluant les villes suivies
+ * @param {string[]} props.userPreferences.cities - Liste des villes suivies par l'utilisateur
+ *
+ * @returns {JSX.Element|null} - Un message d'alerte si la ville est suivie, sinon null
+ */
 const LocationAlert = ({ city, userPreferences }) => {
+  // Vérifie si la ville actuelle est suivie par l'utilisateur
   if (userPreferences.cities.includes(city)) {
     return (
       <div className="alert location-alert">
