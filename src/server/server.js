@@ -19,7 +19,7 @@ const pool = new Pool({
   port: 5432,
 });
 
-// Fonction pour initialiser la base de données
+// Fonction pour initialiser la base de données si elle n'existe pas encore
 const initializeDatabase = async () => {
   try {
       const result = await pool.query(`
@@ -40,11 +40,13 @@ const initializeDatabase = async () => {
 // Appeler la fonction d'initialisation
 initializeDatabase();
 
-// Middleware
+// Middleware pour gérer les requêtes et la sécurité
 app.use(cors());
 app.use(express.json());
 
-// Route pour enregistrer les données météo
+/**
+ * Route pour enregistrer les données météo dans la base de données
+ */
 app.post('/api/weather', async (req, res) => {
   const { city_name, temperature, description } = req.body;
   const query = 'INSERT INTO weather_logs (city_name, temperature, detail) VALUES ($1, $2, $3)';
@@ -57,7 +59,9 @@ app.post('/api/weather', async (req, res) => {
   }
 });
 
-// Route pour récupérer les données météo
+/**
+ * Route pour récupérer les données météo récentes
+ */
 app.get('/api/weather', async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM weather_logs ORDER BY jour DESC LIMIT 10');
@@ -68,7 +72,9 @@ app.get('/api/weather', async (req, res) => {
   }
 });
 
-// Route pour l'inscription
+/**
+ * Route pour inscrire un nouvel utilisateur
+ */
 app.post('/api/signup', async (req, res) => {
   const { username, email, motdepasse } = req.body;
 
@@ -77,7 +83,7 @@ app.post('/api/signup', async (req, res) => {
   }
 
   try {
-    // Hacher le mot de passe
+    // Hacher le mot de passe avant de l'insérer en base
     const hashedPassword = await bcrypt.hash(motdepasse.trim(), 10);
 
     const result = await pool.query(
@@ -96,7 +102,9 @@ app.post('/api/signup', async (req, res) => {
   }
 });
 
-// Route pour la connexion
+/**
+ * Route pour la connexion utilisateur
+ */
 app.post('/api/login', async (req, res) => {
   const { email, motdepasse } = req.body;
 
@@ -129,7 +137,9 @@ app.post('/api/login', async (req, res) => {
   }
 });
 
-// Route pour gérer les villes favorites
+/**
+ * Route pour gérer les villes favorites
+ */
 app.post('/api/villes-favorites', async (req, res) => {
   const { userId, villes } = req.body;
 
@@ -167,7 +177,9 @@ app.post('/api/villes-favorites', async (req, res) => {
   }
 });
 
-// Route pour récupérer les villes favorites d'un utilisateur
+/**
+ * Route pour récupérer les villes favorites d'un utilisateur
+ */
 app.get('/api/villes-favorites/:userId', async (req, res) => {
   const { userId } = req.params;
 
@@ -184,7 +196,9 @@ app.get('/api/villes-favorites/:userId', async (req, res) => {
   }
 });
 
-// Route pour récupérer les préférences utilisateur
+/**
+ * Route pour récupérer les préférences utilisateur
+ */ 
 app.get('/api/preferences-utilisateur/:userId', async (req, res) => {
   const { userId } = req.params;
 
@@ -203,7 +217,9 @@ app.get('/api/preferences-utilisateur/:userId', async (req, res) => {
   }
 });
 
-// Route pour sauvegarder ou mettre à jour les préférences utilisateur
+/**
+ * Route pour sauvegarder ou mettre à jour les préférences utilisateur
+ */
 app.post('/api/preferences-utilisateur', async (req, res) => {
   const { userId, temperatureUnit, alertType } = req.body;
 
@@ -239,7 +255,9 @@ app.post('/api/preferences-utilisateur', async (req, res) => {
   }
 });
 
-//Route pour l'historique des données météo
+/**
+ * Route pour l'historique des données météo 
+ */
 app.post('/api/weather-logs', async (req, res) => {
   const { userId } = req.body;
 
