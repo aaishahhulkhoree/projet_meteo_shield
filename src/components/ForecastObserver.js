@@ -79,9 +79,11 @@ const ForecastObserver = () => {
               setCity(cityName);
               await PrevisionMeteo.mettreAJourPrevisions(cityName);
             },
+            /*
             (error) => {
               setError('La géolocalisation n\'est pas activée.');
-            }
+            }             
+             */
           );
         } else {
           setError('La géolocalisation n\'est pas disponible.');

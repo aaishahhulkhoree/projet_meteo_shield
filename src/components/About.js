@@ -12,7 +12,7 @@ const About = () => {
   /**
    * Fonction pour rediriger l'utilisateur vers la page d'accueil.
    */
-  const goHome = (event) => {
+  const goHome = () => {
     navigate('/'); // Redirige vers la page d'accueil
   };
 

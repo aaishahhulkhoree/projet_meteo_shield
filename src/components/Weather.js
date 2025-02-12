@@ -15,9 +15,10 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 const Weather = ({ city }) => {
   const [forecast, setForecast] = useState(null); // Prévisions météo
   const [error, setError] = useState(''); // Message d'erreur
-  const [earthquakeData, setEarthquakeData] = useState(null); // Données des alertes séismes
+  const [earthquakeData] = useState(null); // Données des alertes séismes
   const [tsunamiWarning, setTsunamiWarning] = useState(false); // Alerte tsunami
 
+  /*
   // Simulation de données pour tester l'alerte sécheresse
   const testData = {
     main: {
@@ -37,6 +38,7 @@ const Weather = ({ city }) => {
   //Simulation de données pour tester l'alerte tempete/storm
   const windSpeed = 75; // Mets cette valeur pour tester différentes alertes
   const forecastWindSpeed = 60; // Mets cette valeur pour tester les prévisions
+   */
 
   const [temperatureUnit, setTemperatureUnit] = useState('C'); // Unité de température par défaut (Celsius)
 

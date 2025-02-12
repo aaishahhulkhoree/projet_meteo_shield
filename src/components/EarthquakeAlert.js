@@ -15,7 +15,7 @@ import PropTypes from 'prop-types';  // Import de PropTypes pour la validation d
  * 
  * @returns {JSX.Element|null} - Retourne un composant affichant l'alerte ou null si les données sont insuffisantes.
  */
-const EarthquakeAlert = ({ earthquakeData, preferences }) => {
+const EarthquakeAlert = ({ earthquakeData }) => {
 
   // Vérifie si les données essentielles sont présentes, sinon retourne null (ne rien afficher)
   if (!earthquakeData || !earthquakeData.magnitude || !earthquakeData.location || !earthquakeData.depth) {

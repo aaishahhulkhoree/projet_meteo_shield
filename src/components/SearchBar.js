@@ -9,8 +9,6 @@ import { FaSearch } from 'react-icons/fa';
 import CountryNames from '../utils/CountryNames';
 // Importation du composant pour afficher le drapeau des pays
 import Flag from 'react-world-flags';
-// Importation des prévisions météo depuis un fichier utilitaire
-import PrevisionMeteo from '../utils/PrevisionMeteo';
 // Importation des styles pour la barre de recherche
 import '../assets/styles/searchbar.css';
 
