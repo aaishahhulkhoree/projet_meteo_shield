@@ -129,6 +129,7 @@ const TemperatureAlert = ({ temp }) => {
  */
 TemperatureAlert.propTypes = {
   temp: PropTypes.number.isRequired, // Température en °C ou °F selon les paramètres
+  unit : PropTypes.string.isRequired,
 };
 
 export default TemperatureAlert;
