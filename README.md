@@ -4,7 +4,7 @@ This project, **MeteoShield**, is a web application designed to provide real-tim
 
 ## Features
 - **Real-Time Alerts**: Notifications for extreme weather events such as storms, floods, heatwaves, and more.
-- **Interactive Map**: GeoJSON-powered map.
+- **Interactive Map**: Leaflet map.
 - **Customizable Notifications**: Users can personalize alerts based on location and preferred event types.
 - **Hourly and Weekly Forecasts**: Comprehensive weather updates for better planning.
 
@@ -85,8 +85,9 @@ For deployment instructions, refer to the [Create React App Deployment Guide](ht
 
 ## Technologies Used
 - **React**: Frontend framework
-- **GeoJSON**: Interactive map rendering
+- **Leaflet**: Interactive map rendering from React
 - **OpenWeather API**: Weather data provider
+- **Map API**: Map data provider
 - **HTML/CSS/JavaScript**: Core web technologies
 
 ## Contributing
