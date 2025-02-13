@@ -1,6 +1,6 @@
 import React from 'react';
-import '../assets/styles/windspeed.css' // Importation du fichier de style spécifique pour la vitesse du vent
 import PropTypes from 'prop-types'; // Import de PropTypes pour la validation des props
+import '../assets/styles/windspeed.css'; // Importation du fichier de style spécifique pour la vitesse du vent
 
 // Composant WindSpeedInfo qui affiche la vitesse du vent en km/h
 const WindSpeedInfo = ({ windSpeed }) => {

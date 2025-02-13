@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types'; // Import de PropTypes
-import '../assets/styles/alert.css'
+import WindSpeedInfo from './WindSpeedInfo'; // Import de WindSpeedInfo
+import '../assets/styles/alert.css';
 
 /**
  * Composant StormAlert qui affiche une alerte en cas de conditions météorologiques sévères, spécifiquement des vents forts ou violents.
@@ -33,6 +34,9 @@ const StormAlert = ({ windSpeed, forecastWindSpeed }) => {
             : `Vent violent détecté avec une vitesse de ${Math.round(windSpeed)} km/h.`}
         </p>
         {isSevereWindForecast && <p>Prévisions : vent supérieur à 50 km/h dans les prochaines heures.</p>}
+
+        {/* Utilisation du composant WindSpeedInfo pour afficher la vitesse du vent */}
+        <WindSpeedInfo windSpeed={windSpeed} />
       </div>
     );
   }
