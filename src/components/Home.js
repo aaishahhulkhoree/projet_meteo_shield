@@ -100,7 +100,7 @@ const Home = () => {
       case 'Extreme':
         setAlertMessage(`Alerte : Conditions météo extrêmes à ${cityName}. Restez en sécurité !`);
         break;
-        case 'Tsunami':
+      case 'Tsunami':
           setAlertMessage(`Alerte : Risque de tsunami à ${cityName}. Éloignez-vous des côtes !`);
           break;
       default:
@@ -111,7 +111,8 @@ const Home = () => {
         } else if (weatherCondition === 'Storm'){
           setAlertMessage('Alerte : Tempête à ${cityName}. Ne sortez pas !');
         } else {
-          setAlertMessage('Aucune Alerte Extrême Détéctée');
+          setAlertMessage(`Aucune alerte détectée à ${cityName} !`);
+          break;
         }
     }
   };
@@ -201,15 +202,16 @@ const Home = () => {
     if (geoLocationWeather) {
       const weatherCondition = geoLocationWeather.weather[0].main;
       if (
-        weatherCondition === 'Thunderstorm' ||
-        weatherCondition === 'Rain' ||
-        weatherCondition === 'Snow' ||
-        weatherCondition === 'Mist' ||
-        weatherCondition === 'Fog'  ||
-        weatherCondition === 'Drought' ||
-        weatherCondition === 'Flood' ||
-        weatherCondition === 'Tsunami' ||
-        weatherCondition === 'Storm'
+        weatherCondition === 'Thunderstorm' || //orage 
+        weatherCondition === 'Rain' || // pluie 
+        weatherCondition === 'Snow' || //neige
+        weatherCondition === 'Mist' || //brume
+        weatherCondition === 'Fog'  || //brouillard
+        weatherCondition === 'Drought' || //secheresse 
+        weatherCondition === 'Flood' || //inondation
+        weatherCondition === 'Tsunami' || //tsunami
+        weatherCondition === 'Storm' || //tempête 
+        weatherCondition === 'Clear' //
 
       ) {
         setShowAlert(true); // Afficher l'alerte météo
