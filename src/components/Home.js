@@ -82,40 +82,40 @@ const Home = () => {
    */
   const checkWeatherAlerts = (data) => {
     const weatherCondition = data.weather[0].main;
-    const cityName = data.name;
+    const cityName = data.name.split(' ')[0];
+    let message = '';
+  
     switch (weatherCondition) {
       case 'Thunderstorm':
-        setAlertMessage(`Alerte : Orage violent en cours à ${cityName}.`);
+        message = `Alerte : Orage violent en cours à ${cityName}.`;
         break;
       case 'Rain':
-        setAlertMessage(`Alerte : Pluie à ${cityName}.`);
+        message = `Alerte : Pluie à ${cityName}.`;
         break;
       case 'Snow':
-        setAlertMessage(`Alerte : Chutes de neige à ${cityName}.`);
+        message = `Alerte : Chutes de neige à ${cityName}.`;
         break;
       case 'Mist':
       case 'Fog':
-        setAlertMessage(`Alerte : Brume ou brouillard à ${cityName}.`);
+        message = `Alerte : Brume ou brouillard à ${cityName}.`;
         break;
-      case 'Extreme':
-        setAlertMessage(`Alerte : Conditions météo extrêmes à ${cityName}. Restez en sécurité !`);
+      case 'Drought':
+        message = `Alerte : Secheresse à ${cityName}.`;
+        break;
+      case 'Flood':
+        message = `Alerte : Inondation à ${cityName}.`;
         break;
       case 'Tsunami':
-          setAlertMessage(`Alerte : Risque de tsunami à ${cityName}. Éloignez-vous des côtes !`);
-          break;
+        message = `Alerte : Tsunami à ${cityName}.`;
+        break;
       default:
-        if (weatherCondition === 'Drought'){
-          setAlertMessage(`Alerte : Sécheresse à ${cityName}. Prenez des précautions !`);
-        } else if (weatherCondition === 'Flood') {
-          setAlertMessage(`Alerte : Inondation à ${cityName}. Restez en sécurité !`);
-        } else if (weatherCondition === 'Storm'){
-          setAlertMessage('Alerte : Tempête à ${cityName}. Ne sortez pas !');
-        } else {
-          setAlertMessage(`Aucune alerte détectée à ${cityName} !`);
-          break;
-        }
+        message = `Aucune alerte détectée à ${cityName} !`;
     }
+  
+    setAlertMessage(message);
+    setShowAlert(message !== `Aucune alerte détectée à ${cityName} !`);
   };
+  
  
   /**
    * Ferme l'alerte affichée
