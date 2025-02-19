@@ -166,7 +166,7 @@ const Settings = () => {
         <div className="setting-option">
           <label>Type d&apos;alerte météo :</label>
           <div className="alert-options">
-            {["storm", "heatwave", "rain", "earthquake", "tsunami"].map((alert) => (
+            {["storm", "heatwave", "rain", "earthquake", "tsunami", "flood"].map((alert) => (
               <button
                 key={alert}
                 className={`alert-button ${alertType.includes(alert) ? "selected" : ""}`}
