@@ -85,35 +85,36 @@ const Home = () => {
     const cityName = data.name.split(' ')[0];
     let message = '';
   
+    console.log(`Météo à ${cityName}: ${weatherCondition}`);
     switch (weatherCondition) {
       case 'Thunderstorm':
-        message = `Alerte : Orage violent en cours à ${cityName}.`;
+        message = ` ⚠️ Alerte : 🌩 Orage violent en cours à ${cityName}. Ne sortez pas !`;
         break;
       case 'Rain':
-        message = `Alerte : Pluie à ${cityName}.`;
+        message = ` ⚠️ Alerte : ☔ Pluie à ${cityName}. Si vous sortez, n'oubliez pas votre parapluie !`;
         break;
       case 'Snow':
-        message = `Alerte : Chutes de neige à ${cityName}.`;
+        message = ` ⚠️ Alerte : 🌨️ Chutes de neige à ${cityName}. ⛄ Attention, au verglas et couvrez vous bien !`;
         break;
       case 'Mist':
       case 'Fog':
-        message = `Alerte : Brume ou brouillard à ${cityName}.`;
+        message = ` ⚠️ Alerte : 🌫 Brume ou 🌫️ brouillard à ${cityName}.`;
         break;
       case 'Drought':
-        message = `Alerte : Secheresse à ${cityName}.`;
+        message = ` ⚠️ Alerte : 🏜️ Secheresse à ${cityName}. Pensez à vous hydrater et évitez de sortir ! `;
         break;
       case 'Flood':
-        message = `Alerte : Inondation à ${cityName}.`;
+        message = ` ⚠️ Alerte : 💦 Inondation à ${cityName}. Mettez vous à l'abri !`;
         break;
       case 'Tsunami':
-        message = `Alerte : Tsunami à ${cityName}.`;
+        message = ` ⚠️ Alerte : 🌊 Tsunami à ${cityName}. Ayeeeeeeeee ! c'est la fin `;
         break;
       default:
-        message = `Aucune alerte détectée à ${cityName} !`;
+        message = `Aucune alerte détectée à ${cityName} ! Ouf, vous pouvez sortir !`;
     }
   
-    setAlertMessage(message);
-    setShowAlert(message !== `Aucune alerte détectée à ${cityName} !`);
+    setAlertMessage(message); 
+    setShowAlert(message !== `Aucune alerte détectée à ${cityName} ! Ouf, vous pouvez sortir !`);
   };
   
  
